@@ -1,0 +1,30 @@
+{
+  "name": "RNPermissions",
+  "version": "4.1.5",
+  "license": "MIT",
+  "summary": "An unified permissions API for React Native on iOS, Android and Windows",
+  "authors": "Mathieu Acthernoene <zoontek@gmail.com>",
+  "homepage": "https://github.com/zoontek/react-native-permissions#readme",
+  "platforms": {
+    "ios": "12.4",
+    "tvos": "12.4"
+  },
+  "requires_arc": true,
+  "source": {
+    "git": "https://github.com/zoontek/react-native-permissions.git",
+    "tag": "4.1.5"
+  },
+  "source_files": [
+    "ios/*.{h,mm}",
+    "ios/PhotoLibrary/*.{h,mm}"
+  ],
+  "frameworks": [
+    "Photos",
+    "PhotosUI"
+  ],
+  "dependencies": {
+    "React-Core": [
+
+    ]
+  }
+}
