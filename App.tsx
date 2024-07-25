@@ -1,12 +1,8 @@
 import React from 'react';
-import {SafeAreaView, Text} from 'react-native';
+import {RootStackNavigator} from './src/navigations';
 
 function App(): React.JSX.Element {
-  return (
-    <SafeAreaView>
-      <Text>hello</Text>
-    </SafeAreaView>
-  );
+  return <RootStackNavigator />;
 }
 
 export default App;
