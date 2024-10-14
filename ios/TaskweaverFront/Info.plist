@@ -26,10 +26,7 @@
 	<true/>
 	<key>NSAppTransportSecurity</key>
 	<dict>
-	  <!-- Do not change NSAllowsArbitraryLoads to true, or you will risk app rejection! -->
 		<key>NSAllowsArbitraryLoads</key>
-		<false/>
-		<key>NSAllowsLocalNetworking</key>
 		<true/>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
@@ -49,13 +46,8 @@
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 	<key>NSPhotoLibraryUsageDescription</key>
-    <string>앨범에서 프로필 사진을 선택하기 위해 권한이 필요합니다.</string>
-    <key>NSCameraUsageDescription</key>
-    <string>카메라로 프로필 사진을 찍기 위해 권한이 필요합니다.</string>
-    <key>NSAppTransportSecurity</key>
-    <dict>
-        <key>NSAllowsArbitraryLoads</key>
-        <true/>
-    </dict>
+	<string>앨범에서 프로필 사진을 선택하기 위해 권한이 필요합니다.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>카메라로 프로필 사진을 찍기 위해 권한이 필요합니다.</string>
 </dict>
 </plist>

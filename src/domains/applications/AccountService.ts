@@ -1,5 +1,4 @@
 import AccountRepository from '../infrastructures/AccountRepository.ts';
-import axios from 'axios';
 
 export default class AccountService {
   private readonly accountRepo: AccountRepository;
@@ -24,5 +23,9 @@ export default class AccountService {
 
   async login(email: string, password: string, deviceId: string) {
     return await this.accountRepo.loginAccount(email, password, deviceId);
+  }
+
+  async logout(accessToken: string) {
+    return await this.accountRepo.logoutAccount(accessToken);
   }
 }

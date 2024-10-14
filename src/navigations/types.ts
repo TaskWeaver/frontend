@@ -8,7 +8,10 @@ export type SignUpParamList = {
 };
 
 export type MainStackProps = {
-  Home: undefined;
+  TopBarNavigation: undefined;
+  Notification: undefined;
+  CreateTeam: undefined;
+  ManageTeam: {teamId: string};
 };
 
 export type RootStackParamList = {
