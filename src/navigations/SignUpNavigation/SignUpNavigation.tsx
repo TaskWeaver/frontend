@@ -11,10 +11,26 @@ const Stack = createNativeStackNavigator<SignUpParamList>();
 export default function SignUpNavigation() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="SignUp" component={SignUp} />
-      <Stack.Screen name="Authorization" component={Authorization} />
-      <Stack.Screen name="Profile" component={Profile} />
-      <Stack.Screen name="Terms" component={Terms} />
+      <Stack.Screen
+        name="SignUp"
+        component={SignUp}
+        options={{headerShown: false, gestureEnabled: false}}
+      />
+      <Stack.Screen
+        name="Authorization"
+        component={Authorization}
+        options={{headerShown: false, gestureEnabled: false}}
+      />
+      <Stack.Screen
+        name="Profile"
+        component={Profile}
+        options={{headerShown: false, gestureEnabled: false}}
+      />
+      <Stack.Screen
+        name="Terms"
+        component={Terms}
+        options={{headerShown: false, gestureEnabled: false}}
+      />
     </Stack.Navigator>
   );
 }
