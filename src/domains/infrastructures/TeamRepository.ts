@@ -12,11 +12,14 @@ export default class TeamRepository {
     });
 
     try {
-      const response = await api.post('/v1/team', {teamName, teamDescription});
-      console.log(response);
+      const response = await api.post('/v1/team', {
+        name: teamName,
+        description: teamDescription,
+      });
 
-      return response;
+      return response.data;
     } catch (e) {
+      console.log(e);
       throw e;
     }
   }
