@@ -8,19 +8,14 @@ import {
   TouchableOpacity,
   Modal,
 } from 'react-native';
-import uuid from 'react-native-uuid';
 import IcLeftArrow from '../../assets/svg/ic_leftArrow.tsx';
 import SignUpTextInput from '../../components/SignUpTextInput';
 import useCustomNavigation from '../../hooks/useCustomNavigation.ts';
-import {createTeam} from '../../features/team/teamSlice.ts';
-import {useDispatch} from 'react-redux';
 import {service} from '../../domains';
 import AsyncStorageService from '../../storage/AsyncStorage.ts';
-import {create} from 'zustand';
 
 const CreateTeamView = () => {
   const {navigation} = useCustomNavigation();
-  const dispatch = useDispatch();
   const asyncStorageService = new AsyncStorageService();
 
   const [teamName, setTeamName] = useState('');
