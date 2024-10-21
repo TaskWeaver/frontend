@@ -5,11 +5,13 @@ export const REFRESH_TOKEN = 'refreshToken';
 
 export default class AsyncStorageService {
   async getAccessToken() {
-    return await AsyncStorage.getItem(ACCESS_TOKEN);
+    const token = await AsyncStorage.getItem(ACCESS_TOKEN);
+    return token ?? '';
   }
 
   async getRefreshToken() {
-    return await AsyncStorage.getItem(REFRESH_TOKEN);
+    const token = await AsyncStorage.getItem(REFRESH_TOKEN);
+    return token ?? '';
   }
 
   async setAccessToken(token: string) {

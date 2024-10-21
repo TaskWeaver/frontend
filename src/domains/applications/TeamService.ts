@@ -7,6 +7,10 @@ export default class TeamService {
     this.teamRepo = teamRepo;
   }
 
+  async getTeam(token: string) {
+    return await this.teamRepo.getTeam(token);
+  }
+
   async createTeam(token: string, teamName: string, teamDescription: string) {
     return await this.teamRepo.createTeam(token, teamName, teamDescription);
   }

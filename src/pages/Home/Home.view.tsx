@@ -7,18 +7,33 @@ import {
   Text,
   View,
 } from 'react-native';
-import React, {useRef} from 'react';
+import React, {useEffect, useRef} from 'react';
 import useCustomNavigation from '../../hooks/useCustomNavigation.ts';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../app/store.ts';
 import {Team} from '../../features/team/type.ts';
+import {service} from '../../domains';
+import AsyncStorageService from '../../storage/AsyncStorage.ts';
 
 export default function HomeView() {
   const {navigation} = useCustomNavigation();
   const teams = useSelector((state: RootState) => state.team.teams);
+  const asyncStorageService = new AsyncStorageService();
 
   // 애니메이션 값 선언
   const scaleValue = useRef(new Animated.Value(1)).current;
+
+  useEffect(() => {
+    const fetchTeamData = async () => {
+      const token = await asyncStorageService.getAccessToken();
+
+      if (token) {
+        await service.team.getTeam(token);
+      }
+    };
+
+    fetchTeamData();
+  }, []);
 
   const handlePressIn = () => {
     Animated.spring(scaleValue, {
