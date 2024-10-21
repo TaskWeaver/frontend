@@ -7,7 +7,7 @@ export default class UserService {
     this.userRepo = userRepo;
   }
 
-  async getProfile() {
-    return await this.userRepo.getUserProfile();
+  async getProfile(token: string) {
+    return await this.userRepo.getUserProfile(token);
   }
 }

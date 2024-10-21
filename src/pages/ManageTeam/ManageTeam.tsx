@@ -32,7 +32,14 @@ const ManageTeamContainer = () => {
       </View>
       <View style={styles.divider} />
 
-      <View style={styles.main}></View>
+      <View style={styles.main}>
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: '#20B767',
+            borderRadius: 8,
+          }}></View>
+      </View>
     </SafeAreaView>
   );
 };
