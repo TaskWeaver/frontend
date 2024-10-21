@@ -33,7 +33,7 @@ export default function HomeView() {
     };
 
     fetchTeamData();
-  }, []);
+  }, [asyncStorageService]);
 
   const handlePressIn = () => {
     Animated.spring(scaleValue, {
