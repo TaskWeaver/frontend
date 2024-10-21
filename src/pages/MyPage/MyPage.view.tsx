@@ -1,5 +1,12 @@
-import {Pressable, SafeAreaView, Text, View, Image} from 'react-native';
-import React from 'react';
+import {
+  Pressable,
+  SafeAreaView,
+  Text,
+  View,
+  Image,
+  Animated,
+} from 'react-native';
+import React, {useRef} from 'react';
 import {service} from '../../domains';
 import RightChevron from '../../assets/svg/ic_rightChevron.tsx';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -19,6 +26,23 @@ export default function MyPageView({
   nickname,
 }: MyPageViewProps) {
   const {navigation} = useCustomNavigation();
+
+  // 애니메이션 값 초기화
+  const scaleAnim = useRef(new Animated.Value(1)).current;
+
+  const handlePressIn = () => {
+    Animated.spring(scaleAnim, {
+      toValue: 0.95, // 작아지는 크기
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const handlePressOut = () => {
+    Animated.spring(scaleAnim, {
+      toValue: 1, // 원래 크기로 돌아옴
+      useNativeDriver: true,
+    }).start();
+  };
 
   const handleLogout = async () => {
     try {
@@ -97,38 +121,52 @@ export default function MyPageView({
             style={{backgroundColor: '#FAFAFA', height: 3, marginTop: 20}}
           />
           <View style={styles.cardContainer}>
-            <Pressable
-              style={{
-                backgroundColor: '#FAFAFA',
-                borderRadius: 12,
-                paddingVertical: 20,
-                paddingHorizontal: 20,
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                elevation: 2,
-              }}>
-              <View style={{flex: 1, flexDirection: 'column', gap: 10}}>
-                <Text
-                  style={{fontSize: 20, fontWeight: 'bold', color: '#20B767'}}>
-                  개인정보
-                </Text>
-                <Text
-                  style={{fontSize: 16, fontWeight: 'medium', color: '#333'}}>
-                  개인정보를 수정해보세요
-                </Text>
-              </View>
-              <RightChevron size={24} />
-            </Pressable>
+            <Animated.View style={{transform: [{scale: scaleAnim}]}}>
+              <Pressable
+                style={{
+                  backgroundColor: '#FAFAFA',
+                  borderRadius: 12,
+                  paddingVertical: 20,
+                  paddingHorizontal: 20,
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  elevation: 2,
+                }}
+                onPressIn={handlePressIn}
+                onPressOut={handlePressOut}>
+                <View style={{flex: 1, flexDirection: 'column', gap: 10}}>
+                  <Text
+                    style={{
+                      fontSize: 20,
+                      fontWeight: 'bold',
+                      color: '#20B767',
+                    }}>
+                    개인정보
+                  </Text>
+                  <Text
+                    style={{fontSize: 16, fontWeight: 'medium', color: '#333'}}>
+                    개인정보를 수정해보세요
+                  </Text>
+                </View>
+                <RightChevron size={24} />
+              </Pressable>
+            </Animated.View>
           </View>
         </View>
 
         <View style={{alignItems: 'center', marginTop: 20}}>
-          <Pressable onPress={handleLogout}>
-            <Text style={{fontSize: 16, fontWeight: 'bold', color: '#20B767'}}>
-              로그아웃
-            </Text>
-          </Pressable>
+          <Animated.View style={{transform: [{scale: scaleAnim}]}}>
+            <Pressable
+              onPress={handleLogout}
+              onPressIn={handlePressIn}
+              onPressOut={handlePressOut}>
+              <Text
+                style={{fontSize: 16, fontWeight: 'bold', color: '#20B767'}}>
+                로그아웃
+              </Text>
+            </Pressable>
+          </Animated.View>
         </View>
 
         <View
@@ -139,13 +177,19 @@ export default function MyPageView({
             marginTop: 30,
             marginBottom: 20,
           }}>
-          <Pressable onPress={handleTermsOfService}>
+          <Pressable
+            onPress={handleTermsOfService}
+            onPressIn={handlePressIn}
+            onPressOut={handlePressOut}>
             <Text style={{fontSize: 14, color: '#333', fontWeight: 'medium'}}>
               서비스 이용약관
             </Text>
           </Pressable>
           <Text style={styles.separator}>|</Text>
-          <Pressable onPress={handlePrivacyPolicy}>
+          <Pressable
+            onPress={handlePrivacyPolicy}
+            onPressIn={handlePressIn}
+            onPressOut={handlePressOut}>
             <Text style={{fontSize: 14, color: '#333', fontWeight: 'medium'}}>
               개인정보 처리방침
             </Text>

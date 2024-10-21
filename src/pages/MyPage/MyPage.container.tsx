@@ -11,6 +11,7 @@ export default function MyPageContainer() {
   useEffect(() => {
     const fetchProfile = async () => {
       const profile = await service.user.getProfile();
+      console.log(profile);
       if (profile) {
         setEmail(profile.email);
         setId(profile.id);
