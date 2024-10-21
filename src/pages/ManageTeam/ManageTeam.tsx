@@ -32,7 +32,9 @@ const ManageTeamContainer = () => {
       </View>
       <View style={styles.divider} />
 
-      <View style={styles.main}></View>
+      <View style={styles.main}>
+        <View></View>
+      </View>
     </SafeAreaView>
   );
 };
