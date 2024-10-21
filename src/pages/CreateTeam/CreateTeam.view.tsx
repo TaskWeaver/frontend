@@ -14,10 +14,14 @@ import SignUpTextInput from '../../components/SignUpTextInput';
 import useCustomNavigation from '../../hooks/useCustomNavigation.ts';
 import {createTeam} from '../../features/team/teamSlice.ts';
 import {useDispatch} from 'react-redux';
+import {service} from '../../domains';
+import AsyncStorageService from '../../storage/AsyncStorage.ts';
+import {create} from 'zustand';
 
 const CreateTeamView = () => {
   const {navigation} = useCustomNavigation();
   const dispatch = useDispatch();
+  const asyncStorageService = new AsyncStorageService();
 
   const [teamName, setTeamName] = useState('');
   const [teamDescription, setTeamDescription] = useState('');
@@ -28,15 +32,26 @@ const CreateTeamView = () => {
     setIsFormValid(teamName.length > 0 && teamDescription.length > 0);
   }, [teamName, teamDescription]);
 
-  const handleCreateTeam = () => {
+  const handleCreateTeam = async () => {
     if (isFormValid) {
-      const newTeam = {
-        id: uuid.v4().toString(),
-        name: teamName,
-        description: teamDescription,
-      };
-      dispatch(createTeam(newTeam));
-      setModalVisible(true);
+      try {
+        const token = await asyncStorageService.getAccessToken();
+        if (token) {
+          const response = await service.team.createTeam(
+            token,
+            teamName,
+            teamDescription
+          );
+
+          if (response.resultCode === 201) {
+            setModalVisible(true);
+          }
+        } else {
+          return null;
+        }
+      } catch (e) {
+        throw e;
+      }
     }
   };
 
