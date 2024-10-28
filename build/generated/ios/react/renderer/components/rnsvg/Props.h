@@ -81,38 +81,6 @@ static inline void fromRawValue(const PropsParserContext& context, const RawValu
 static inline std::string toString(const RNSVGSvgViewAndroidNativeForegroundAndroidStruct &value) {
   return "[Object RNSVGSvgViewAndroidNativeForegroundAndroidStruct]";
 }
-
-struct RNSVGSvgViewAndroidHitSlopStruct {
-  Float left{0.0};
-  Float top{0.0};
-  Float right{0.0};
-  Float bottom{0.0};
-};
-
-static inline void fromRawValue(const PropsParserContext& context, const RawValue &value, RNSVGSvgViewAndroidHitSlopStruct &result) {
-  auto map = (std::unordered_map<std::string, RawValue>)value;
-
-  auto tmp_left = map.find("left");
-  if (tmp_left != map.end()) {
-    fromRawValue(context, tmp_left->second, result.left);
-  }
-  auto tmp_top = map.find("top");
-  if (tmp_top != map.end()) {
-    fromRawValue(context, tmp_top->second, result.top);
-  }
-  auto tmp_right = map.find("right");
-  if (tmp_right != map.end()) {
-    fromRawValue(context, tmp_right->second, result.right);
-  }
-  auto tmp_bottom = map.find("bottom");
-  if (tmp_bottom != map.end()) {
-    fromRawValue(context, tmp_bottom->second, result.bottom);
-  }
-}
-
-static inline std::string toString(const RNSVGSvgViewAndroidHitSlopStruct &value) {
-  return "[Object RNSVGSvgViewAndroidHitSlopStruct]";
-}
 class RNSVGSvgViewAndroidProps final : public ViewProps {
  public:
   RNSVGSvgViewAndroidProps() = default;
@@ -128,12 +96,9 @@ class RNSVGSvgViewAndroidProps final : public ViewProps {
   Float vbHeight{0.0};
   std::string align{};
   int meetOrSlice{0};
-  SharedColor tintColor{};
   SharedColor color{};
   std::string pointerEvents{};
   bool hasTVPreferredFocus{false};
-  Float borderTopEndRadius{0.0};
-  Float borderBottomStartRadius{0.0};
   SharedColor borderBottomColor{};
   int nextFocusDown{0};
   SharedColor borderRightColor{};
@@ -145,85 +110,34 @@ class RNSVGSvgViewAndroidProps final : public ViewProps {
   int nextFocusUp{0};
   bool accessible{false};
   SharedColor borderStartColor{};
-  Float borderBottomEndRadius{0.0};
   SharedColor borderEndColor{};
   bool focusable{false};
   RNSVGSvgViewAndroidNativeBackgroundAndroidStruct nativeBackgroundAndroid{};
-  Float borderTopStartRadius{0.0};
   RNSVGSvgViewAndroidNativeForegroundAndroidStruct nativeForegroundAndroid{};
   std::string backfaceVisibility{};
   std::string borderStyle{};
   bool needsOffscreenAlphaCompositing{false};
-  RNSVGSvgViewAndroidHitSlopStruct hitSlop{};
+  folly::dynamic hitSlop{};
   SharedColor borderTopColor{};
   int nextFocusLeft{0};
-  double borderTopRightRadius{0.0};
-  double borderBottomRightRadius{0.0};
-  double borderRadius{0.0};
-  double borderBottomLeftRadius{0.0};
-  double borderTopLeftRadius{0.0};
   SharedColor borderBlockColor{};
   SharedColor borderBlockEndColor{};
   SharedColor borderBlockStartColor{};
-  double borderEndEndRadius{0.0};
-  double borderEndStartRadius{0.0};
-  double borderStartEndRadius{0.0};
-  double borderStartStartRadius{0.0};
+  folly::dynamic borderRadius{};
+  folly::dynamic borderTopLeftRadius{};
+  folly::dynamic borderTopRightRadius{};
+  folly::dynamic borderBottomRightRadius{};
+  folly::dynamic borderBottomLeftRadius{};
+  folly::dynamic borderTopStartRadius{};
+  folly::dynamic borderTopEndRadius{};
+  folly::dynamic borderBottomStartRadius{};
+  folly::dynamic borderBottomEndRadius{};
+  folly::dynamic borderEndEndRadius{};
+  folly::dynamic borderEndStartRadius{};
+  folly::dynamic borderStartEndRadius{};
+  folly::dynamic borderStartStartRadius{};
 };
 
-struct RNSVGCircleFillStruct {
-  int type{-1};
-  SharedColor payload{};
-  std::string brushRef{};
-};
-
-static inline void fromRawValue(const PropsParserContext& context, const RawValue &value, RNSVGCircleFillStruct &result) {
-  auto map = (std::unordered_map<std::string, RawValue>)value;
-
-  auto tmp_type = map.find("type");
-  if (tmp_type != map.end()) {
-    fromRawValue(context, tmp_type->second, result.type);
-  }
-  auto tmp_payload = map.find("payload");
-  if (tmp_payload != map.end()) {
-    fromRawValue(context, tmp_payload->second, result.payload);
-  }
-  auto tmp_brushRef = map.find("brushRef");
-  if (tmp_brushRef != map.end()) {
-    fromRawValue(context, tmp_brushRef->second, result.brushRef);
-  }
-}
-
-static inline std::string toString(const RNSVGCircleFillStruct &value) {
-  return "[Object RNSVGCircleFillStruct]";
-}
-
-struct RNSVGCircleStrokeStruct {
-  int type{-1};
-  SharedColor payload{};
-  std::string brushRef{};
-};
-
-static inline void fromRawValue(const PropsParserContext& context, const RawValue &value, RNSVGCircleStrokeStruct &result) {
-  auto map = (std::unordered_map<std::string, RawValue>)value;
-
-  auto tmp_type = map.find("type");
-  if (tmp_type != map.end()) {
-    fromRawValue(context, tmp_type->second, result.type);
-  }
-  auto tmp_payload = map.find("payload");
-  if (tmp_payload != map.end()) {
-    fromRawValue(context, tmp_payload->second, result.payload);
-  }
-  auto tmp_brushRef = map.find("brushRef");
-  if (tmp_brushRef != map.end()) {
-    fromRawValue(context, tmp_brushRef->second, result.brushRef);
-  }
-}
-
-static inline std::string toString(const RNSVGCircleStrokeStruct &value) {
-  return "[Object RNSVGCircleStrokeStruct]";
-}
 class RNSVGCircleProps final : public ViewProps {
  public:
   RNSVGCircleProps() = default;
@@ -243,10 +157,11 @@ class RNSVGCircleProps final : public ViewProps {
   bool responsible{false};
   std::string display{};
   std::string pointerEvents{};
-  RNSVGCircleFillStruct fill{};
+  SharedColor color{};
+  folly::dynamic fill{};
   Float fillOpacity{1.0};
   int fillRule{1};
-  RNSVGCircleStrokeStruct stroke{};
+  folly::dynamic stroke{};
   Float strokeOpacity{1.0};
   folly::dynamic strokeWidth{};
   int strokeLinecap{0};
@@ -262,59 +177,6 @@ class RNSVGCircleProps final : public ViewProps {
   folly::dynamic r{};
 };
 
-struct RNSVGClipPathFillStruct {
-  int type{-1};
-  SharedColor payload{};
-  std::string brushRef{};
-};
-
-static inline void fromRawValue(const PropsParserContext& context, const RawValue &value, RNSVGClipPathFillStruct &result) {
-  auto map = (std::unordered_map<std::string, RawValue>)value;
-
-  auto tmp_type = map.find("type");
-  if (tmp_type != map.end()) {
-    fromRawValue(context, tmp_type->second, result.type);
-  }
-  auto tmp_payload = map.find("payload");
-  if (tmp_payload != map.end()) {
-    fromRawValue(context, tmp_payload->second, result.payload);
-  }
-  auto tmp_brushRef = map.find("brushRef");
-  if (tmp_brushRef != map.end()) {
-    fromRawValue(context, tmp_brushRef->second, result.brushRef);
-  }
-}
-
-static inline std::string toString(const RNSVGClipPathFillStruct &value) {
-  return "[Object RNSVGClipPathFillStruct]";
-}
-
-struct RNSVGClipPathStrokeStruct {
-  int type{-1};
-  SharedColor payload{};
-  std::string brushRef{};
-};
-
-static inline void fromRawValue(const PropsParserContext& context, const RawValue &value, RNSVGClipPathStrokeStruct &result) {
-  auto map = (std::unordered_map<std::string, RawValue>)value;
-
-  auto tmp_type = map.find("type");
-  if (tmp_type != map.end()) {
-    fromRawValue(context, tmp_type->second, result.type);
-  }
-  auto tmp_payload = map.find("payload");
-  if (tmp_payload != map.end()) {
-    fromRawValue(context, tmp_payload->second, result.payload);
-  }
-  auto tmp_brushRef = map.find("brushRef");
-  if (tmp_brushRef != map.end()) {
-    fromRawValue(context, tmp_brushRef->second, result.brushRef);
-  }
-}
-
-static inline std::string toString(const RNSVGClipPathStrokeStruct &value) {
-  return "[Object RNSVGClipPathStrokeStruct]";
-}
 class RNSVGClipPathProps final : public ViewProps {
  public:
   RNSVGClipPathProps() = default;
@@ -334,10 +196,11 @@ class RNSVGClipPathProps final : public ViewProps {
   bool responsible{false};
   std::string display{};
   std::string pointerEvents{};
-  RNSVGClipPathFillStruct fill{};
+  SharedColor color{};
+  folly::dynamic fill{};
   Float fillOpacity{1.0};
   int fillRule{1};
-  RNSVGClipPathStrokeStruct stroke{};
+  folly::dynamic stroke{};
   Float strokeOpacity{1.0};
   folly::dynamic strokeWidth{};
   int strokeLinecap{0};
@@ -374,59 +237,6 @@ class RNSVGDefsProps final : public ViewProps {
   std::string pointerEvents{};
 };
 
-struct RNSVGEllipseFillStruct {
-  int type{-1};
-  SharedColor payload{};
-  std::string brushRef{};
-};
-
-static inline void fromRawValue(const PropsParserContext& context, const RawValue &value, RNSVGEllipseFillStruct &result) {
-  auto map = (std::unordered_map<std::string, RawValue>)value;
-
-  auto tmp_type = map.find("type");
-  if (tmp_type != map.end()) {
-    fromRawValue(context, tmp_type->second, result.type);
-  }
-  auto tmp_payload = map.find("payload");
-  if (tmp_payload != map.end()) {
-    fromRawValue(context, tmp_payload->second, result.payload);
-  }
-  auto tmp_brushRef = map.find("brushRef");
-  if (tmp_brushRef != map.end()) {
-    fromRawValue(context, tmp_brushRef->second, result.brushRef);
-  }
-}
-
-static inline std::string toString(const RNSVGEllipseFillStruct &value) {
-  return "[Object RNSVGEllipseFillStruct]";
-}
-
-struct RNSVGEllipseStrokeStruct {
-  int type{-1};
-  SharedColor payload{};
-  std::string brushRef{};
-};
-
-static inline void fromRawValue(const PropsParserContext& context, const RawValue &value, RNSVGEllipseStrokeStruct &result) {
-  auto map = (std::unordered_map<std::string, RawValue>)value;
-
-  auto tmp_type = map.find("type");
-  if (tmp_type != map.end()) {
-    fromRawValue(context, tmp_type->second, result.type);
-  }
-  auto tmp_payload = map.find("payload");
-  if (tmp_payload != map.end()) {
-    fromRawValue(context, tmp_payload->second, result.payload);
-  }
-  auto tmp_brushRef = map.find("brushRef");
-  if (tmp_brushRef != map.end()) {
-    fromRawValue(context, tmp_brushRef->second, result.brushRef);
-  }
-}
-
-static inline std::string toString(const RNSVGEllipseStrokeStruct &value) {
-  return "[Object RNSVGEllipseStrokeStruct]";
-}
 class RNSVGEllipseProps final : public ViewProps {
  public:
   RNSVGEllipseProps() = default;
@@ -446,10 +256,11 @@ class RNSVGEllipseProps final : public ViewProps {
   bool responsible{false};
   std::string display{};
   std::string pointerEvents{};
-  RNSVGEllipseFillStruct fill{};
+  SharedColor color{};
+  folly::dynamic fill{};
   Float fillOpacity{1.0};
   int fillRule{1};
-  RNSVGEllipseStrokeStruct stroke{};
+  folly::dynamic stroke{};
   Float strokeOpacity{1.0};
   folly::dynamic strokeWidth{};
   int strokeLinecap{0};
@@ -464,6 +275,47 @@ class RNSVGEllipseProps final : public ViewProps {
   folly::dynamic cy{};
   folly::dynamic rx{};
   folly::dynamic ry{};
+};
+
+enum class RNSVGFeBlendMode { Unknown, Normal, Multiply, Screen, Darken, Lighten };
+
+static inline void fromRawValue(const PropsParserContext& context, const RawValue &value, RNSVGFeBlendMode &result) {
+  auto string = (std::string)value;
+  if (string == "unknown") { result = RNSVGFeBlendMode::Unknown; return; }
+  if (string == "normal") { result = RNSVGFeBlendMode::Normal; return; }
+  if (string == "multiply") { result = RNSVGFeBlendMode::Multiply; return; }
+  if (string == "screen") { result = RNSVGFeBlendMode::Screen; return; }
+  if (string == "darken") { result = RNSVGFeBlendMode::Darken; return; }
+  if (string == "lighten") { result = RNSVGFeBlendMode::Lighten; return; }
+  abort();
+}
+
+static inline std::string toString(const RNSVGFeBlendMode &value) {
+  switch (value) {
+    case RNSVGFeBlendMode::Unknown: return "unknown";
+    case RNSVGFeBlendMode::Normal: return "normal";
+    case RNSVGFeBlendMode::Multiply: return "multiply";
+    case RNSVGFeBlendMode::Screen: return "screen";
+    case RNSVGFeBlendMode::Darken: return "darken";
+    case RNSVGFeBlendMode::Lighten: return "lighten";
+  }
+}
+
+class RNSVGFeBlendProps final : public ViewProps {
+ public:
+  RNSVGFeBlendProps() = default;
+  RNSVGFeBlendProps(const PropsParserContext& context, const RNSVGFeBlendProps &sourceProps, const RawProps &rawProps);
+
+#pragma mark - Props
+
+  folly::dynamic x{};
+  folly::dynamic y{};
+  folly::dynamic width{};
+  folly::dynamic height{};
+  std::string result{};
+  std::string in1{};
+  std::string in2{};
+  RNSVGFeBlendMode mode{RNSVGFeBlendMode::Normal};
 };
 
 enum class RNSVGFeColorMatrixType { Matrix, Saturate, HueRotate, LuminanceToAlpha };
@@ -501,6 +353,22 @@ class RNSVGFeColorMatrixProps final : public ViewProps {
   std::string in1{};
   RNSVGFeColorMatrixType type{RNSVGFeColorMatrixType::Matrix};
   std::vector<Float> values{};
+};
+
+class RNSVGFeFloodProps final : public ViewProps {
+ public:
+  RNSVGFeFloodProps() = default;
+  RNSVGFeFloodProps(const PropsParserContext& context, const RNSVGFeFloodProps &sourceProps, const RawProps &rawProps);
+
+#pragma mark - Props
+
+  folly::dynamic x{};
+  folly::dynamic y{};
+  folly::dynamic width{};
+  folly::dynamic height{};
+  std::string result{};
+  folly::dynamic floodColor{};
+  Float floodOpacity{1.0};
 };
 
 enum class RNSVGFeGaussianBlurEdgeMode { Duplicate, Wrap, None };
@@ -618,59 +486,6 @@ class RNSVGFilterProps final : public ViewProps {
   RNSVGFilterPrimitiveUnits primitiveUnits{RNSVGFilterPrimitiveUnits::UserSpaceOnUse};
 };
 
-struct RNSVGForeignObjectFillStruct {
-  int type{-1};
-  SharedColor payload{};
-  std::string brushRef{};
-};
-
-static inline void fromRawValue(const PropsParserContext& context, const RawValue &value, RNSVGForeignObjectFillStruct &result) {
-  auto map = (std::unordered_map<std::string, RawValue>)value;
-
-  auto tmp_type = map.find("type");
-  if (tmp_type != map.end()) {
-    fromRawValue(context, tmp_type->second, result.type);
-  }
-  auto tmp_payload = map.find("payload");
-  if (tmp_payload != map.end()) {
-    fromRawValue(context, tmp_payload->second, result.payload);
-  }
-  auto tmp_brushRef = map.find("brushRef");
-  if (tmp_brushRef != map.end()) {
-    fromRawValue(context, tmp_brushRef->second, result.brushRef);
-  }
-}
-
-static inline std::string toString(const RNSVGForeignObjectFillStruct &value) {
-  return "[Object RNSVGForeignObjectFillStruct]";
-}
-
-struct RNSVGForeignObjectStrokeStruct {
-  int type{-1};
-  SharedColor payload{};
-  std::string brushRef{};
-};
-
-static inline void fromRawValue(const PropsParserContext& context, const RawValue &value, RNSVGForeignObjectStrokeStruct &result) {
-  auto map = (std::unordered_map<std::string, RawValue>)value;
-
-  auto tmp_type = map.find("type");
-  if (tmp_type != map.end()) {
-    fromRawValue(context, tmp_type->second, result.type);
-  }
-  auto tmp_payload = map.find("payload");
-  if (tmp_payload != map.end()) {
-    fromRawValue(context, tmp_payload->second, result.payload);
-  }
-  auto tmp_brushRef = map.find("brushRef");
-  if (tmp_brushRef != map.end()) {
-    fromRawValue(context, tmp_brushRef->second, result.brushRef);
-  }
-}
-
-static inline std::string toString(const RNSVGForeignObjectStrokeStruct &value) {
-  return "[Object RNSVGForeignObjectStrokeStruct]";
-}
 class RNSVGForeignObjectProps final : public ViewProps {
  public:
   RNSVGForeignObjectProps() = default;
@@ -690,10 +505,11 @@ class RNSVGForeignObjectProps final : public ViewProps {
   bool responsible{false};
   std::string display{};
   std::string pointerEvents{};
-  RNSVGForeignObjectFillStruct fill{};
+  SharedColor color{};
+  folly::dynamic fill{};
   Float fillOpacity{1.0};
   int fillRule{1};
-  RNSVGForeignObjectStrokeStruct stroke{};
+  folly::dynamic stroke{};
   Float strokeOpacity{1.0};
   folly::dynamic strokeWidth{};
   int strokeLinecap{0};
@@ -713,59 +529,6 @@ class RNSVGForeignObjectProps final : public ViewProps {
   folly::dynamic width{};
 };
 
-struct RNSVGGroupFillStruct {
-  int type{-1};
-  SharedColor payload{};
-  std::string brushRef{};
-};
-
-static inline void fromRawValue(const PropsParserContext& context, const RawValue &value, RNSVGGroupFillStruct &result) {
-  auto map = (std::unordered_map<std::string, RawValue>)value;
-
-  auto tmp_type = map.find("type");
-  if (tmp_type != map.end()) {
-    fromRawValue(context, tmp_type->second, result.type);
-  }
-  auto tmp_payload = map.find("payload");
-  if (tmp_payload != map.end()) {
-    fromRawValue(context, tmp_payload->second, result.payload);
-  }
-  auto tmp_brushRef = map.find("brushRef");
-  if (tmp_brushRef != map.end()) {
-    fromRawValue(context, tmp_brushRef->second, result.brushRef);
-  }
-}
-
-static inline std::string toString(const RNSVGGroupFillStruct &value) {
-  return "[Object RNSVGGroupFillStruct]";
-}
-
-struct RNSVGGroupStrokeStruct {
-  int type{-1};
-  SharedColor payload{};
-  std::string brushRef{};
-};
-
-static inline void fromRawValue(const PropsParserContext& context, const RawValue &value, RNSVGGroupStrokeStruct &result) {
-  auto map = (std::unordered_map<std::string, RawValue>)value;
-
-  auto tmp_type = map.find("type");
-  if (tmp_type != map.end()) {
-    fromRawValue(context, tmp_type->second, result.type);
-  }
-  auto tmp_payload = map.find("payload");
-  if (tmp_payload != map.end()) {
-    fromRawValue(context, tmp_payload->second, result.payload);
-  }
-  auto tmp_brushRef = map.find("brushRef");
-  if (tmp_brushRef != map.end()) {
-    fromRawValue(context, tmp_brushRef->second, result.brushRef);
-  }
-}
-
-static inline std::string toString(const RNSVGGroupStrokeStruct &value) {
-  return "[Object RNSVGGroupStrokeStruct]";
-}
 class RNSVGGroupProps final : public ViewProps {
  public:
   RNSVGGroupProps() = default;
@@ -785,10 +548,11 @@ class RNSVGGroupProps final : public ViewProps {
   bool responsible{false};
   std::string display{};
   std::string pointerEvents{};
-  RNSVGGroupFillStruct fill{};
+  SharedColor color{};
+  folly::dynamic fill{};
   Float fillOpacity{1.0};
   int fillRule{1};
-  RNSVGGroupStrokeStruct stroke{};
+  folly::dynamic stroke{};
   Float strokeOpacity{1.0};
   folly::dynamic strokeWidth{};
   int strokeLinecap{0};
@@ -804,59 +568,6 @@ class RNSVGGroupProps final : public ViewProps {
   folly::dynamic font{};
 };
 
-struct RNSVGImageFillStruct {
-  int type{-1};
-  SharedColor payload{};
-  std::string brushRef{};
-};
-
-static inline void fromRawValue(const PropsParserContext& context, const RawValue &value, RNSVGImageFillStruct &result) {
-  auto map = (std::unordered_map<std::string, RawValue>)value;
-
-  auto tmp_type = map.find("type");
-  if (tmp_type != map.end()) {
-    fromRawValue(context, tmp_type->second, result.type);
-  }
-  auto tmp_payload = map.find("payload");
-  if (tmp_payload != map.end()) {
-    fromRawValue(context, tmp_payload->second, result.payload);
-  }
-  auto tmp_brushRef = map.find("brushRef");
-  if (tmp_brushRef != map.end()) {
-    fromRawValue(context, tmp_brushRef->second, result.brushRef);
-  }
-}
-
-static inline std::string toString(const RNSVGImageFillStruct &value) {
-  return "[Object RNSVGImageFillStruct]";
-}
-
-struct RNSVGImageStrokeStruct {
-  int type{-1};
-  SharedColor payload{};
-  std::string brushRef{};
-};
-
-static inline void fromRawValue(const PropsParserContext& context, const RawValue &value, RNSVGImageStrokeStruct &result) {
-  auto map = (std::unordered_map<std::string, RawValue>)value;
-
-  auto tmp_type = map.find("type");
-  if (tmp_type != map.end()) {
-    fromRawValue(context, tmp_type->second, result.type);
-  }
-  auto tmp_payload = map.find("payload");
-  if (tmp_payload != map.end()) {
-    fromRawValue(context, tmp_payload->second, result.payload);
-  }
-  auto tmp_brushRef = map.find("brushRef");
-  if (tmp_brushRef != map.end()) {
-    fromRawValue(context, tmp_brushRef->second, result.brushRef);
-  }
-}
-
-static inline std::string toString(const RNSVGImageStrokeStruct &value) {
-  return "[Object RNSVGImageStrokeStruct]";
-}
 class RNSVGImageProps final : public ViewProps {
  public:
   RNSVGImageProps() = default;
@@ -876,10 +587,11 @@ class RNSVGImageProps final : public ViewProps {
   bool responsible{false};
   std::string display{};
   std::string pointerEvents{};
-  RNSVGImageFillStruct fill{};
+  SharedColor color{};
+  folly::dynamic fill{};
   Float fillOpacity{1.0};
   int fillRule{1};
-  RNSVGImageStrokeStruct stroke{};
+  folly::dynamic stroke{};
   Float strokeOpacity{1.0};
   folly::dynamic strokeWidth{};
   int strokeLinecap{0};
@@ -914,9 +626,9 @@ class RNSVGSvgViewProps final : public ViewProps {
   Float vbHeight{0.0};
   std::string align{};
   int meetOrSlice{0};
-  SharedColor tintColor{};
   SharedColor color{};
   std::string pointerEvents{};
+  folly::dynamic hitSlop{};
 };
 
 class RNSVGLinearGradientProps final : public ViewProps {
@@ -947,59 +659,6 @@ class RNSVGLinearGradientProps final : public ViewProps {
   std::vector<Float> gradientTransform{};
 };
 
-struct RNSVGLineFillStruct {
-  int type{-1};
-  SharedColor payload{};
-  std::string brushRef{};
-};
-
-static inline void fromRawValue(const PropsParserContext& context, const RawValue &value, RNSVGLineFillStruct &result) {
-  auto map = (std::unordered_map<std::string, RawValue>)value;
-
-  auto tmp_type = map.find("type");
-  if (tmp_type != map.end()) {
-    fromRawValue(context, tmp_type->second, result.type);
-  }
-  auto tmp_payload = map.find("payload");
-  if (tmp_payload != map.end()) {
-    fromRawValue(context, tmp_payload->second, result.payload);
-  }
-  auto tmp_brushRef = map.find("brushRef");
-  if (tmp_brushRef != map.end()) {
-    fromRawValue(context, tmp_brushRef->second, result.brushRef);
-  }
-}
-
-static inline std::string toString(const RNSVGLineFillStruct &value) {
-  return "[Object RNSVGLineFillStruct]";
-}
-
-struct RNSVGLineStrokeStruct {
-  int type{-1};
-  SharedColor payload{};
-  std::string brushRef{};
-};
-
-static inline void fromRawValue(const PropsParserContext& context, const RawValue &value, RNSVGLineStrokeStruct &result) {
-  auto map = (std::unordered_map<std::string, RawValue>)value;
-
-  auto tmp_type = map.find("type");
-  if (tmp_type != map.end()) {
-    fromRawValue(context, tmp_type->second, result.type);
-  }
-  auto tmp_payload = map.find("payload");
-  if (tmp_payload != map.end()) {
-    fromRawValue(context, tmp_payload->second, result.payload);
-  }
-  auto tmp_brushRef = map.find("brushRef");
-  if (tmp_brushRef != map.end()) {
-    fromRawValue(context, tmp_brushRef->second, result.brushRef);
-  }
-}
-
-static inline std::string toString(const RNSVGLineStrokeStruct &value) {
-  return "[Object RNSVGLineStrokeStruct]";
-}
 class RNSVGLineProps final : public ViewProps {
  public:
   RNSVGLineProps() = default;
@@ -1019,10 +678,11 @@ class RNSVGLineProps final : public ViewProps {
   bool responsible{false};
   std::string display{};
   std::string pointerEvents{};
-  RNSVGLineFillStruct fill{};
+  SharedColor color{};
+  folly::dynamic fill{};
   Float fillOpacity{1.0};
   int fillRule{1};
-  RNSVGLineStrokeStruct stroke{};
+  folly::dynamic stroke{};
   Float strokeOpacity{1.0};
   folly::dynamic strokeWidth{};
   int strokeLinecap{0};
@@ -1039,59 +699,6 @@ class RNSVGLineProps final : public ViewProps {
   folly::dynamic y2{};
 };
 
-struct RNSVGMarkerFillStruct {
-  int type{-1};
-  SharedColor payload{};
-  std::string brushRef{};
-};
-
-static inline void fromRawValue(const PropsParserContext& context, const RawValue &value, RNSVGMarkerFillStruct &result) {
-  auto map = (std::unordered_map<std::string, RawValue>)value;
-
-  auto tmp_type = map.find("type");
-  if (tmp_type != map.end()) {
-    fromRawValue(context, tmp_type->second, result.type);
-  }
-  auto tmp_payload = map.find("payload");
-  if (tmp_payload != map.end()) {
-    fromRawValue(context, tmp_payload->second, result.payload);
-  }
-  auto tmp_brushRef = map.find("brushRef");
-  if (tmp_brushRef != map.end()) {
-    fromRawValue(context, tmp_brushRef->second, result.brushRef);
-  }
-}
-
-static inline std::string toString(const RNSVGMarkerFillStruct &value) {
-  return "[Object RNSVGMarkerFillStruct]";
-}
-
-struct RNSVGMarkerStrokeStruct {
-  int type{-1};
-  SharedColor payload{};
-  std::string brushRef{};
-};
-
-static inline void fromRawValue(const PropsParserContext& context, const RawValue &value, RNSVGMarkerStrokeStruct &result) {
-  auto map = (std::unordered_map<std::string, RawValue>)value;
-
-  auto tmp_type = map.find("type");
-  if (tmp_type != map.end()) {
-    fromRawValue(context, tmp_type->second, result.type);
-  }
-  auto tmp_payload = map.find("payload");
-  if (tmp_payload != map.end()) {
-    fromRawValue(context, tmp_payload->second, result.payload);
-  }
-  auto tmp_brushRef = map.find("brushRef");
-  if (tmp_brushRef != map.end()) {
-    fromRawValue(context, tmp_brushRef->second, result.brushRef);
-  }
-}
-
-static inline std::string toString(const RNSVGMarkerStrokeStruct &value) {
-  return "[Object RNSVGMarkerStrokeStruct]";
-}
 class RNSVGMarkerProps final : public ViewProps {
  public:
   RNSVGMarkerProps() = default;
@@ -1111,10 +718,11 @@ class RNSVGMarkerProps final : public ViewProps {
   bool responsible{false};
   std::string display{};
   std::string pointerEvents{};
-  RNSVGMarkerFillStruct fill{};
+  SharedColor color{};
+  folly::dynamic fill{};
   Float fillOpacity{1.0};
   int fillRule{1};
-  RNSVGMarkerStrokeStruct stroke{};
+  folly::dynamic stroke{};
   Float strokeOpacity{1.0};
   folly::dynamic strokeWidth{};
   int strokeLinecap{0};
@@ -1142,59 +750,6 @@ class RNSVGMarkerProps final : public ViewProps {
   int meetOrSlice{0};
 };
 
-struct RNSVGMaskFillStruct {
-  int type{-1};
-  SharedColor payload{};
-  std::string brushRef{};
-};
-
-static inline void fromRawValue(const PropsParserContext& context, const RawValue &value, RNSVGMaskFillStruct &result) {
-  auto map = (std::unordered_map<std::string, RawValue>)value;
-
-  auto tmp_type = map.find("type");
-  if (tmp_type != map.end()) {
-    fromRawValue(context, tmp_type->second, result.type);
-  }
-  auto tmp_payload = map.find("payload");
-  if (tmp_payload != map.end()) {
-    fromRawValue(context, tmp_payload->second, result.payload);
-  }
-  auto tmp_brushRef = map.find("brushRef");
-  if (tmp_brushRef != map.end()) {
-    fromRawValue(context, tmp_brushRef->second, result.brushRef);
-  }
-}
-
-static inline std::string toString(const RNSVGMaskFillStruct &value) {
-  return "[Object RNSVGMaskFillStruct]";
-}
-
-struct RNSVGMaskStrokeStruct {
-  int type{-1};
-  SharedColor payload{};
-  std::string brushRef{};
-};
-
-static inline void fromRawValue(const PropsParserContext& context, const RawValue &value, RNSVGMaskStrokeStruct &result) {
-  auto map = (std::unordered_map<std::string, RawValue>)value;
-
-  auto tmp_type = map.find("type");
-  if (tmp_type != map.end()) {
-    fromRawValue(context, tmp_type->second, result.type);
-  }
-  auto tmp_payload = map.find("payload");
-  if (tmp_payload != map.end()) {
-    fromRawValue(context, tmp_payload->second, result.payload);
-  }
-  auto tmp_brushRef = map.find("brushRef");
-  if (tmp_brushRef != map.end()) {
-    fromRawValue(context, tmp_brushRef->second, result.brushRef);
-  }
-}
-
-static inline std::string toString(const RNSVGMaskStrokeStruct &value) {
-  return "[Object RNSVGMaskStrokeStruct]";
-}
 class RNSVGMaskProps final : public ViewProps {
  public:
   RNSVGMaskProps() = default;
@@ -1214,10 +769,11 @@ class RNSVGMaskProps final : public ViewProps {
   bool responsible{false};
   std::string display{};
   std::string pointerEvents{};
-  RNSVGMaskFillStruct fill{};
+  SharedColor color{};
+  folly::dynamic fill{};
   Float fillOpacity{1.0};
   int fillRule{1};
-  RNSVGMaskStrokeStruct stroke{};
+  folly::dynamic stroke{};
   Float strokeOpacity{1.0};
   folly::dynamic strokeWidth{};
   int strokeLinecap{0};
@@ -1240,59 +796,6 @@ class RNSVGMaskProps final : public ViewProps {
   int maskType{0};
 };
 
-struct RNSVGPathFillStruct {
-  int type{-1};
-  SharedColor payload{};
-  std::string brushRef{};
-};
-
-static inline void fromRawValue(const PropsParserContext& context, const RawValue &value, RNSVGPathFillStruct &result) {
-  auto map = (std::unordered_map<std::string, RawValue>)value;
-
-  auto tmp_type = map.find("type");
-  if (tmp_type != map.end()) {
-    fromRawValue(context, tmp_type->second, result.type);
-  }
-  auto tmp_payload = map.find("payload");
-  if (tmp_payload != map.end()) {
-    fromRawValue(context, tmp_payload->second, result.payload);
-  }
-  auto tmp_brushRef = map.find("brushRef");
-  if (tmp_brushRef != map.end()) {
-    fromRawValue(context, tmp_brushRef->second, result.brushRef);
-  }
-}
-
-static inline std::string toString(const RNSVGPathFillStruct &value) {
-  return "[Object RNSVGPathFillStruct]";
-}
-
-struct RNSVGPathStrokeStruct {
-  int type{-1};
-  SharedColor payload{};
-  std::string brushRef{};
-};
-
-static inline void fromRawValue(const PropsParserContext& context, const RawValue &value, RNSVGPathStrokeStruct &result) {
-  auto map = (std::unordered_map<std::string, RawValue>)value;
-
-  auto tmp_type = map.find("type");
-  if (tmp_type != map.end()) {
-    fromRawValue(context, tmp_type->second, result.type);
-  }
-  auto tmp_payload = map.find("payload");
-  if (tmp_payload != map.end()) {
-    fromRawValue(context, tmp_payload->second, result.payload);
-  }
-  auto tmp_brushRef = map.find("brushRef");
-  if (tmp_brushRef != map.end()) {
-    fromRawValue(context, tmp_brushRef->second, result.brushRef);
-  }
-}
-
-static inline std::string toString(const RNSVGPathStrokeStruct &value) {
-  return "[Object RNSVGPathStrokeStruct]";
-}
 class RNSVGPathProps final : public ViewProps {
  public:
   RNSVGPathProps() = default;
@@ -1312,10 +815,11 @@ class RNSVGPathProps final : public ViewProps {
   bool responsible{false};
   std::string display{};
   std::string pointerEvents{};
-  RNSVGPathFillStruct fill{};
+  SharedColor color{};
+  folly::dynamic fill{};
   Float fillOpacity{1.0};
   int fillRule{1};
-  RNSVGPathStrokeStruct stroke{};
+  folly::dynamic stroke{};
   Float strokeOpacity{1.0};
   folly::dynamic strokeWidth{};
   int strokeLinecap{0};
@@ -1329,59 +833,6 @@ class RNSVGPathProps final : public ViewProps {
   std::string d{};
 };
 
-struct RNSVGPatternFillStruct {
-  int type{-1};
-  SharedColor payload{};
-  std::string brushRef{};
-};
-
-static inline void fromRawValue(const PropsParserContext& context, const RawValue &value, RNSVGPatternFillStruct &result) {
-  auto map = (std::unordered_map<std::string, RawValue>)value;
-
-  auto tmp_type = map.find("type");
-  if (tmp_type != map.end()) {
-    fromRawValue(context, tmp_type->second, result.type);
-  }
-  auto tmp_payload = map.find("payload");
-  if (tmp_payload != map.end()) {
-    fromRawValue(context, tmp_payload->second, result.payload);
-  }
-  auto tmp_brushRef = map.find("brushRef");
-  if (tmp_brushRef != map.end()) {
-    fromRawValue(context, tmp_brushRef->second, result.brushRef);
-  }
-}
-
-static inline std::string toString(const RNSVGPatternFillStruct &value) {
-  return "[Object RNSVGPatternFillStruct]";
-}
-
-struct RNSVGPatternStrokeStruct {
-  int type{-1};
-  SharedColor payload{};
-  std::string brushRef{};
-};
-
-static inline void fromRawValue(const PropsParserContext& context, const RawValue &value, RNSVGPatternStrokeStruct &result) {
-  auto map = (std::unordered_map<std::string, RawValue>)value;
-
-  auto tmp_type = map.find("type");
-  if (tmp_type != map.end()) {
-    fromRawValue(context, tmp_type->second, result.type);
-  }
-  auto tmp_payload = map.find("payload");
-  if (tmp_payload != map.end()) {
-    fromRawValue(context, tmp_payload->second, result.payload);
-  }
-  auto tmp_brushRef = map.find("brushRef");
-  if (tmp_brushRef != map.end()) {
-    fromRawValue(context, tmp_brushRef->second, result.brushRef);
-  }
-}
-
-static inline std::string toString(const RNSVGPatternStrokeStruct &value) {
-  return "[Object RNSVGPatternStrokeStruct]";
-}
 class RNSVGPatternProps final : public ViewProps {
  public:
   RNSVGPatternProps() = default;
@@ -1401,10 +852,11 @@ class RNSVGPatternProps final : public ViewProps {
   bool responsible{false};
   std::string display{};
   std::string pointerEvents{};
-  RNSVGPatternFillStruct fill{};
+  SharedColor color{};
+  folly::dynamic fill{};
   Float fillOpacity{1.0};
   int fillRule{1};
-  RNSVGPatternStrokeStruct stroke{};
+  folly::dynamic stroke{};
   Float strokeOpacity{1.0};
   folly::dynamic strokeWidth{};
   int strokeLinecap{0};
@@ -1463,59 +915,6 @@ class RNSVGRadialGradientProps final : public ViewProps {
   std::vector<Float> gradientTransform{};
 };
 
-struct RNSVGRectFillStruct {
-  int type{-1};
-  SharedColor payload{};
-  std::string brushRef{};
-};
-
-static inline void fromRawValue(const PropsParserContext& context, const RawValue &value, RNSVGRectFillStruct &result) {
-  auto map = (std::unordered_map<std::string, RawValue>)value;
-
-  auto tmp_type = map.find("type");
-  if (tmp_type != map.end()) {
-    fromRawValue(context, tmp_type->second, result.type);
-  }
-  auto tmp_payload = map.find("payload");
-  if (tmp_payload != map.end()) {
-    fromRawValue(context, tmp_payload->second, result.payload);
-  }
-  auto tmp_brushRef = map.find("brushRef");
-  if (tmp_brushRef != map.end()) {
-    fromRawValue(context, tmp_brushRef->second, result.brushRef);
-  }
-}
-
-static inline std::string toString(const RNSVGRectFillStruct &value) {
-  return "[Object RNSVGRectFillStruct]";
-}
-
-struct RNSVGRectStrokeStruct {
-  int type{-1};
-  SharedColor payload{};
-  std::string brushRef{};
-};
-
-static inline void fromRawValue(const PropsParserContext& context, const RawValue &value, RNSVGRectStrokeStruct &result) {
-  auto map = (std::unordered_map<std::string, RawValue>)value;
-
-  auto tmp_type = map.find("type");
-  if (tmp_type != map.end()) {
-    fromRawValue(context, tmp_type->second, result.type);
-  }
-  auto tmp_payload = map.find("payload");
-  if (tmp_payload != map.end()) {
-    fromRawValue(context, tmp_payload->second, result.payload);
-  }
-  auto tmp_brushRef = map.find("brushRef");
-  if (tmp_brushRef != map.end()) {
-    fromRawValue(context, tmp_brushRef->second, result.brushRef);
-  }
-}
-
-static inline std::string toString(const RNSVGRectStrokeStruct &value) {
-  return "[Object RNSVGRectStrokeStruct]";
-}
 class RNSVGRectProps final : public ViewProps {
  public:
   RNSVGRectProps() = default;
@@ -1535,10 +934,11 @@ class RNSVGRectProps final : public ViewProps {
   bool responsible{false};
   std::string display{};
   std::string pointerEvents{};
-  RNSVGRectFillStruct fill{};
+  SharedColor color{};
+  folly::dynamic fill{};
   Float fillOpacity{1.0};
   int fillRule{1};
-  RNSVGRectStrokeStruct stroke{};
+  folly::dynamic stroke{};
   Float strokeOpacity{1.0};
   folly::dynamic strokeWidth{};
   int strokeLinecap{0};
@@ -1557,59 +957,6 @@ class RNSVGRectProps final : public ViewProps {
   folly::dynamic ry{};
 };
 
-struct RNSVGSymbolFillStruct {
-  int type{-1};
-  SharedColor payload{};
-  std::string brushRef{};
-};
-
-static inline void fromRawValue(const PropsParserContext& context, const RawValue &value, RNSVGSymbolFillStruct &result) {
-  auto map = (std::unordered_map<std::string, RawValue>)value;
-
-  auto tmp_type = map.find("type");
-  if (tmp_type != map.end()) {
-    fromRawValue(context, tmp_type->second, result.type);
-  }
-  auto tmp_payload = map.find("payload");
-  if (tmp_payload != map.end()) {
-    fromRawValue(context, tmp_payload->second, result.payload);
-  }
-  auto tmp_brushRef = map.find("brushRef");
-  if (tmp_brushRef != map.end()) {
-    fromRawValue(context, tmp_brushRef->second, result.brushRef);
-  }
-}
-
-static inline std::string toString(const RNSVGSymbolFillStruct &value) {
-  return "[Object RNSVGSymbolFillStruct]";
-}
-
-struct RNSVGSymbolStrokeStruct {
-  int type{-1};
-  SharedColor payload{};
-  std::string brushRef{};
-};
-
-static inline void fromRawValue(const PropsParserContext& context, const RawValue &value, RNSVGSymbolStrokeStruct &result) {
-  auto map = (std::unordered_map<std::string, RawValue>)value;
-
-  auto tmp_type = map.find("type");
-  if (tmp_type != map.end()) {
-    fromRawValue(context, tmp_type->second, result.type);
-  }
-  auto tmp_payload = map.find("payload");
-  if (tmp_payload != map.end()) {
-    fromRawValue(context, tmp_payload->second, result.payload);
-  }
-  auto tmp_brushRef = map.find("brushRef");
-  if (tmp_brushRef != map.end()) {
-    fromRawValue(context, tmp_brushRef->second, result.brushRef);
-  }
-}
-
-static inline std::string toString(const RNSVGSymbolStrokeStruct &value) {
-  return "[Object RNSVGSymbolStrokeStruct]";
-}
 class RNSVGSymbolProps final : public ViewProps {
  public:
   RNSVGSymbolProps() = default;
@@ -1629,10 +976,11 @@ class RNSVGSymbolProps final : public ViewProps {
   bool responsible{false};
   std::string display{};
   std::string pointerEvents{};
-  RNSVGSymbolFillStruct fill{};
+  SharedColor color{};
+  folly::dynamic fill{};
   Float fillOpacity{1.0};
   int fillRule{1};
-  RNSVGSymbolStrokeStruct stroke{};
+  folly::dynamic stroke{};
   Float strokeOpacity{1.0};
   folly::dynamic strokeWidth{};
   int strokeLinecap{0};
@@ -1654,59 +1002,6 @@ class RNSVGSymbolProps final : public ViewProps {
   int meetOrSlice{0};
 };
 
-struct RNSVGTextFillStruct {
-  int type{-1};
-  SharedColor payload{};
-  std::string brushRef{};
-};
-
-static inline void fromRawValue(const PropsParserContext& context, const RawValue &value, RNSVGTextFillStruct &result) {
-  auto map = (std::unordered_map<std::string, RawValue>)value;
-
-  auto tmp_type = map.find("type");
-  if (tmp_type != map.end()) {
-    fromRawValue(context, tmp_type->second, result.type);
-  }
-  auto tmp_payload = map.find("payload");
-  if (tmp_payload != map.end()) {
-    fromRawValue(context, tmp_payload->second, result.payload);
-  }
-  auto tmp_brushRef = map.find("brushRef");
-  if (tmp_brushRef != map.end()) {
-    fromRawValue(context, tmp_brushRef->second, result.brushRef);
-  }
-}
-
-static inline std::string toString(const RNSVGTextFillStruct &value) {
-  return "[Object RNSVGTextFillStruct]";
-}
-
-struct RNSVGTextStrokeStruct {
-  int type{-1};
-  SharedColor payload{};
-  std::string brushRef{};
-};
-
-static inline void fromRawValue(const PropsParserContext& context, const RawValue &value, RNSVGTextStrokeStruct &result) {
-  auto map = (std::unordered_map<std::string, RawValue>)value;
-
-  auto tmp_type = map.find("type");
-  if (tmp_type != map.end()) {
-    fromRawValue(context, tmp_type->second, result.type);
-  }
-  auto tmp_payload = map.find("payload");
-  if (tmp_payload != map.end()) {
-    fromRawValue(context, tmp_payload->second, result.payload);
-  }
-  auto tmp_brushRef = map.find("brushRef");
-  if (tmp_brushRef != map.end()) {
-    fromRawValue(context, tmp_brushRef->second, result.brushRef);
-  }
-}
-
-static inline std::string toString(const RNSVGTextStrokeStruct &value) {
-  return "[Object RNSVGTextStrokeStruct]";
-}
 class RNSVGTextProps final : public ViewProps {
  public:
   RNSVGTextProps() = default;
@@ -1726,10 +1021,11 @@ class RNSVGTextProps final : public ViewProps {
   bool responsible{false};
   std::string display{};
   std::string pointerEvents{};
-  RNSVGTextFillStruct fill{};
+  SharedColor color{};
+  folly::dynamic fill{};
   Float fillOpacity{1.0};
   int fillRule{1};
-  RNSVGTextStrokeStruct stroke{};
+  folly::dynamic stroke{};
   Float strokeOpacity{1.0};
   folly::dynamic strokeWidth{};
   int strokeLinecap{0};
@@ -1756,59 +1052,6 @@ class RNSVGTextProps final : public ViewProps {
   folly::dynamic verticalAlign{};
 };
 
-struct RNSVGTextPathFillStruct {
-  int type{-1};
-  SharedColor payload{};
-  std::string brushRef{};
-};
-
-static inline void fromRawValue(const PropsParserContext& context, const RawValue &value, RNSVGTextPathFillStruct &result) {
-  auto map = (std::unordered_map<std::string, RawValue>)value;
-
-  auto tmp_type = map.find("type");
-  if (tmp_type != map.end()) {
-    fromRawValue(context, tmp_type->second, result.type);
-  }
-  auto tmp_payload = map.find("payload");
-  if (tmp_payload != map.end()) {
-    fromRawValue(context, tmp_payload->second, result.payload);
-  }
-  auto tmp_brushRef = map.find("brushRef");
-  if (tmp_brushRef != map.end()) {
-    fromRawValue(context, tmp_brushRef->second, result.brushRef);
-  }
-}
-
-static inline std::string toString(const RNSVGTextPathFillStruct &value) {
-  return "[Object RNSVGTextPathFillStruct]";
-}
-
-struct RNSVGTextPathStrokeStruct {
-  int type{-1};
-  SharedColor payload{};
-  std::string brushRef{};
-};
-
-static inline void fromRawValue(const PropsParserContext& context, const RawValue &value, RNSVGTextPathStrokeStruct &result) {
-  auto map = (std::unordered_map<std::string, RawValue>)value;
-
-  auto tmp_type = map.find("type");
-  if (tmp_type != map.end()) {
-    fromRawValue(context, tmp_type->second, result.type);
-  }
-  auto tmp_payload = map.find("payload");
-  if (tmp_payload != map.end()) {
-    fromRawValue(context, tmp_payload->second, result.payload);
-  }
-  auto tmp_brushRef = map.find("brushRef");
-  if (tmp_brushRef != map.end()) {
-    fromRawValue(context, tmp_brushRef->second, result.brushRef);
-  }
-}
-
-static inline std::string toString(const RNSVGTextPathStrokeStruct &value) {
-  return "[Object RNSVGTextPathStrokeStruct]";
-}
 class RNSVGTextPathProps final : public ViewProps {
  public:
   RNSVGTextPathProps() = default;
@@ -1828,10 +1071,11 @@ class RNSVGTextPathProps final : public ViewProps {
   bool responsible{false};
   std::string display{};
   std::string pointerEvents{};
-  RNSVGTextPathFillStruct fill{};
+  SharedColor color{};
+  folly::dynamic fill{};
   Float fillOpacity{1.0};
   int fillRule{1};
-  RNSVGTextPathStrokeStruct stroke{};
+  folly::dynamic stroke{};
   Float strokeOpacity{1.0};
   folly::dynamic strokeWidth{};
   int strokeLinecap{0};
@@ -1864,59 +1108,6 @@ class RNSVGTextPathProps final : public ViewProps {
   folly::dynamic startOffset{};
 };
 
-struct RNSVGTSpanFillStruct {
-  int type{-1};
-  SharedColor payload{};
-  std::string brushRef{};
-};
-
-static inline void fromRawValue(const PropsParserContext& context, const RawValue &value, RNSVGTSpanFillStruct &result) {
-  auto map = (std::unordered_map<std::string, RawValue>)value;
-
-  auto tmp_type = map.find("type");
-  if (tmp_type != map.end()) {
-    fromRawValue(context, tmp_type->second, result.type);
-  }
-  auto tmp_payload = map.find("payload");
-  if (tmp_payload != map.end()) {
-    fromRawValue(context, tmp_payload->second, result.payload);
-  }
-  auto tmp_brushRef = map.find("brushRef");
-  if (tmp_brushRef != map.end()) {
-    fromRawValue(context, tmp_brushRef->second, result.brushRef);
-  }
-}
-
-static inline std::string toString(const RNSVGTSpanFillStruct &value) {
-  return "[Object RNSVGTSpanFillStruct]";
-}
-
-struct RNSVGTSpanStrokeStruct {
-  int type{-1};
-  SharedColor payload{};
-  std::string brushRef{};
-};
-
-static inline void fromRawValue(const PropsParserContext& context, const RawValue &value, RNSVGTSpanStrokeStruct &result) {
-  auto map = (std::unordered_map<std::string, RawValue>)value;
-
-  auto tmp_type = map.find("type");
-  if (tmp_type != map.end()) {
-    fromRawValue(context, tmp_type->second, result.type);
-  }
-  auto tmp_payload = map.find("payload");
-  if (tmp_payload != map.end()) {
-    fromRawValue(context, tmp_payload->second, result.payload);
-  }
-  auto tmp_brushRef = map.find("brushRef");
-  if (tmp_brushRef != map.end()) {
-    fromRawValue(context, tmp_brushRef->second, result.brushRef);
-  }
-}
-
-static inline std::string toString(const RNSVGTSpanStrokeStruct &value) {
-  return "[Object RNSVGTSpanStrokeStruct]";
-}
 class RNSVGTSpanProps final : public ViewProps {
  public:
   RNSVGTSpanProps() = default;
@@ -1936,10 +1127,11 @@ class RNSVGTSpanProps final : public ViewProps {
   bool responsible{false};
   std::string display{};
   std::string pointerEvents{};
-  RNSVGTSpanFillStruct fill{};
+  SharedColor color{};
+  folly::dynamic fill{};
   Float fillOpacity{1.0};
   int fillRule{1};
-  RNSVGTSpanStrokeStruct stroke{};
+  folly::dynamic stroke{};
   Float strokeOpacity{1.0};
   folly::dynamic strokeWidth{};
   int strokeLinecap{0};
@@ -1967,59 +1159,6 @@ class RNSVGTSpanProps final : public ViewProps {
   std::string content{};
 };
 
-struct RNSVGUseFillStruct {
-  int type{-1};
-  SharedColor payload{};
-  std::string brushRef{};
-};
-
-static inline void fromRawValue(const PropsParserContext& context, const RawValue &value, RNSVGUseFillStruct &result) {
-  auto map = (std::unordered_map<std::string, RawValue>)value;
-
-  auto tmp_type = map.find("type");
-  if (tmp_type != map.end()) {
-    fromRawValue(context, tmp_type->second, result.type);
-  }
-  auto tmp_payload = map.find("payload");
-  if (tmp_payload != map.end()) {
-    fromRawValue(context, tmp_payload->second, result.payload);
-  }
-  auto tmp_brushRef = map.find("brushRef");
-  if (tmp_brushRef != map.end()) {
-    fromRawValue(context, tmp_brushRef->second, result.brushRef);
-  }
-}
-
-static inline std::string toString(const RNSVGUseFillStruct &value) {
-  return "[Object RNSVGUseFillStruct]";
-}
-
-struct RNSVGUseStrokeStruct {
-  int type{-1};
-  SharedColor payload{};
-  std::string brushRef{};
-};
-
-static inline void fromRawValue(const PropsParserContext& context, const RawValue &value, RNSVGUseStrokeStruct &result) {
-  auto map = (std::unordered_map<std::string, RawValue>)value;
-
-  auto tmp_type = map.find("type");
-  if (tmp_type != map.end()) {
-    fromRawValue(context, tmp_type->second, result.type);
-  }
-  auto tmp_payload = map.find("payload");
-  if (tmp_payload != map.end()) {
-    fromRawValue(context, tmp_payload->second, result.payload);
-  }
-  auto tmp_brushRef = map.find("brushRef");
-  if (tmp_brushRef != map.end()) {
-    fromRawValue(context, tmp_brushRef->second, result.brushRef);
-  }
-}
-
-static inline std::string toString(const RNSVGUseStrokeStruct &value) {
-  return "[Object RNSVGUseStrokeStruct]";
-}
 class RNSVGUseProps final : public ViewProps {
  public:
   RNSVGUseProps() = default;
@@ -2039,10 +1178,11 @@ class RNSVGUseProps final : public ViewProps {
   bool responsible{false};
   std::string display{};
   std::string pointerEvents{};
-  RNSVGUseFillStruct fill{};
+  SharedColor color{};
+  folly::dynamic fill{};
   Float fillOpacity{1.0};
   int fillRule{1};
-  RNSVGUseStrokeStruct stroke{};
+  folly::dynamic stroke{};
   Float strokeOpacity{1.0};
   folly::dynamic strokeWidth{};
   int strokeLinecap{0};
