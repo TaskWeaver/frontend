@@ -1,13 +1,17 @@
 import axios from 'axios';
 import {REACT_APP_SERVER_URL} from '@env';
+import Token from '../storage/Token.ts';
 
 export default class UserRepository {
-  async getUserProfile(token: string) {
+  async getUserProfile() {
+    const token = new Token();
+    const accessToken = await token.getAccessToken();
+
     const api = axios.create({
       baseURL: REACT_APP_SERVER_URL,
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${accessToken}`,
       },
     });
 

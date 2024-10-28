@@ -7,7 +7,7 @@ import {
   Text,
   View,
 } from 'react-native';
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect} from 'react';
 import useCustomNavigation from '../../hooks/useCustomNavigation.ts';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../app/store.ts';
@@ -21,7 +21,7 @@ export default function HomeView() {
   const asyncStorageService = new AsyncStorageService();
 
   // 애니메이션 값 선언
-  const scaleValue = useRef(new Animated.Value(1)).current;
+  const scaleValue = new Animated.Value(1); // useRef 대신 애니메이션 값을 선언
 
   useEffect(() => {
     const fetchTeamData = async () => {
@@ -63,45 +63,70 @@ export default function HomeView() {
     });
   };
 
-  const renderTeamCard = ({item}: {item: Team}) => (
-    <Pressable onPress={() => handleTeamPress(item)}>
-      <View
-        style={{
-          flex: 1,
-          backgroundColor: '#20B767',
-          borderRadius: 12,
-        }}>
-        <View
+  // renderItem 함수 내부에서 애니메이션 값을 외부에서 직접 받아서 처리
+  const renderTeamCard = ({item}: {item: Team}) => {
+    const teamScaleValue = new Animated.Value(1); // 컴포넌트 외부에서 직접 애니메이션 값 선언
+
+    const handleTeamPressIn = () => {
+      Animated.spring(teamScaleValue, {
+        toValue: 0.95, // 작아지는 크기
+        useNativeDriver: true,
+      }).start();
+    };
+
+    const handleTeamPressOut = () => {
+      Animated.spring(teamScaleValue, {
+        toValue: 1, // 원래 크기로 복귀
+        friction: 3,
+        tension: 40,
+        useNativeDriver: true,
+      }).start();
+    };
+
+    return (
+      <Pressable
+        onPressIn={handleTeamPressIn}
+        onPressOut={handleTeamPressOut}
+        onPress={() => handleTeamPress(item)}>
+        <Animated.View
           style={{
-            padding: 16,
+            flex: 1,
+            backgroundColor: '#20B767',
+            borderRadius: 12,
+            transform: [{scale: teamScaleValue}], // 애니메이션 값 적용
           }}>
-          <Text
+          <View
             style={{
-              fontSize: 24,
-              fontWeight: 'bold',
-              color: 'white',
-              marginBottom: 4,
+              padding: 16,
             }}>
-            {item.name}
-          </Text>
-          <Text style={{fontSize: 18, color: 'white', fontWeight: 'medium'}}>
-            {item.description}
-          </Text>
-        </View>
-        <View style={{height: 2, backgroundColor: 'white'}} />
-        <View style={{padding: 16}}>
-          <Text
-            style={{
-              fontSize: 14,
-              fontWeight: 'bold',
-              color: '#fff',
-            }}>
-            팀 멤버
-          </Text>
-        </View>
-      </View>
-    </Pressable>
-  );
+            <Text
+              style={{
+                fontSize: 24,
+                fontWeight: 'bold',
+                color: 'white',
+                marginBottom: 4,
+              }}>
+              {item.name}
+            </Text>
+            <Text style={{fontSize: 18, color: 'white', fontWeight: 'medium'}}>
+              {item.description}
+            </Text>
+          </View>
+          <View style={{height: 2, backgroundColor: 'white'}} />
+          <View style={{padding: 16}}>
+            <Text
+              style={{
+                fontSize: 14,
+                fontWeight: 'bold',
+                color: '#fff',
+              }}>
+              팀 멤버
+            </Text>
+          </View>
+        </Animated.View>
+      </Pressable>
+    );
+  };
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
@@ -117,7 +142,6 @@ export default function HomeView() {
               flexDirection: 'column',
               justifyContent: 'center',
               alignItems: 'center',
-              paddingHorizontal: 24,
               backgroundColor: 'white',
             }}>
             <Image
@@ -144,7 +168,7 @@ export default function HomeView() {
               style={{marginTop: 150, width: '100%'}}>
               <Animated.View
                 style={{
-                  transform: [{scale: scaleValue}],
+                  transform: [{scale: scaleValue}], // 애니메이션 값 적용
                   backgroundColor: '#20B767',
                   paddingVertical: 16,
                   borderRadius: 8,
@@ -165,19 +189,3 @@ export default function HomeView() {
     </SafeAreaView>
   );
 }
-
-const styles = {
-  memberContainer: {
-    marginBottom: 12,
-    backgroundColor: '#fff',
-    padding: 10,
-  },
-  memberRole: {
-    fontSize: 14,
-    color: '#777',
-  },
-  noMembersText: {
-    fontSize: 14,
-    color: '#aaa',
-  },
-};
