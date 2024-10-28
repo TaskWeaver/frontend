@@ -8,24 +8,29 @@
     "lint": "eslint .",
     "start": "react-native start",
     "test": "jest",
-    "prepare": "husky"
+    "postinstall": "husky install",
+    "prepare": "husky install"
   },
   "dependencies": {
+    "@gorhom/bottom-sheet": "^5.0.2",
     "@react-native-async-storage/async-storage": "^2.0.0",
     "@react-navigation/material-top-tabs": "^6.6.14",
     "@react-navigation/native": "^6.1.17",
     "@react-navigation/native-stack": "^6.10.0",
     "@reduxjs/toolkit": "^2.2.8",
     "axios": "^1.7.2",
+    "lint-staged": "^15.2.10",
     "react": "18.2.0",
     "react-icons": "^5.2.1",
     "react-native": "0.74.3",
     "react-native-background-timer": "^2.4.1",
     "react-native-device-info": "^11.1.0",
+    "react-native-gesture-handler": "^2.15.0",
     "react-native-get-random-values": "^1.11.0",
     "react-native-image-picker": "^7.1.2",
     "react-native-pager-view": "^6.3.4",
     "react-native-permissions": "^4.1.5",
+    "react-native-reanimated": "^3.15.5",
     "react-native-safe-area-context": "^4.10.8",
     "react-native-screens": "^3.32.0",
     "react-native-svg": "^15.5.0",
@@ -59,9 +64,7 @@
     "babel-jest": "^29.6.3",
     "clsx": "^2.1.1",
     "eslint": "^8.19.0",
-    "husky": "^9.0.11",
     "jest": "^29.6.3",
-    "lint-staged": "^15.2.7",
     "nativewind": "^2.0.11",
     "prettier": "2.8.8",
     "react-native-dotenv": "^3.4.11",
@@ -73,5 +76,13 @@
   },
   "engines": {
     "node": ">=18"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "eslint --cache --fix"
+    ],
+    "*.{ts,tsx,md,json}": [
+      "prettier --write"
+    ]
   }
 }
