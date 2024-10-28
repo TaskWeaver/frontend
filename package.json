@@ -8,8 +8,8 @@
     "lint": "eslint .",
     "start": "react-native start",
     "test": "jest",
-    "prepare": "node_modules/.bin/husky-run install",
-    "create-hook": "husky add .husky/pre-commit \"npm test\""
+    "postinstall": "husky install",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@gorhom/bottom-sheet": "^5.0.2",
@@ -19,7 +19,6 @@
     "@react-navigation/native-stack": "^6.10.0",
     "@reduxjs/toolkit": "^2.2.8",
     "axios": "^1.7.2",
-    "husky": "^4.3.8",
     "lint-staged": "^15.2.10",
     "react": "18.2.0",
     "react-icons": "^5.2.1",
@@ -80,7 +79,7 @@
   },
   "lint-staged": {
     "*.{ts,tsx}": [
-      "eslint --cache"
+      "eslint --cache --fix"
     ],
     "*.{ts,tsx,md,json}": [
       "prettier --write"
