@@ -1,4 +1,4 @@
-import React, {useCallback, useRef} from 'react';
+import React, {useCallback, useRef, useState} from 'react';
 import {
   View,
   Text,
@@ -15,8 +15,7 @@ import PlusFriends from '../../assets/svg/ic_plusFriends.tsx';
 import {IcNotification} from '../../assets/svg';
 import BottomSheet, {
   BottomSheetBackdrop,
-  BottomSheetModal,
-  BottomSheetModalProvider,
+  BottomSheetView,
 } from '@gorhom/bottom-sheet';
 import {RootState} from '../../app/store.ts';
 import {removeTeam} from '../../features/team/teamSlice';
@@ -33,9 +32,11 @@ const ManageTeamContainer = () => {
   const route = useRoute<ManageTeamRouteProp>();
   const {teamId} = route.params;
 
-  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+  const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
 
-  const snapPoints = React.useMemo(() => ['30%'], []);
+  const bottomSheetRef = useRef<BottomSheet>(null);
+  // 스냅포인트 값을 퍼센트로 변경
+  const snapPoints = React.useMemo(() => ['15%'], []);
 
   const team = useSelector((state: RootState) =>
     state.team.teams.find((t) => t.id === teamId)
@@ -45,34 +46,34 @@ const ManageTeamContainer = () => {
     navigation.goBack();
   };
 
-  const handlePresentModalPress = useCallback(() => {
-    bottomSheetModalRef.current?.snapToIndex(0);
-  }, []);
+  const handlePresentSheet = () => {
+    setIsBottomSheetOpen(true);
+    bottomSheetRef.current?.snapToIndex(0);
+  };
 
-  const handleDismissModalPress = useCallback(() => {
-    bottomSheetModalRef.current?.dismiss();
-  }, []);
+  const handleCloseSheet = () => {
+    setIsBottomSheetOpen(false);
+    bottomSheetRef.current?.close();
+  };
 
   const handleEditTeam = () => {
-    // Navigate to team edit screen or open edit modal
-    bottomSheetModalRef.current?.close();
-    // Example: navigation.navigate('EditTeam', { teamId });
+    handleCloseSheet();
+    // TODO: Add edit team navigation logic
   };
 
   const handleDeleteTeam = () => {
-    // Show confirmation dialog before deleting
     Alert.alert('팀 삭제', '정말로 이 팀을 삭제하시겠습니까?', [
       {
         text: '취소',
         style: 'cancel',
-        onPress: () => bottomSheetModalRef.current?.close(),
+        onPress: handleCloseSheet,
       },
       {
         text: '삭제',
         style: 'destructive',
         onPress: () => {
           dispatch(removeTeam(teamId));
-          bottomSheetModalRef.current?.close();
+          handleCloseSheet();
           navigation.goBack();
         },
       },
@@ -80,84 +81,90 @@ const ManageTeamContainer = () => {
   };
 
   const renderBackdrop = useCallback(
-    (
-      props: React.JSX.IntrinsicAttributes & BottomSheetDefaultBackdropProps
-    ) => (
+    (props: JSX.IntrinsicAttributes & BottomSheetDefaultBackdropProps) => (
       <BottomSheetBackdrop
         {...props}
         disappearsOnIndex={-1}
         appearsOnIndex={0}
-        onPress={handleDismissModalPress}
+        pressBehavior="close"
       />
     ),
-    [handleDismissModalPress]
+    []
   );
 
   if (!team) {
     return (
-      <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
+      <SafeAreaView style={styles.container}>
         <Text>팀을 찾을 수 없습니다.</Text>
       </SafeAreaView>
     );
   }
 
   return (
-    <>
-      <BottomSheetModalProvider>
-        <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
-          <View style={styles.header}>
-            <Pressable onPress={handleBackPress} style={styles.backButton}>
-              <IcLeftArrow size={24} />
-            </Pressable>
-            <Text style={styles.title}>팀 관리</Text>
-            <View style={styles.rightButton}>
-              <Pressable style={styles.icon}>
-                <PlusFriends />
-              </Pressable>
-              <Pressable style={styles.icon}>
-                <IcNotification size={24} />
-              </Pressable>
-            </View>
-          </View>
-          <View style={styles.divider} />
+    <SafeAreaView style={styles.container}>
+      <View style={styles.header}>
+        <Pressable onPress={handleBackPress} style={styles.backButton}>
+          <IcLeftArrow size={24} />
+        </Pressable>
+        <Text style={styles.title}>팀 관리</Text>
+        <View style={styles.rightButton}>
+          <Pressable style={styles.icon}>
+            <PlusFriends />
+          </Pressable>
+          <Pressable style={styles.icon}>
+            <IcNotification size={24} />
+          </Pressable>
+        </View>
+      </View>
+      <View style={styles.divider} />
 
-          <View
-            style={{flex: 1, backgroundColor: '#fff', paddingHorizontal: 24}}>
-            <View style={styles.teamInfoContainer}>
-              <Text style={styles.teamName}>{team.name}</Text>
-              <Text style={styles.teamDescription}>{team.description}</Text>
-              <Pressable
-                style={styles.moreOptionsButton}
-                onPress={handlePresentModalPress}>
-                <Text>옵션</Text>
-              </Pressable>
-            </View>
-          </View>
-        </SafeAreaView>
-        <BottomSheet
-          ref={bottomSheetModalRef}
-          index={0}
-          snapPoints={snapPoints}
-          backdropComponent={renderBackdrop}>
-          <View style={styles.bottomSheetContent}>
-            <Pressable onPress={handleEditTeam} style={styles.bottomSheetItem}>
-              <Text style={styles.bottomSheetText}>팀 정보 수정</Text>
-            </Pressable>
-            <Pressable
-              onPress={handleDeleteTeam}
-              style={styles.bottomSheetItem}>
-              <Text style={[styles.bottomSheetText, {color: 'red'}]}>
-                팀 삭제
-              </Text>
-            </Pressable>
-          </View>
-        </BottomSheet>
-      </BottomSheetModalProvider>
-    </>
+      <View style={styles.content}>
+        <View style={styles.teamInfoContainer}>
+          <Text style={styles.teamName}>{team.name}</Text>
+          <Text style={styles.teamDescription}>{team.description}</Text>
+          <Pressable
+            style={styles.moreOptionsButton}
+            onPress={handlePresentSheet}>
+            <Text style={styles.moreOptionsText}>옵션</Text>
+          </Pressable>
+        </View>
+      </View>
+
+      <BottomSheet
+        ref={bottomSheetRef}
+        index={isBottomSheetOpen ? 0 : -1}
+        backdropComponent={renderBackdrop}
+        containerStyle={{shadowOpacity: 0}}
+        snapPoints={snapPoints}
+        onChange={(index) => setIsBottomSheetOpen(index === 0)}
+        enablePanDownToClose
+        handleIndicatorStyle={{backgroundColor: 'white'}}
+        style={styles.bottomSheet}>
+        <BottomSheetView style={styles.bottomSheetContent}>
+          <Pressable onPress={handleEditTeam} style={styles.bottomSheetItem}>
+            <Text style={styles.bottomSheetText}>팀 정보 수정</Text>
+          </Pressable>
+          <Pressable onPress={handleDeleteTeam} style={styles.bottomSheetItem}>
+            <Text style={[styles.bottomSheetText, styles.deleteText]}>
+              팀 삭제
+            </Text>
+          </Pressable>
+        </BottomSheetView>
+      </BottomSheet>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
+  content: {
+    flex: 1,
+    backgroundColor: '#fff',
+    paddingHorizontal: 24,
+  },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -185,10 +192,6 @@ const styles = StyleSheet.create({
     color: 'black',
     marginBottom: 15,
   },
-  iconContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
   icon: {
     marginLeft: 16,
   },
@@ -204,19 +207,36 @@ const styles = StyleSheet.create({
     zIndex: 1,
     padding: 10,
   },
+  moreOptionsText: {
+    color: 'white',
+    fontSize: 16,
+  },
+  bottomSheet: {
+    backgroundColor: 'white',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: -4,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
   bottomSheetContent: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    paddingBottom: 20,
   },
   bottomSheetItem: {
-    width: '100%',
+    paddingVertical: 8,
+    marginVertical: 4,
     alignItems: 'center',
-    paddingVertical: 15,
   },
   bottomSheetText: {
-    fontSize: 18,
+    fontSize: 14,
     fontWeight: 'bold',
+  },
+  deleteText: {
+    color: 'red',
   },
   teamInfoContainer: {
     borderRadius: 8,
@@ -233,7 +253,7 @@ const styles = StyleSheet.create({
   },
   teamDescription: {
     color: 'white',
-    fontWeight: 'medium',
+    fontWeight: '500',
     textAlign: 'center',
     fontSize: 18,
   },

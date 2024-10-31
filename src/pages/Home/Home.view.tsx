@@ -20,6 +20,8 @@ export default function HomeView() {
   const {navigation} = useCustomNavigation();
   const dispatch = useDispatch();
   const teams = useSelector((state: RootState) => state.team.teams);
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const token = new Token();
 
   const scaleValue = new Animated.Value(1);
@@ -35,8 +37,8 @@ export default function HomeView() {
           if (Array.isArray(response.data.result)) {
             const teamData: Team[] = response.data.result.map((team: any) => ({
               id: team.id,
-              name: team.name || 'Unnamed Team',
-              description: team.description || 'No description',
+              name: team.name,
+              description: team.description,
               myRole: team.myRole || '',
               totalMembers: team.totalMembers || 0,
               createdAt: team.createdAt || new Date().toISOString(),
@@ -75,7 +77,6 @@ export default function HomeView() {
   };
 
   const handleTeamPress = (team: Team) => {
-    // Uncomment and modify as needed
     console.log(team.id);
     navigation.navigate('MainStack', {
       screen: 'ManageTeam',
@@ -111,9 +112,7 @@ export default function HomeView() {
               numberOfLines={2}
               ellipsizeMode="tail"
               style={{fontSize: 18, color: 'white', fontWeight: '500'}}>
-              {item.description.startsWith('https://')
-                ? 'Team Invitation Link'
-                : item.description}
+              {item.description}
             </Text>
           </View>
           <View style={{height: 2, backgroundColor: 'white'}} />
