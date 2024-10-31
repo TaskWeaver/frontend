@@ -12,9 +12,7 @@ export default class TeamRepository {
     });
 
     try {
-      const response = await api.get('/v1/teams');
-      console.log(response);
-
+      const response = await api.get('v1/teams');
       return response;
     } catch (e) {
       throw e;

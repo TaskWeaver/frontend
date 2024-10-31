@@ -9,8 +9,8 @@ import {
 import React, {useRef} from 'react';
 import {service} from '../../domains';
 import RightChevron from '../../assets/svg/ic_rightChevron.tsx';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import useCustomNavigation from '../../hooks/useCustomNavigation.ts';
+import Token from '../../domains/storage/Token.ts';
 
 interface MyPageViewProps {
   email: string;
@@ -26,6 +26,7 @@ export default function MyPageView({
   nickname,
 }: MyPageViewProps) {
   const {navigation} = useCustomNavigation();
+  const token = new Token();
 
   // 애니메이션 값 초기화
   const scaleAnim = useRef(new Animated.Value(1)).current;
@@ -46,13 +47,12 @@ export default function MyPageView({
 
   const handleLogout = async () => {
     try {
-      const accessToken = await AsyncStorage.getItem('accessToken');
+      const accessToken = await token.getAccessToken();
+      console.log(accessToken);
       if (accessToken) {
         const response = await service.account.logout(accessToken);
         if (response.status === 200) {
-          await AsyncStorage.removeItem('accessToken');
-          await AsyncStorage.removeItem('refreshToken');
-          console.log('로그아웃 성공');
+          await token.clearToken();
           navigation.navigate('LogIn');
         } else {
           console.log('로그아웃 실패');

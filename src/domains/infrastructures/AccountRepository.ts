@@ -34,7 +34,7 @@ export default class AccountRepository {
     }
 
     try {
-      const response = await api.post('/v1/auth/sign-up', formData);
+      const response = await api.post('v1/auth/sign-up', formData);
       console.log('Response:', response.data);
       return response.data;
     } catch (error: any) {
@@ -59,7 +59,7 @@ export default class AccountRepository {
     });
 
     try {
-      const response = await api.post('/v1/auth/sign-in', {
+      const response = await api.post('v1/auth/sign-in', {
         email,
         password,
         deviceId,
@@ -91,7 +91,7 @@ export default class AccountRepository {
     });
 
     try {
-      return await api.delete('/v1/auth/logout');
+      return await api.delete('v1/auth/logout');
     } catch (error: any) {
       console.log('Logout error:', error);
       throw error; // 에러 처리

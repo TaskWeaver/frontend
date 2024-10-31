@@ -1,24 +1,50 @@
 import React, {useRef, useState} from 'react';
 import {View, Text, Pressable, StyleSheet, SafeAreaView} from 'react-native';
+import {useRoute, RouteProp} from '@react-navigation/native';
+import {useSelector} from 'react-redux';
 import useCustomNavigation from '../../hooks/useCustomNavigation.ts';
 import IcLeftArrow from '../../assets/svg/ic_leftArrow.tsx';
 import PlusFriends from '../../assets/svg/ic_plusFriends.tsx';
 import {IcNotification} from '../../assets/svg';
 import BottomSheet from '@gorhom/bottom-sheet';
+import {RootState} from '../../app/store.ts';
+
+// Define the route params type
+type ManageTeamRouteProp = RouteProp<
+  {ManageTeam: {teamId: string | number}},
+  'ManageTeam'
+>;
 
 const ManageTeamContainer = () => {
   const {navigation} = useCustomNavigation();
-  const bottomSheetRef = useRef<BottomSheet>(null); // 바텀 시트 레퍼런스
-  const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false); // 바텀 시트 표시 상태
+  const route = useRoute<ManageTeamRouteProp>();
+  const {teamId} = route.params;
+
+  const bottomSheetRef = useRef<BottomSheet>(null);
+  const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
+
+  // Select the specific team from the Redux store
+  const team = useSelector((state: RootState) =>
+    state.team.teams.find((t) => t.id === teamId)
+  );
 
   const handleBackPress = () => {
     navigation.goBack();
   };
 
   const handleOpenBottomSheet = () => {
-    setIsBottomSheetVisible(true); // 바텀 시트 표시 상태 변경
-    bottomSheetRef.current?.expand(); // 바텀 시트를 열도록 설정
+    setIsBottomSheetVisible(true);
+    bottomSheetRef.current?.expand();
   };
+
+  // Render nothing if team is not found
+  if (!team) {
+    return (
+      <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
+        <Text>팀을 찾을 수 없습니다.</Text>
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
@@ -46,7 +72,7 @@ const ManageTeamContainer = () => {
             paddingVertical: 35,
           }}>
           <Pressable style={styles.icon} onPress={handleOpenBottomSheet}>
-            <Text style={{fontSize: 24}}>dk</Text>
+            <Text style={{fontSize: 24}}></Text>
           </Pressable>
           <Text
             style={{
@@ -56,7 +82,7 @@ const ManageTeamContainer = () => {
               fontSize: 24,
               marginBottom: 12,
             }}>
-            Team Name
+            {team.name}
           </Text>
           <Text
             style={{
@@ -65,7 +91,7 @@ const ManageTeamContainer = () => {
               textAlign: 'center',
               fontSize: 18,
             }}>
-            Team 소개
+            {team.description}
           </Text>
         </View>
       </View>
@@ -73,7 +99,7 @@ const ManageTeamContainer = () => {
       {/* Bottom Sheet */}
       <BottomSheet
         ref={bottomSheetRef}
-        snapPoints={['25%', '50%']} // 바텀 시트 높이
+        snapPoints={['25%', '50%']}
         onClose={() => setIsBottomSheetVisible(false)}>
         <View style={styles.bottomSheetContent}>
           <Text style={styles.bottomSheetText}>팀 정보 수정</Text>

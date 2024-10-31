@@ -1,3 +1,4 @@
+import React, {useLayoutEffect} from 'react';
 import {
   Animated,
   FlatList,
@@ -7,33 +8,51 @@ import {
   Text,
   View,
 } from 'react-native';
-import React, {useEffect} from 'react';
-import useCustomNavigation from '../../hooks/useCustomNavigation.ts';
-import {useSelector} from 'react-redux';
-import {RootState} from '../../app/store.ts';
-import {Team} from '../../features/team/type.ts';
+import {useDispatch, useSelector} from 'react-redux';
+import useCustomNavigation from '../../hooks/useCustomNavigation';
+import {RootState} from '../../app/store';
 import {service} from '../../domains';
-import AsyncStorageService from '../../storage/AsyncStorage.ts';
+import Token from '../../domains/storage/Token';
+import {setTeams} from '../../features/team/teamSlice';
+import {Team} from '../../assets/types/type.ts';
 
 export default function HomeView() {
   const {navigation} = useCustomNavigation();
+  const dispatch = useDispatch();
   const teams = useSelector((state: RootState) => state.team.teams);
-  const asyncStorageService = new AsyncStorageService();
+  const token = new Token();
 
-  // 애니메이션 값 선언
-  const scaleValue = new Animated.Value(1); // useRef 대신 애니메이션 값을 선언
+  const scaleValue = new Animated.Value(1);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const fetchTeamData = async () => {
-      const token = await asyncStorageService.getAccessToken();
+      try {
+        const accessToken = await token.getAccessToken();
 
-      if (token) {
-        await service.team.getTeam(token);
+        if (accessToken) {
+          const response: any = await service.team.getTeam(accessToken);
+
+          if (Array.isArray(response.data.result)) {
+            const teamData: Team[] = response.data.result.map((team: any) => ({
+              id: team.id,
+              name: team.name || 'Unnamed Team',
+              description: team.description || 'No description',
+              myRole: team.myRole || '',
+              totalMembers: team.totalMembers || 0,
+              createdAt: team.createdAt || new Date().toISOString(),
+              members: team.members || [],
+            }));
+
+            dispatch(setTeams(teamData));
+          }
+        }
+      } catch (error) {
+        console.error('Failed to fetch team data:', error);
       }
     };
 
     fetchTeamData();
-  }, [asyncStorageService]);
+  }, [dispatch, token]);
 
   const handlePressIn = () => {
     Animated.spring(scaleValue, {
@@ -55,50 +74,30 @@ export default function HomeView() {
     navigation.navigate('MainStack', {screen: 'CreateTeam'});
   };
 
-  // 팀 카드 터치 시 네비게이션 함수
   const handleTeamPress = (team: Team) => {
+    // Uncomment and modify as needed
+    console.log(team.id);
     navigation.navigate('MainStack', {
       screen: 'ManageTeam',
       params: {teamId: team.id},
     });
   };
 
-  // renderItem 함수 내부에서 애니메이션 값을 외부에서 직접 받아서 처리
   const renderTeamCard = ({item}: {item: Team}) => {
-    const teamScaleValue = new Animated.Value(1); // 컴포넌트 외부에서 직접 애니메이션 값 선언
-
-    const handleTeamPressIn = () => {
-      Animated.spring(teamScaleValue, {
-        toValue: 0.95, // 작아지는 크기
-        useNativeDriver: true,
-      }).start();
-    };
-
-    const handleTeamPressOut = () => {
-      Animated.spring(teamScaleValue, {
-        toValue: 1, // 원래 크기로 복귀
-        friction: 3,
-        tension: 40,
-        useNativeDriver: true,
-      }).start();
-    };
+    const teamScaleValue = new Animated.Value(1);
 
     return (
-      <Pressable
-        onPressIn={handleTeamPressIn}
-        onPressOut={handleTeamPressOut}
-        onPress={() => handleTeamPress(item)}>
+      <Pressable onPress={() => handleTeamPress(item)}>
         <Animated.View
           style={{
             flex: 1,
             backgroundColor: '#20B767',
             borderRadius: 12,
-            transform: [{scale: teamScaleValue}], // 애니메이션 값 적용
+            transform: [{scale: teamScaleValue}],
+            marginBottom: 8,
+            marginTop: 8,
           }}>
-          <View
-            style={{
-              padding: 16,
-            }}>
+          <View style={{padding: 16}}>
             <Text
               style={{
                 fontSize: 24,
@@ -108,12 +107,22 @@ export default function HomeView() {
               }}>
               {item.name}
             </Text>
-            <Text style={{fontSize: 18, color: 'white', fontWeight: 'medium'}}>
-              {item.description}
+            <Text
+              numberOfLines={2}
+              ellipsizeMode="tail"
+              style={{fontSize: 18, color: 'white', fontWeight: '500'}}>
+              {item.description.startsWith('https://')
+                ? 'Team Invitation Link'
+                : item.description}
             </Text>
           </View>
           <View style={{height: 2, backgroundColor: 'white'}} />
-          <View style={{padding: 16}}>
+          <View
+            style={{
+              padding: 16,
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+            }}>
             <Text
               style={{
                 fontSize: 14,
@@ -121,6 +130,13 @@ export default function HomeView() {
                 color: '#fff',
               }}>
               팀 멤버
+            </Text>
+            <Text
+              style={{
+                fontSize: 14,
+                color: '#fff',
+              }}>
+              {item.totalMembers} 명
             </Text>
           </View>
         </Animated.View>
@@ -132,8 +148,8 @@ export default function HomeView() {
     <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
       <FlatList
         data={teams}
-        style={{paddingHorizontal: 24, marginTop: 24}}
-        keyExtractor={(item) => item.name}
+        style={{paddingHorizontal: 24}}
+        keyExtractor={(item) => item.id.toString()}
         renderItem={renderTeamCard}
         ListEmptyComponent={
           <View
@@ -168,7 +184,7 @@ export default function HomeView() {
               style={{marginTop: 150, width: '100%'}}>
               <Animated.View
                 style={{
-                  transform: [{scale: scaleValue}], // 애니메이션 값 적용
+                  transform: [{scale: scaleValue}],
                   backgroundColor: '#20B767',
                   paddingVertical: 16,
                   borderRadius: 8,
