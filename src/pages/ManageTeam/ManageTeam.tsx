@@ -139,14 +139,21 @@ const ManageTeamContainer = () => {
         </View>
       </View>
 
-      <View>
-        <View style={{flex: 1, justifyContent: 'space-between'}}>
-          <Text>팀 멤버</Text>
-          <Ic_rightChevron />
+      <View style={{paddingHorizontal: 24, marginTop: 80}}>
+        <View
+          style={{
+            paddingHorizontal: 3,
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            marginBottom: 10,
+          }}>
+          <Text style={{fontSize: 14, fontWeight: 'bold'}}>팀 멤버</Text>
+          <Ic_rightChevron size={14} />
         </View>
         {team.members.length > 0 ? (
           <View
             style={{
+              padding: 18,
               borderWidth: 1,
               borderRadius: 8,
               borderStyle: 'solid',
@@ -193,7 +200,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   content: {
-    flex: 1,
     backgroundColor: '#fff',
     paddingHorizontal: 24,
   },
