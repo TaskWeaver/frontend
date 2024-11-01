@@ -22,6 +22,8 @@ import {removeTeam} from '../../features/team/teamSlice';
 import {BottomSheetDefaultBackdropProps} from '@gorhom/bottom-sheet/lib/typescript/components/bottomSheetBackdrop/types';
 import {service} from '../../domains';
 import Token from '../../domains/storage/Token.ts';
+import IcMoreButton from '../../assets/svg/ic_moreButton.tsx';
+import Ic_rightChevron from '../../assets/svg/ic_rightChevron.tsx';
 
 type ManageTeamRouteProp = RouteProp<
   {ManageTeam: {teamId: string}},
@@ -132,9 +134,32 @@ const ManageTeamContainer = () => {
           <Pressable
             style={styles.moreOptionsButton}
             onPress={handlePresentSheet}>
-            <Text style={styles.moreOptionsText}>옵션</Text>
+            <IcMoreButton />
           </Pressable>
         </View>
+      </View>
+
+      <View>
+        <View style={{flex: 1, justifyContent: 'space-between'}}>
+          <Text>팀 멤버</Text>
+          <Ic_rightChevron />
+        </View>
+        {team.members.length > 0 ? (
+          <View
+            style={{
+              borderWidth: 1,
+              borderRadius: 8,
+              borderStyle: 'solid',
+              backgroundColor: '#FAFAFA',
+              borderColor: '#F0F0F0',
+            }}>
+            <Text style={{color: '#C7C7C9', fontWeight: 'medium'}}>
+              팀 멤버를 초대해보세요
+            </Text>
+          </View>
+        ) : (
+          <View></View>
+        )}
       </View>
 
       <BottomSheet
