@@ -40,4 +40,22 @@ export default class TeamRepository {
       throw e;
     }
   }
+
+  async deleteTeam(token: string, teamId: string) {
+    const api = axios.create({
+      baseURL: REACT_APP_SERVER_URL,
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    try {
+      const response = await api.delete(`v1/team/${teamId}`);
+      return response;
+    } catch (e) {
+      console.log(e);
+      throw e;
+    }
+  }
 }

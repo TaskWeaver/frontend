@@ -20,6 +20,8 @@ import BottomSheet, {
 import {RootState} from '../../app/store.ts';
 import {removeTeam} from '../../features/team/teamSlice';
 import {BottomSheetDefaultBackdropProps} from '@gorhom/bottom-sheet/lib/typescript/components/bottomSheetBackdrop/types';
+import {service} from '../../domains';
+import Token from '../../domains/storage/Token.ts';
 
 type ManageTeamRouteProp = RouteProp<
   {ManageTeam: {teamId: string}},
@@ -31,6 +33,7 @@ const ManageTeamContainer = () => {
   const dispatch = useDispatch();
   const route = useRoute<ManageTeamRouteProp>();
   const {teamId} = route.params;
+  const token = new Token();
 
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
 
@@ -61,7 +64,10 @@ const ManageTeamContainer = () => {
     // TODO: Add edit team navigation logic
   };
 
-  const handleDeleteTeam = () => {
+  const handleDeleteTeam = async () => {
+    const accessToken = await token.getAccessToken();
+    if (!accessToken) return;
+
     Alert.alert('팀 삭제', '정말로 이 팀을 삭제하시겠습니까?', [
       {
         text: '취소',
@@ -71,7 +77,8 @@ const ManageTeamContainer = () => {
       {
         text: '삭제',
         style: 'destructive',
-        onPress: () => {
+        onPress: async () => {
+          await service.team.deleteTeam(accessToken, teamId);
           dispatch(removeTeam(teamId));
           handleCloseSheet();
           navigation.goBack();
