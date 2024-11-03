@@ -58,4 +58,25 @@ export default class TeamRepository {
       throw e;
     }
   }
+
+  async inviteMember(token: string, teamId: string, email: string) {
+    const api = axios.create({
+      baseURL: REACT_APP_SERVER_URL,
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    try {
+      const response = await api.post('v1/team/invitation/email', {
+        email: email,
+        teamId: teamId,
+      });
+      return response;
+    } catch (e) {
+      console.log(e);
+      throw e;
+    }
+  }
 }

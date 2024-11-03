@@ -3,6 +3,7 @@ import {RootStackNavigator} from './src/navigations';
 import {Provider} from 'react-redux';
 import {store} from './src/app/store.ts';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import Toast from 'react-native-toast-message';
 
 function App(): React.JSX.Element {
   return (
@@ -10,6 +11,7 @@ function App(): React.JSX.Element {
       <Provider store={store}>
         <RootStackNavigator />
       </Provider>
+      <Toast />
     </GestureHandlerRootView>
   );
 }

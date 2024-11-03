@@ -33,7 +33,6 @@ export default function HomeView() {
 
         if (accessToken) {
           const response: any = await service.team.getTeam(accessToken);
-
           if (Array.isArray(response.data.result)) {
             const teamData: Team[] = response.data.result.map((team: any) => ({
               id: team.id,
@@ -93,10 +92,9 @@ export default function HomeView() {
           style={{
             flex: 1,
             backgroundColor: '#20B767',
-            borderRadius: 12,
+            borderRadius: 8,
             transform: [{scale: teamScaleValue}],
-            marginBottom: 8,
-            marginTop: 8,
+            marginVertical: 8,
           }}>
           <View style={{padding: 16}}>
             <Text
@@ -111,7 +109,7 @@ export default function HomeView() {
             <Text
               numberOfLines={2}
               ellipsizeMode="tail"
-              style={{fontSize: 18, color: 'white', fontWeight: '500'}}>
+              style={{fontSize: 18, color: 'white', fontWeight: '400'}}>
               {item.description}
             </Text>
           </View>
@@ -128,7 +126,7 @@ export default function HomeView() {
                 fontWeight: 'bold',
                 color: '#fff',
               }}>
-              팀 멤버
+              {item.myRole}
             </Text>
             <Text
               style={{
@@ -144,10 +142,11 @@ export default function HomeView() {
   };
 
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
+    <View style={{flex: 1, backgroundColor: 'white'}}>
       <FlatList
         data={teams}
-        style={{paddingHorizontal: 24}}
+        showsVerticalScrollIndicator={false}
+        style={{paddingHorizontal: 24, paddingTop: 12}}
         keyExtractor={(item) => item.id.toString()}
         renderItem={renderTeamCard}
         ListEmptyComponent={
@@ -201,6 +200,6 @@ export default function HomeView() {
           </View>
         }
       />
-    </SafeAreaView>
+    </View>
   );
 }

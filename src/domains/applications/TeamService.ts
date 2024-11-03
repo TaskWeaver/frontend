@@ -18,4 +18,8 @@ export default class TeamService {
   async deleteTeam(token: string, teamId: string) {
     return await this.teamRepo.deleteTeam(token, teamId);
   }
+
+  async inviteMember(token: string, teamId: string, email: string) {
+    return await this.teamRepo.inviteMember(token, teamId, email);
+  }
 }
