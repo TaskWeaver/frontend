@@ -97,4 +97,20 @@ export default class AccountRepository {
       throw error; // 에러 처리
     }
   }
+
+  async checkNickname(nickname: string) {
+    const api = axios.create({
+      baseURL: REACT_APP_SERVER_URL,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    try {
+      const response = await api.get(`v1/auth/${nickname}`);
+      return response.data;
+    } catch (e) {
+      throw e;
+    }
+  }
 }
