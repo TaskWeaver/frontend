@@ -30,6 +30,8 @@ export default function LoginContainer() {
   // 로그인 처리
   const handleLogin = async () => {
     try {
+      navigation.navigate('MainStack', {screen: 'TopBarNavigation'});
+
       const {result, resultCode} = await service.account.login(
         email,
         password,
@@ -50,7 +52,6 @@ export default function LoginContainer() {
       if (error.response && error.response.data) {
         const errorData = error.response.data;
 
-        // Check for specific error messages
         if (errorData.reason === '아이디 또는 비밀번호가 일치하지 않습니다.') {
           message = '아이디 또는 비밀번호를 다시 확인해주세요.';
         } else if (errorData.resultMsg) {

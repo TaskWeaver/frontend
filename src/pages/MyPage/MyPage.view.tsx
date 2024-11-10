@@ -45,6 +45,13 @@ export default function MyPageView({
     }).start();
   };
 
+  const handleEditUser = () => {
+    navigation.navigate('MainStack', {
+      screen: 'EditUserInformation',
+      params: {email: email, nickname: nickname, image: imageUrl},
+    });
+  };
+
   const handleLogout = async () => {
     try {
       const accessToken = await token.getAccessToken();
@@ -134,7 +141,8 @@ export default function MyPageView({
                   elevation: 2,
                 }}
                 onPressIn={handlePressIn}
-                onPressOut={handlePressOut}>
+                onPressOut={handlePressOut}
+                onPress={handleEditUser}>
                 <View style={{flex: 1, flexDirection: 'column', gap: 10}}>
                   <Text
                     style={{

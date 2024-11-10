@@ -5,6 +5,7 @@ import TopBarNavigation from '../TopBarNavigation/TopBarNavigation.tsx';
 import NotificationContainer from '../../pages/Notification/Notification.container.tsx';
 import CreateTeamContainer from '../../pages/CreateTeam/CreateTeam.container.tsx';
 import ManageTeamContainer from '../../pages/ManageTeam/ManageTeam.tsx';
+import UserInformation from '../../pages/UserInformation/UserInformation.tsx';
 
 const Stack = createNativeStackNavigator<MainStackProps>();
 
@@ -29,6 +30,11 @@ export default function MainNavigation() {
       <Stack.Screen
         name="ManageTeam"
         component={ManageTeamContainer}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name={'EditUserInformation'}
+        component={UserInformation}
         options={{headerShown: false}}
       />
     </Stack.Navigator>
