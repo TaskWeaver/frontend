@@ -8,6 +8,15 @@
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
+		<key>NSExceptionDomains</key>
+		<dict>
+			<key>NSExceptionAllowsInsecureHTTPLoads</key>
+			<true/>
+			<key>NSIncludesSubdomains</key>
+			<true/>
+			<key>https://taskweaver.store</key>
+			<string></string>
+		</dict>
 	</dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>

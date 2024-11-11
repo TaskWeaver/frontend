@@ -1,10 +1,10 @@
 import axios from 'axios';
-import {REACT_APP_SERVER_URL} from '@env';
+import {REACT_APP_SERVER_URI} from '@env';
 
 export default class TeamRepository {
   async getTeam(token: string) {
     const api = axios.create({
-      baseURL: REACT_APP_SERVER_URL,
+      baseURL: REACT_APP_SERVER_URI,
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
@@ -21,7 +21,7 @@ export default class TeamRepository {
 
   async createTeam(token: string, teamName: string, teamDescription: string) {
     const api = axios.create({
-      baseURL: REACT_APP_SERVER_URL,
+      baseURL: REACT_APP_SERVER_URI,
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
@@ -43,7 +43,7 @@ export default class TeamRepository {
 
   async deleteTeam(token: string, teamId: string) {
     const api = axios.create({
-      baseURL: REACT_APP_SERVER_URL,
+      baseURL: REACT_APP_SERVER_URI,
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
@@ -61,7 +61,7 @@ export default class TeamRepository {
 
   async inviteMember(token: string, teamId: string, email: string) {
     const api = axios.create({
-      baseURL: REACT_APP_SERVER_URL,
+      baseURL: REACT_APP_SERVER_URI,
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {REACT_APP_SERVER_URL} from '@env';
+import {REACT_APP_SERVER_URI} from '@env';
 
 export default class AccountRepository {
   async createAccount(
@@ -9,7 +9,7 @@ export default class AccountRepository {
     profileImage: any
   ) {
     const api = axios.create({
-      baseURL: REACT_APP_SERVER_URL,
+      baseURL: REACT_APP_SERVER_URI,
       headers: {'Content-Type': 'multipart/form-data'},
     });
 
@@ -35,7 +35,6 @@ export default class AccountRepository {
 
     try {
       const response = await api.post('v1/auth/sign-up', formData);
-      console.log('Response:', response.data);
       return response.data;
     } catch (error: any) {
       console.log('Full error:', error);
@@ -54,8 +53,8 @@ export default class AccountRepository {
 
   async loginAccount(email: string, password: string, deviceId: string) {
     const api = axios.create({
-      baseURL: REACT_APP_SERVER_URL,
-      headers: {'Content-Type': 'application/json'},
+      baseURL: REACT_APP_SERVER_URI,
+      headers: {'content-type': 'application/json'},
     });
 
     try {
@@ -82,7 +81,7 @@ export default class AccountRepository {
 
   async logoutAccount(accessToken: string) {
     const api = axios.create({
-      baseURL: REACT_APP_SERVER_URL,
+      baseURL: REACT_APP_SERVER_URI,
       headers: {
         Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
@@ -99,7 +98,7 @@ export default class AccountRepository {
 
   async checkNickname(nickname: string) {
     const api = axios.create({
-      baseURL: REACT_APP_SERVER_URL,
+      baseURL: REACT_APP_SERVER_URI,
       headers: {
         'Content-Type': 'application/json',
       },

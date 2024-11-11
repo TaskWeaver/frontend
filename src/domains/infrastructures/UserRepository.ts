@@ -1,10 +1,10 @@
 import axios from 'axios';
-import {REACT_APP_SERVER_URL} from '@env';
+import {REACT_APP_SERVER_URI} from '@env';
 
 export default class UserRepository {
   async getUserProfile(accessToken: string) {
     const api = axios.create({
-      baseURL: REACT_APP_SERVER_URL,
+      baseURL: REACT_APP_SERVER_URI,
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${accessToken}`,

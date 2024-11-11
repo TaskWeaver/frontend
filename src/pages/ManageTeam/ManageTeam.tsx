@@ -184,7 +184,9 @@ const ManageTeamContainer = () => {
             marginBottom: 10,
           }}>
           <Text style={{fontSize: 14, fontWeight: 'bold'}}>팀 멤버</Text>
-          <Ic_rightChevron size={14} />
+          <Pressable onPress={handlePlusFriendsPress}>
+            <Ic_rightChevron size={14} />
+          </Pressable>
         </View>
         {team.members.length > 0 ? (
           <View

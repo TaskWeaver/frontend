@@ -30,8 +30,6 @@ export default function LoginContainer() {
   // 로그인 처리
   const handleLogin = async () => {
     try {
-      navigation.navigate('MainStack', {screen: 'TopBarNavigation'});
-
       const {result, resultCode} = await service.account.login(
         email,
         password,
@@ -46,7 +44,6 @@ export default function LoginContainer() {
         navigation.navigate('MainStack', {screen: 'TopBarNavigation'});
       }
     } catch (error: any) {
-      // Handle specific error scenarios
       let message = '로그인 중 오류가 발생했습니다.';
 
       if (error.response && error.response.data) {

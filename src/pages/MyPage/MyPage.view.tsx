@@ -55,10 +55,9 @@ export default function MyPageView({
   const handleLogout = async () => {
     try {
       const accessToken = await token.getAccessToken();
-      console.log(accessToken);
       if (accessToken) {
         const response = await service.account.logout(accessToken);
-        if (response.status === 200) {
+        if (response.data.resultCode === 200) {
           await token.clearToken();
           navigation.navigate('LogIn');
         } else {
@@ -164,17 +163,14 @@ export default function MyPageView({
         </View>
 
         <View style={{alignItems: 'center', marginTop: 20}}>
-          <Animated.View style={{transform: [{scale: scaleAnim}]}}>
-            <Pressable
-              onPress={handleLogout}
-              onPressIn={handlePressIn}
-              onPressOut={handlePressOut}>
+          <View>
+            <Pressable onPress={handleLogout}>
               <Text
                 style={{fontSize: 16, fontWeight: 'bold', color: '#20B767'}}>
                 로그아웃
               </Text>
             </Pressable>
-          </Animated.View>
+          </View>
         </View>
 
         <View
