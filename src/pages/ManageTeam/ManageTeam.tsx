@@ -121,8 +121,6 @@ const ManageTeamContainer = () => {
       teamId,
       email
     );
-
-    console.log(response);
   };
 
   const renderBackdrop = useCallback(
