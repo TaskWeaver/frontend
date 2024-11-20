@@ -6,6 +6,7 @@ import NotificationContainer from '../../pages/Notification/Notification.contain
 import CreateTeamContainer from '../../pages/CreateTeam/CreateTeam.container.tsx';
 import ManageTeamContainer from '../../pages/ManageTeam/ManageTeam.tsx';
 import UserInformation from '../../pages/UserInformation/UserInformation.tsx';
+import EditTeamPage from '../../pages/EditTeam/EditTeam.tsx';
 
 const Stack = createNativeStackNavigator<MainStackProps>();
 
@@ -31,6 +32,13 @@ export default function MainNavigation() {
         name="ManageTeam"
         component={ManageTeamContainer}
         options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name={'EditTeam'}
+        component={EditTeamPage}
+        options={{
+          headerShown: false,
+        }}
       />
       <Stack.Screen
         name={'EditUserInformation'}

@@ -41,6 +41,33 @@ export default class TeamRepository {
     }
   }
 
+  async editTeam(
+    token: string,
+    teamName: string,
+    teamDescription: string,
+    teamId: string
+  ) {
+    const api = axios.create({
+      baseURL: REACT_APP_SERVER_URI,
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    try {
+      const response = await api.put(`/v1/team/${teamId}`, {
+        name: teamName,
+        description: teamDescription,
+      });
+
+      return response.data;
+    } catch (e) {
+      console.log(e);
+      throw e;
+    }
+  }
+
   async deleteTeam(token: string, teamId: string) {
     const api = axios.create({
       baseURL: REACT_APP_SERVER_URI,

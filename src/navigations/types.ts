@@ -13,6 +13,7 @@ export type MainStackProps = {
   CreateTeam: undefined;
   ManageTeam: {teamId: string};
   EditUserInformation: {nickname: string; email: string; image: string};
+  EditTeam: {teamName: string; teamDescription: string; teamId: string};
 };
 
 export type RootStackParamList = {

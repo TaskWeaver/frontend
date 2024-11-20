@@ -29,7 +29,6 @@ import IcMoreButton from '../../assets/svg/ic_moreButton.tsx';
 import Ic_rightChevron from '../../assets/svg/ic_rightChevron.tsx';
 import EditIcon from '../../assets/svg/ic_editIcon.tsx';
 import TrashIcon from '../../assets/svg/ic_trash.tsx';
-import DownloadIcon from '../../assets/svg/ic_download.tsx';
 import {Portal, Modal as PaperModal} from 'react-native-paper';
 
 type ManageTeamRouteProp = RouteProp<
@@ -93,7 +92,14 @@ const ManageTeamContainer = () => {
 
   const handleEditTeam = () => {
     handleCloseSheet();
-    // TODO: Add edit team navigation logic
+    navigation.navigate('MainStack', {
+      screen: 'EditTeam',
+      params: {
+        teamName: team?.name ?? '',
+        teamDescription: team?.description ?? '',
+        teamId: team?.id ?? '',
+      },
+    });
   };
 
   const handleDeletePress = () => {
@@ -124,7 +130,7 @@ const ManageTeamContainer = () => {
       setFeedbackMessage('초대가 완료되었습니다.');
     } catch (e: any) {
       if (e.response?.status === 404) {
-        setFeedbackMessage('존재하지 않는 회원입니다.');
+        setFeedbackMessage('일치하는 회원 정보가 없습니다.');
       } else {
         setFeedbackMessage('초대에 실패했습니다. 다시 시도해주세요.');
       }
@@ -294,14 +300,9 @@ const ManageTeamContainer = () => {
           onDismiss={handleCloseInviteModal}
           contentContainerStyle={styles.centeredModalContainer}>
           <View style={styles.inviteModalContent}>
-            <View style={{alignItems: 'flex-end'}}>
-              <Pressable onPress={handleCloseInviteModal}>
-                <Text style={styles.closeButton}>✕</Text>
-              </Pressable>
-            </View>
             <Text style={styles.modalHeaderText}>멤버를 추가하시겠습니까?</Text>
             <View>
-              <Text style={{fontSize: 14, fontWeight: 'bold'}}>
+              <Text style={{fontSize: 15, fontWeight: 'bold'}}>
                 아이디로 추가
               </Text>
               <View
@@ -314,7 +315,7 @@ const ManageTeamContainer = () => {
                   placeholder={'이메일을 입력해주세요'}
                   onChangeText={(text) => setMemberEmail(text)}
                   style={{
-                    paddingVertical: 15,
+                    paddingVertical: 10,
                     borderBottomColor: '#d9d9d9',
                     borderBottomWidth: 1,
                     width: '85%',
@@ -326,22 +327,52 @@ const ManageTeamContainer = () => {
                   <IcPlus size={16} />
                 </Pressable>
               </View>
+              <View>
+                <Pressable
+                  style={{
+                    marginTop: 25,
+                    backgroundColor: '#CCF0DD',
+                    borderRadius: 8,
+                    padding: 14,
+                  }}
+                  onPress={handleCloseInviteModal}>
+                  <Text
+                    style={{
+                      color: '#078E47',
+                      textAlign: 'center',
+                      fontWeight: 'bold',
+                    }}>
+                    닫기
+                  </Text>
+                </Pressable>
+              </View>
             </View>
           </View>
         </PaperModal>
-
-        {/* Feedback Modal */}
         <PaperModal
           visible={feedbackModalVisible}
           onDismiss={() => setFeedbackModalVisible(false)}
           contentContainerStyle={styles.centeredModalContainer}>
           <View style={styles.feedbackModalContent}>
             <Text style={styles.feedbackText}>{feedbackMessage}</Text>
-            <TouchableOpacity
-              style={styles.closeFeedbackButton}
+            <Pressable
+              style={{
+                width: '100%',
+                marginTop: 8,
+                backgroundColor: '#CCF0DD',
+                borderRadius: 8,
+                padding: 14,
+              }}
               onPress={() => setFeedbackModalVisible(false)}>
-              <Text style={styles.closeButtonText}>확인</Text>
-            </TouchableOpacity>
+              <Text
+                style={{
+                  color: '#078E47',
+                  textAlign: 'center',
+                  fontWeight: 'bold',
+                }}>
+                닫기
+              </Text>
+            </Pressable>
           </View>
         </PaperModal>
       </Portal>
@@ -508,20 +539,24 @@ const styles = StyleSheet.create({
   },
   modalBackground: {
     flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
     justifyContent: 'center',
     alignItems: 'center',
     zIndex: 100,
   },
   closeButton: {
+    flex: 1,
+    alignItems: 'stretch',
     fontSize: 16,
     fontWeight: 'bold',
     color: '#666',
   },
   modalHeaderText: {
-    fontSize: 20,
-    fontWeight: 'bold',
+    fontSize: 16,
+    fontWeight: '700',
     textAlign: 'center',
-    marginVertical: 20,
+    marginTop: 15,
+    marginBottom: 40,
   },
   inputContainer: {
     flexDirection: 'row',
@@ -538,7 +573,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: 'center',
     marginBottom: 20,
-    color: '#666',
+    fontWeight: 'bold',
+    color: '#333',
   },
   closeFeedbackButton: {
     paddingVertical: 10,
