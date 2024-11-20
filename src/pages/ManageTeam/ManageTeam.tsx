@@ -30,6 +30,7 @@ import Ic_rightChevron from '../../assets/svg/ic_rightChevron.tsx';
 import EditIcon from '../../assets/svg/ic_editIcon.tsx';
 import TrashIcon from '../../assets/svg/ic_trash.tsx';
 import DownloadIcon from '../../assets/svg/ic_download.tsx';
+import {Portal, Modal as PaperModal} from 'react-native-paper';
 
 type ManageTeamRouteProp = RouteProp<
   {ManageTeam: {teamId: string}},
@@ -46,7 +47,9 @@ const ManageTeamContainer = () => {
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [inviteModalVisible, setInviteModalVisible] = useState(false);
-  const [memberImail, setMemberImail] = useState('');
+  const [memberEmail, setMemberEmail] = useState('');
+  const [feedbackModalVisible, setFeedbackModalVisible] = useState(false);
+  const [feedbackMessage, setFeedbackMessage] = useState('');
 
   const bottomSheetRef = useRef<BottomSheet>(null);
   const snapPoints = React.useMemo(() => ['18%'], []);
@@ -66,12 +69,12 @@ const ManageTeamContainer = () => {
     });
   };
 
-  const handlePlusFriendsPress = () => {
-    setInviteModalVisible(true);
-  };
-
   const handleCloseInviteModal = () => {
     setInviteModalVisible(false);
+  };
+
+  const handlePlusFriendsPress = () => {
+    setInviteModalVisible(true);
   };
 
   const handleBackPress = () => {
@@ -116,11 +119,18 @@ const ManageTeamContainer = () => {
     const accessToken = await token.getAccessToken();
     if (!accessToken) return;
 
-    const response = await service.team.inviteMember(
-      accessToken,
-      teamId,
-      email
-    );
+    try {
+      await service.team.inviteMember(accessToken, teamId, email);
+      setFeedbackMessage('초대가 완료되었습니다.');
+    } catch (e: any) {
+      if (e.response?.status === 404) {
+        setFeedbackMessage('존재하지 않는 회원입니다.');
+      } else {
+        setFeedbackMessage('초대에 실패했습니다. 다시 시도해주세요.');
+      }
+    } finally {
+      setFeedbackModalVisible(true);
+    }
   };
 
   const renderBackdrop = useCallback(
@@ -254,82 +264,6 @@ const ManageTeamContainer = () => {
         </View>
       </Modal>
 
-      <Modal
-        animationType="fade"
-        transparent={true}
-        visible={inviteModalVisible}
-        onRequestClose={handleCloseInviteModal}>
-        <View style={styles.modalBackground}>
-          <View style={styles.inviteModalContent}>
-            <View style={{alignItems: 'flex-end'}}>
-              <Pressable onPress={handleCloseInviteModal}>
-                <Text style={styles.closeButton}>✕</Text>
-              </Pressable>
-            </View>
-            <Text
-              style={{
-                fontSize: 20,
-                fontWeight: 'bold',
-                textAlign: 'center',
-                marginTop: 10,
-                marginBottom: 40,
-              }}>
-              멤버를 추가하시겠습니까?
-            </Text>
-            <View>
-              <Text style={{fontSize: 14, fontWeight: 'bold'}}>
-                아이디로 추가
-              </Text>
-              <View
-                style={{
-                  justifyContent: 'space-between',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                }}>
-                <TextInput
-                  placeholder={'이메일을 입력해주세요'}
-                  onChangeText={(text) => setMemberImail(text)}
-                  style={{
-                    paddingVertical: 15,
-                    borderBottomColor: '#d9d9d9',
-                    borderBottomWidth: 1,
-                    width: '85%',
-                    color: 'black',
-                  }}
-                />
-                <Pressable
-                  onPress={() => handleInviteMember(teamId, memberImail)}>
-                  <IcPlus size={16} />
-                </Pressable>
-              </View>
-            </View>
-            <View style={{marginTop: 40}}>
-              <Text style={{fontSize: 14, fontWeight: 'bold'}}>
-                초대 링크로 추가
-              </Text>
-              <View
-                style={{
-                  justifyContent: 'space-between',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  marginBottom: 60,
-                }}>
-                <TextInput
-                  placeholder={'이메일을 입력해주세요'}
-                  style={{
-                    paddingVertical: 15,
-                    borderBottomColor: '#d9d9d9',
-                    borderBottomWidth: 1,
-                    width: '85%',
-                  }}
-                />
-                <DownloadIcon width={16} height={16} />
-              </View>
-            </View>
-          </View>
-        </View>
-      </Modal>
-
       <BottomSheet
         ref={bottomSheetRef}
         index={isBottomSheetOpen ? 0 : -1}
@@ -353,6 +287,64 @@ const ManageTeamContainer = () => {
           </Pressable>
         </BottomSheetView>
       </BottomSheet>
+
+      <Portal>
+        <PaperModal
+          visible={inviteModalVisible}
+          onDismiss={handleCloseInviteModal}
+          contentContainerStyle={styles.centeredModalContainer}>
+          <View style={styles.inviteModalContent}>
+            <View style={{alignItems: 'flex-end'}}>
+              <Pressable onPress={handleCloseInviteModal}>
+                <Text style={styles.closeButton}>✕</Text>
+              </Pressable>
+            </View>
+            <Text style={styles.modalHeaderText}>멤버를 추가하시겠습니까?</Text>
+            <View>
+              <Text style={{fontSize: 14, fontWeight: 'bold'}}>
+                아이디로 추가
+              </Text>
+              <View
+                style={{
+                  justifyContent: 'space-between',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}>
+                <TextInput
+                  placeholder={'이메일을 입력해주세요'}
+                  onChangeText={(text) => setMemberEmail(text)}
+                  style={{
+                    paddingVertical: 15,
+                    borderBottomColor: '#d9d9d9',
+                    borderBottomWidth: 1,
+                    width: '85%',
+                    color: 'black',
+                  }}
+                />
+                <Pressable
+                  onPress={() => handleInviteMember(teamId, memberEmail)}>
+                  <IcPlus size={16} />
+                </Pressable>
+              </View>
+            </View>
+          </View>
+        </PaperModal>
+
+        {/* Feedback Modal */}
+        <PaperModal
+          visible={feedbackModalVisible}
+          onDismiss={() => setFeedbackModalVisible(false)}
+          contentContainerStyle={styles.centeredModalContainer}>
+          <View style={styles.feedbackModalContent}>
+            <Text style={styles.feedbackText}>{feedbackMessage}</Text>
+            <TouchableOpacity
+              style={styles.closeFeedbackButton}
+              onPress={() => setFeedbackModalVisible(false)}>
+              <Text style={styles.closeButtonText}>확인</Text>
+            </TouchableOpacity>
+          </View>
+        </PaperModal>
+      </Portal>
     </SafeAreaView>
   );
 };
@@ -361,6 +353,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+  },
+  centeredModalContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   content: {
     backgroundColor: '#fff',
@@ -452,13 +448,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 18,
   },
-  modalBackground: {
-    flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   modalContent: {
+    shadowColor: 'transparent',
     backgroundColor: 'white',
     borderRadius: 12,
     padding: 24,
@@ -502,15 +493,63 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   inviteModalContent: {
+    shadowColor: 'transparent',
+    backgroundColor: 'white',
+    borderRadius: 12,
+    padding: 24,
+    width: '80%',
+  },
+  feedbackModalContent: {
     backgroundColor: 'white',
     borderRadius: 8,
-    paddingTop: 20,
-    paddingHorizontal: 24,
+    padding: 24,
+    alignItems: 'center',
+    width: '80%',
+  },
+  modalBackground: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 100,
   },
   closeButton: {
     fontSize: 16,
     fontWeight: 'bold',
     color: '#666',
+  },
+  modalHeaderText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginVertical: 20,
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderBottomWidth: 1,
+    borderBottomColor: '#d9d9d9',
+  },
+  textInput: {
+    flex: 1,
+    paddingVertical: 10,
+    color: 'black',
+  },
+  feedbackText: {
+    fontSize: 16,
+    textAlign: 'center',
+    marginBottom: 20,
+    color: '#666',
+  },
+  closeFeedbackButton: {
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    backgroundColor: '#20B767',
+  },
+  closeButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 16,
   },
 });
 
