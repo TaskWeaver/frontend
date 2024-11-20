@@ -83,6 +83,7 @@ const TopBarNavigation = () => {
       <Tab.Navigator
         tabBar={(props) => {
           const activeRoute = props.state.routeNames[props.state.index];
+          // eslint-disable-next-line react-hooks/rules-of-hooks
           useEffect(() => {
             setIsMyPageActive(activeRoute === 'MyPage');
           }, [activeRoute]);

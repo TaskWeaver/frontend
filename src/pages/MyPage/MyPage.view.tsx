@@ -21,13 +21,11 @@ interface MyPageViewProps {
 
 export default function MyPageView({
   email,
-  id,
   imageUrl,
   nickname,
 }: MyPageViewProps) {
   const {navigation} = useCustomNavigation();
   const token = new Token();
-
   // 애니메이션 값 초기화
   const scaleAnim = useRef(new Animated.Value(1)).current;
 
@@ -58,10 +56,11 @@ export default function MyPageView({
       if (accessToken) {
         const response = await service.account.logout(accessToken);
         if (response.data.resultCode === 200) {
+          navigation.reset({
+            index: 0,
+            routes: [{name: 'LogIn'}],
+          });
           await token.clearToken();
-          navigation.navigate('LogIn');
-        } else {
-          console.log('로그아웃 실패');
         }
       } else {
         console.log('로그인된 사용자가 없습니다.');
@@ -70,15 +69,14 @@ export default function MyPageView({
       console.log('로그아웃 중 오류 발생:', error);
     }
   };
-
   const handleTermsOfService = () => {
     console.log('서비스 이용약관 버튼 클릭');
-    // 여기에 서비스 이용약관 페이지로 이동하는 로직 추가
+    // TODO : 여기에 서비스 이용약관 페이지로 이동하는 로직 추가
   };
 
   const handlePrivacyPolicy = () => {
     console.log('개인정보 처리방침 버튼 클릭');
-    // 여기에 개인정보 처리방침 페이지로 이동하는 로직 추가
+    // TODO : 여기에 개인정보 처리방침 페이지로 이동하는 로직 추가
   };
 
   return (
@@ -102,11 +100,15 @@ export default function MyPageView({
                 </Text>
               </View>
               <Image
-                source={require('../../assets/images/img_profile_image.png')}
+                source={
+                  imageUrl === 'domain 주소'
+                    ? require('../../assets/images/img_user_no_profile.png') // 로컬 이미지
+                    : {uri: imageUrl} // 원격 URL
+                }
                 style={{
-                  width: 60,
-                  height: 60,
-                  borderRadius: 30,
+                  width: 70,
+                  height: 70,
+                  borderRadius: 35,
                 }}
               />
             </View>

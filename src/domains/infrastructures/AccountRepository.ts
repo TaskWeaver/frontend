@@ -106,6 +106,26 @@ export default class AccountRepository {
 
     try {
       const response = await api.get(`v1/auth/${nickname}`);
+      console.log(response);
+      return response.data;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  async sendAuthorization(email: string) {
+    const api = axios.create({
+      baseURL: REACT_APP_SERVER_URI,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    try {
+      const response = await api.post('v1/user/email', {
+        email,
+      });
+      console.log(response);
       return response.data;
     } catch (e) {
       throw e;

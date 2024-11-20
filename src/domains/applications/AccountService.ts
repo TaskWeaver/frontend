@@ -32,4 +32,8 @@ export default class AccountService {
   async checkNickname(nickname: string) {
     return await this.accountRepo.checkNickname(nickname);
   }
+
+  async sendAuthCode(email: string) {
+    return await this.accountRepo.sendAuthorization(email);
+  }
 }

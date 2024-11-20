@@ -1,15 +1,42 @@
 import React from 'react';
-import {SafeAreaView, Text, TouchableOpacity, View} from 'react-native';
+import {
+  SafeAreaView,
+  Text,
+  TouchableOpacity,
+  View,
+  Pressable,
+} from 'react-native';
+import IcLeftArrow from '../../assets/svg/ic_leftArrow.tsx';
+import useCustomNavigation from '../../hooks/useCustomNavigation.ts';
 
 interface TermsViewProps {
   onSignUp: () => void;
+  isTermsAgreed: boolean;
+  toggleTermsAgreed: () => void;
 }
 
 export default function TermsView(props: TermsViewProps) {
-  const {onSignUp} = props;
+  const {onSignUp, isTermsAgreed, toggleTermsAgreed} = props;
+  const {navigation} = useCustomNavigation();
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'center',
+          paddingTop: 20,
+          paddingBottom: 10,
+          backgroundColor: '#fff',
+          position: 'relative',
+        }}>
+        <Pressable
+          onPress={() => navigation.goBack()}
+          style={{position: 'absolute', left: 20}}>
+          <IcLeftArrow size={24} />
+        </Pressable>
+      </View>
       <View style={{paddingHorizontal: 24, flex: 1}}>
         <Text style={{fontSize: 24, fontWeight: 'bold', marginTop: 28}}>
           회원가입
@@ -25,7 +52,22 @@ export default function TermsView(props: TermsViewProps) {
             <Text style={{fontSize: 16, fontWeight: 'bold'}}>
               {'필수 약관 전체 동의'}
             </Text>
-            <TouchableOpacity></TouchableOpacity>
+            <Pressable
+              onPress={toggleTermsAgreed}
+              style={{
+                width: 24,
+                height: 24,
+                borderWidth: 2,
+                borderColor: isTermsAgreed ? '#20B767' : '#d9d9d9',
+                backgroundColor: isTermsAgreed ? '#20B767' : 'white',
+                borderRadius: 4,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              {isTermsAgreed && (
+                <Text style={{color: 'white', fontWeight: 'bold'}}>✓</Text>
+              )}
+            </Pressable>
           </View>
           <TouchableOpacity
             style={{
@@ -61,18 +103,19 @@ export default function TermsView(props: TermsViewProps) {
         }}>
         <TouchableOpacity
           style={{
-            backgroundColor: '#0a84ff',
-            paddingVertical: 14,
-            borderRadius: 6,
+            backgroundColor: isTermsAgreed ? '#20B767' : '#d9d9d9',
+            paddingVertical: 16,
+            borderRadius: 8,
             width: '100%',
           }}
-          onPress={onSignUp}>
+          onPress={isTermsAgreed ? onSignUp : undefined}
+          disabled={!isTermsAgreed}>
           <Text
             style={{
               color: 'white',
               textAlign: 'center',
-              fontWeight: '500',
-              fontSize: 18,
+              fontWeight: '700',
+              fontSize: 16,
             }}>
             다음
           </Text>
