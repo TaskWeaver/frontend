@@ -76,8 +76,19 @@ const ManageTeamContainer = () => {
     setInviteModalVisible(true);
   };
 
+  const handleTeamMember = () => {
+    navigation.navigate('MainStack', {
+      screen: 'TeamMember',
+      params: {teamId: team?.id || ''},
+    });
+  };
+
   const handleBackPress = () => {
     navigation.goBack();
+  };
+
+  const handleNotification = () => {
+    navigation.navigate('MainStack', {screen: 'Notification'});
   };
 
   const handlePresentSheet = () => {
@@ -170,7 +181,7 @@ const ManageTeamContainer = () => {
           <Pressable onPress={handlePlusFriendsPress} style={styles.icon}>
             <PlusFriends />
           </Pressable>
-          <Pressable style={styles.icon}>
+          <Pressable style={styles.icon} onPress={handleNotification}>
             <IcNotification size={24} />
           </Pressable>
         </View>
@@ -184,7 +195,7 @@ const ManageTeamContainer = () => {
           <Pressable
             style={styles.moreOptionsButton}
             onPress={handlePresentSheet}>
-            <IcMoreButton />
+            <IcMoreButton color={'white'} />
           </Pressable>
         </View>
       </View>
@@ -198,7 +209,7 @@ const ManageTeamContainer = () => {
             marginBottom: 10,
           }}>
           <Text style={{fontSize: 14, fontWeight: 'bold'}}>팀 멤버</Text>
-          <Pressable onPress={handlePlusFriendsPress}>
+          <Pressable onPress={handleTeamMember}>
             <Ic_rightChevron size={14} />
           </Pressable>
         </View>

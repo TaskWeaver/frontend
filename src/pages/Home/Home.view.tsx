@@ -53,7 +53,7 @@ export default function HomeView() {
       } finally {
         setTimeout(() => {
           setIsLoading(false); // 로딩 종료
-        }, 1100); // 1초 대기
+        }, 1500); // 1.5초 대기
       }
     };
 

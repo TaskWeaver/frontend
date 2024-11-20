@@ -10,4 +10,8 @@ export default class UserService {
   async getProfile(token: string) {
     return await this.userRepo.getUserProfile(token);
   }
+
+  async getNotification(token: string) {
+    return await this.userRepo.getNotification(token);
+  }
 }

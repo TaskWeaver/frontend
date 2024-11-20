@@ -14,6 +14,7 @@ export type MainStackProps = {
   ManageTeam: {teamId: string};
   EditUserInformation: {nickname: string; email: string; image: string};
   EditTeam: {teamName: string; teamDescription: string; teamId: string};
+  TeamMember: {teamId: string};
 };
 
 export type RootStackParamList = {
