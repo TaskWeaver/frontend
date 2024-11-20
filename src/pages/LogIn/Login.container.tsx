@@ -5,7 +5,14 @@ import useBlockBackButton from '../../hooks/useBlockBackButton.ts';
 import DeviceInfo from 'react-native-device-info';
 import {service} from '../../domains';
 import Token from '../../domains/storage/Token.ts';
-import {Modal, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  Modal,
+  StyleSheet,
+  Text,
+  View,
+  ActivityIndicator,
+  Pressable,
+} from 'react-native';
 
 export default function LoginContainer() {
   const [password, setPassword] = useState('');
@@ -14,6 +21,7 @@ export default function LoginContainer() {
   const [deviceId, setDeviceId] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [isErrorDialogOpen, setIsErrorDialogOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const tokenManager = new Token();
 
@@ -29,6 +37,7 @@ export default function LoginContainer() {
 
   // 로그인 처리
   const handleLogin = async () => {
+    setIsLoading(true); // 로딩 시작
     try {
       const {result, resultCode} = await service.account.login(
         email,
@@ -58,6 +67,8 @@ export default function LoginContainer() {
 
       setErrorMessage(message);
       setIsErrorDialogOpen(true);
+    } finally {
+      setIsLoading(false); // 로딩 종료
     }
   };
 
@@ -75,6 +86,14 @@ export default function LoginContainer() {
     setIsErrorDialogOpen(false);
     setErrorMessage('');
   };
+
+  if (isLoading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#20B767" />
+      </View>
+    );
+  }
 
   return (
     <>
@@ -99,11 +118,11 @@ export default function LoginContainer() {
           <View style={styles.modalView}>
             <Text style={styles.modalTitle}>로그인 오류</Text>
             <Text style={styles.modalText}>{errorMessage}</Text>
-            <TouchableOpacity
+            <Pressable
               style={styles.confirmButton}
               onPress={handleCloseErrorDialog}>
               <Text style={styles.confirmButtonText}>확인</Text>
-            </TouchableOpacity>
+            </Pressable>
           </View>
         </View>
       </Modal>
@@ -112,50 +131,6 @@ export default function LoginContainer() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#FFFFFF',
-    paddingHorizontal: 30,
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingTop: 20,
-    paddingBottom: 10,
-    backgroundColor: '#fff',
-    position: 'relative',
-  },
-  backButton: {
-    position: 'absolute',
-    left: 16,
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: 'black',
-    marginBottom: 15,
-  },
-  divider: {
-    height: 2,
-    backgroundColor: '#FAFAFA',
-    marginBottom: 20,
-  },
-  form: {
-    flex: 1,
-    justifyContent: 'flex-start',
-  },
-  createButton: {
-    paddingVertical: 16,
-    borderRadius: 8,
-    alignItems: 'center',
-    marginBottom: 50,
-  },
-  createButtonText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
   modalBackground: {
     flex: 1,
     justifyContent: 'center',
@@ -198,5 +173,11 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 'bold',
     textAlign: 'center',
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#FFFFFF',
   },
 });

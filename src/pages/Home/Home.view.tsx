@@ -1,10 +1,10 @@
-import React, {useLayoutEffect} from 'react';
+import React, {useLayoutEffect, useState} from 'react';
 import {
+  ActivityIndicator,
   Animated,
   FlatList,
   Image,
   Pressable,
-  SafeAreaView,
   Text,
   View,
 } from 'react-native';
@@ -20,6 +20,7 @@ export default function HomeView() {
   const {navigation} = useCustomNavigation();
   const dispatch = useDispatch();
   const teams = useSelector((state: RootState) => state.team.teams);
+  const [isLoading, setIsLoading] = useState(true); // 로딩 상태 추가
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const token = new Token();
@@ -49,6 +50,10 @@ export default function HomeView() {
         }
       } catch (error) {
         console.error('Failed to fetch team data:', error);
+      } finally {
+        setTimeout(() => {
+          setIsLoading(false); // 로딩 종료
+        }, 1100); // 1초 대기
       }
     };
 
@@ -140,6 +145,23 @@ export default function HomeView() {
       </Pressable>
     );
   };
+
+  if (isLoading) {
+    return (
+      <View
+        style={{
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: 'white',
+        }}>
+        <ActivityIndicator size="large" color="#20B767" />
+        <Text style={{marginTop: 16, fontSize: 16, color: '#20B767'}}>
+          팀 데이터를 불러오는 중입니다...
+        </Text>
+      </View>
+    );
+  }
 
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>

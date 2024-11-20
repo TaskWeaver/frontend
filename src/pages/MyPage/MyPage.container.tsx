@@ -6,7 +6,7 @@ import Token from '../../domains/storage/Token.ts';
 export default function MyPageContainer() {
   const [email, setEmail] = useState('');
   const [id, setId] = useState('');
-  const [imageUrl, setImageUrl] = useState('');
+  const [imageUrl, setImageUrl] = useState('domain 주소');
   const [nickname, setNickname] = useState('');
 
   const token = new Token();

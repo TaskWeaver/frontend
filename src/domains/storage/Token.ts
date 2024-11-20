@@ -4,6 +4,7 @@ const ACCESS_TOKEN = 'accessToken';
 const REFRESH_TOKEN = 'refreshToken';
 const ACCESS_TOKEN_EXPIRE_TIME = 'accessTokenExpireTime';
 const REFRESH_TOKEN_EXPIRE_TIME = 'refreshTokenExpireTime';
+const ONBOARDING_KEY = 'hasSeenOnBoarding';
 
 export default class Token {
   async isTokenExpired(expireTimeKey: string): Promise<boolean> {
@@ -62,5 +63,17 @@ export default class Token {
     } catch (e) {
       throw e;
     }
+  }
+
+  async saveOnBoarding(): Promise<void> {
+    try {
+      await AsyncStorage.setItem(ONBOARDING_KEY, 'true');
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  async getOnBoarding(): Promise<string | null> {
+    return await AsyncStorage.getItem(ONBOARDING_KEY);
   }
 }
