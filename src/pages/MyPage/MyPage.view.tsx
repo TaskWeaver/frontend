@@ -56,17 +56,15 @@ export default function MyPageView({
       if (accessToken) {
         const response = await service.account.logout(accessToken);
         if (response.data.resultCode === 200) {
-          navigation.reset({
-            index: 0,
-            routes: [{name: 'LogIn'}],
-          });
-          await token.clearToken();
+          navigation.navigate('LogIn');
         }
       } else {
         console.log('로그인된 사용자가 없습니다.');
       }
     } catch (error) {
       console.log('로그아웃 중 오류 발생:', error);
+    } finally {
+      await token.clearToken();
     }
   };
   const handleTermsOfService = () => {

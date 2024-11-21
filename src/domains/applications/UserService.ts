@@ -14,4 +14,8 @@ export default class UserService {
   async getNotification(token: string) {
     return await this.userRepo.getNotification(token);
   }
+
+  async getNewToken(accessToken: string, refreshToken: string) {
+    return await this.userRepo.getNewToken(accessToken, refreshToken);
+  }
 }

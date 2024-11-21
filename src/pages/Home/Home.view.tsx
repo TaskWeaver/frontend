@@ -22,7 +22,6 @@ export default function HomeView() {
   const teams = useSelector((state: RootState) => state.team.teams);
   const [isLoading, setIsLoading] = useState(true); // 로딩 상태 추가
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const token = new Token();
 
   const scaleValue = new Animated.Value(1);
@@ -58,7 +57,7 @@ export default function HomeView() {
     };
 
     fetchTeamData();
-  }, [dispatch, token]);
+  }, [dispatch, teams]);
 
   const handlePressIn = () => {
     Animated.spring(scaleValue, {

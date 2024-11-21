@@ -21,18 +21,25 @@ export default function RootStackNavigation() {
     const checkInitialRoute = async () => {
       try {
         const hasSeenOnBoarding = await tokenManager.getOnBoarding();
-        const accessToken = await tokenManager.getAccessToken();
+        const isAccessTokenExpired = await tokenManager.isTokenExpired(
+          'accessTokenExpireTime'
+        );
 
-        if (accessToken) {
-          setInitialRoute('MainStack'); // 사용자가 로그인 상태
-        } else if (hasSeenOnBoarding === 'true') {
-          setInitialRoute('LogIn'); // 이미 OnBoarding을 본 사용자
+        if (!isAccessTokenExpired) {
+          setInitialRoute('MainStack');
         } else {
-          setInitialRoute('OnBoarding'); // 처음 사용하는 사용자
+          const refreshedAccessToken = await tokenManager.refreshTokens();
+          if (refreshedAccessToken) {
+            setInitialRoute('MainStack');
+          } else if (hasSeenOnBoarding === 'true') {
+            setInitialRoute('LogIn');
+          } else {
+            setInitialRoute('OnBoarding');
+          }
         }
       } catch (error) {
         console.log('초기 경로 설정 중 오류 발생:', error);
-        setInitialRoute('OnBoarding'); // 기본값으로 설정
+        setInitialRoute('OnBoarding'); // 기본값
       }
     };
 

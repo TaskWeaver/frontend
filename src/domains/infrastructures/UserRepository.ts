@@ -35,4 +35,24 @@ export default class UserRepository {
       throw e;
     }
   }
+
+  async getNewToken(accessToken: string, refreshToken: string) {
+    const api = axios.create({
+      baseURL: REACT_APP_SERVER_URI,
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    try {
+      const response = await api.post('v1/user/token', {
+        refreshToken: refreshToken,
+        oldAccessToken: accessToken,
+      });
+      console.log(response);
+      return response.data;
+    } catch (e) {
+      throw e;
+    }
+  }
 }
