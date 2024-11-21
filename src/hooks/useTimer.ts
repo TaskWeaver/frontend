@@ -1,10 +1,11 @@
 import {useState, useEffect, useCallback} from 'react';
 import BackgroundTimer from 'react-native-background-timer';
 
-const TIMER_DURATION = 60 * 5;
+// TODO : CHANGE TIME TO 300;
+const TIMER_DURATION = 30;
 
-const useTimer = () => {
-  const [secondsLeft, setSecondsLeft] = useState(TIMER_DURATION);
+const useTimer = (initialDuration = TIMER_DURATION) => {
+  const [secondsLeft, setSecondsLeft] = useState(initialDuration);
 
   useEffect(() => {
     const interval = BackgroundTimer.setInterval(() => {
@@ -22,6 +23,10 @@ const useTimer = () => {
     };
   }, []);
 
+  const resetTimer = useCallback(() => {
+    setSecondsLeft(initialDuration);
+  }, [initialDuration]);
+
   const formatTime = useCallback(() => {
     const minutes = Math.floor(secondsLeft / 60);
     const seconds = secondsLeft % 60;
@@ -33,6 +38,7 @@ const useTimer = () => {
   return {
     secondsLeft,
     formatTime,
+    resetTimer,
   };
 };
 

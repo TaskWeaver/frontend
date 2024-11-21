@@ -1,6 +1,7 @@
 import React, {useState, useCallback} from 'react';
 import SignUpView from './SignUp.view';
 import useCustomNavigation from '../../hooks/useCustomNavigation.ts';
+import {service} from '../../domains';
 
 export default function SignUpContainer() {
   const [email, setEmail] = useState('');
@@ -8,6 +9,7 @@ export default function SignUpContainer() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const {navigation} = useCustomNavigation();
 
@@ -29,16 +31,28 @@ export default function SignUpContainer() {
     []
   );
 
-  const handleAuth = useCallback(() => {
+  const handleAuth = useCallback(async () => {
     if (
       validateEmail(email) &&
       validatePassword(password) &&
       passwordsMatch(password, confirmPassword)
     ) {
-      navigation.navigate('SignUpStack', {
-        screen: 'Authorization',
-        params: {email: email, password: password},
-      });
+      setIsLoading(true); // 로딩 시작
+      try {
+        const response = await service.account.sendAuthCode(email);
+        navigation.navigate('SignUpStack', {
+          screen: 'Authorization',
+          params: {
+            email: email,
+            password: password,
+            authCode: response.result.certificationNum,
+          },
+        });
+      } catch (error) {
+        console.error('Error sending auth code:', error);
+      } finally {
+        setIsLoading(false); // 로딩 종료
+      }
     }
   }, [
     validateEmail,
@@ -74,6 +88,7 @@ export default function SignUpContainer() {
       showConfirmPassword={showConfirmPassword}
       toggleShowPassword={toggleShowPassword}
       toggleShowConfirmPassword={toggleShowConfirmPassword}
+      isLoading={isLoading} // 로딩 상태 전달
     />
   );
 }

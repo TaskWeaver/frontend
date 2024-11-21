@@ -1,9 +1,11 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {service} from '../index.ts';
 
 const ACCESS_TOKEN = 'accessToken';
 const REFRESH_TOKEN = 'refreshToken';
 const ACCESS_TOKEN_EXPIRE_TIME = 'accessTokenExpireTime';
 const REFRESH_TOKEN_EXPIRE_TIME = 'refreshTokenExpireTime';
+const ONBOARDING_KEY = 'hasSeenOnBoarding';
 
 export default class Token {
   async isTokenExpired(expireTimeKey: string): Promise<boolean> {
@@ -15,21 +17,42 @@ export default class Token {
   }
 
   async getAccessToken(): Promise<string | null> {
-    const isExpired = await this.isTokenExpired(ACCESS_TOKEN_EXPIRE_TIME);
-    if (isExpired) {
-      await this.clearToken();
-      return null;
-    }
     return await AsyncStorage.getItem(ACCESS_TOKEN);
   }
 
   async getRefreshToken(): Promise<string | null> {
-    const isExpired = await this.isTokenExpired(REFRESH_TOKEN_EXPIRE_TIME);
-    if (isExpired) {
+    return await AsyncStorage.getItem(REFRESH_TOKEN);
+  }
+
+  async refreshTokens(): Promise<string | null> {
+    const refreshToken = await this.getRefreshToken();
+    const oldAccessToken = await this.getAccessToken();
+
+    console.log(oldAccessToken, refreshToken);
+
+    if (!refreshToken || !oldAccessToken) {
       await this.clearToken();
       return null;
     }
-    return await AsyncStorage.getItem(REFRESH_TOKEN);
+
+    try {
+      const response = await service.user.getNewToken(
+        oldAccessToken,
+        refreshToken
+      );
+      if (response.resultCode === 200) {
+        const newAccessToken = response.result;
+        await this.saveToken(newAccessToken, refreshToken);
+        return newAccessToken;
+      } else {
+        await this.clearToken();
+        return null;
+      }
+    } catch (error) {
+      console.error('토큰 갱신 중 오류 발생:', error);
+      await this.clearToken();
+      return null;
+    }
   }
 
   async saveToken(accessToken: string, refreshToken: string): Promise<void> {
@@ -62,5 +85,17 @@ export default class Token {
     } catch (e) {
       throw e;
     }
+  }
+
+  async saveOnBoarding(): Promise<void> {
+    try {
+      await AsyncStorage.setItem(ONBOARDING_KEY, 'true');
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  async getOnBoarding(): Promise<string | null> {
+    return await AsyncStorage.getItem(ONBOARDING_KEY);
   }
 }

@@ -1,19 +1,19 @@
 import MyPageView from './MyPage.view.tsx';
 import {useState, useEffect} from 'react';
 import {service} from '../../domains';
-import AsyncStorageService from '../../storage/AsyncStorage.ts';
+import Token from '../../domains/storage/Token.ts';
 
 export default function MyPageContainer() {
   const [email, setEmail] = useState('');
   const [id, setId] = useState('');
-  const [imageUrl, setImageUrl] = useState('');
+  const [imageUrl, setImageUrl] = useState('domain 주소');
   const [nickname, setNickname] = useState('');
 
-  const asyncStorageService = new AsyncStorageService();
+  const token = new Token();
 
   useEffect(() => {
     const fetchProfile = async () => {
-      const accessToken = await asyncStorageService.getAccessToken();
+      const accessToken = await token.getAccessToken();
       if (!accessToken) return;
       const profile = await service.user.getProfile(accessToken);
       if (profile) {
