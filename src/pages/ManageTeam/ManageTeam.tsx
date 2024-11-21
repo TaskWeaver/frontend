@@ -87,6 +87,7 @@ const ManageTeamContainer = () => {
     navigation.goBack();
   };
 
+
   const handleNotification = () => {
     navigation.navigate('MainStack', {screen: 'Notification'});
   };
@@ -280,7 +281,6 @@ const ManageTeamContainer = () => {
           </View>
         </View>
       </Modal>
-
       <BottomSheet
         ref={bottomSheetRef}
         index={isBottomSheetOpen ? 0 : -1}
