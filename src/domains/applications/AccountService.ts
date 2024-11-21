@@ -28,4 +28,12 @@ export default class AccountService {
   async logout(accessToken: string) {
     return await this.accountRepo.logoutAccount(accessToken);
   }
+
+  async checkNickname(nickname: string) {
+    return await this.accountRepo.checkNickname(nickname);
+  }
+
+  async sendAuthCode(email: string) {
+    return await this.accountRepo.sendAuthorization(email);
+  }
 }

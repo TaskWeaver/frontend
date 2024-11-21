@@ -1,14 +1,10 @@
 import axios from 'axios';
-import {REACT_APP_SERVER_URL} from '@env';
-import Token from '../storage/Token.ts';
+import {REACT_APP_SERVER_URI} from '@env';
 
 export default class UserRepository {
-  async getUserProfile() {
-    const token = new Token();
-    const accessToken = await token.getAccessToken();
-
+  async getUserProfile(accessToken: string) {
     const api = axios.create({
-      baseURL: REACT_APP_SERVER_URL,
+      baseURL: REACT_APP_SERVER_URI,
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${accessToken}`,
@@ -16,12 +12,47 @@ export default class UserRepository {
     });
 
     try {
-      const response = await api.get('/v1/user');
-      console.log(response.data.result);
+      const response = await api.get('v1/user');
       return response.data.result;
     } catch (error: any) {
-      console.log(error);
       throw error;
+    }
+  }
+
+  async getNotification(token: string) {
+    const api = axios.create({
+      baseURL: REACT_APP_SERVER_URI,
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    try {
+      const response = await api.get('v1/notification');
+      return response.data;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  async getNewToken(accessToken: string, refreshToken: string) {
+    const api = axios.create({
+      baseURL: REACT_APP_SERVER_URI,
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    try {
+      const response = await api.post('v1/user/token', {
+        refreshToken: refreshToken,
+        oldAccessToken: accessToken,
+      });
+      console.log(response);
+      return response.data;
+    } catch (e) {
+      throw e;
     }
   }
 }

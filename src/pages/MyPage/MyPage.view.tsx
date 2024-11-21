@@ -9,8 +9,8 @@ import {
 import React, {useRef} from 'react';
 import {service} from '../../domains';
 import RightChevron from '../../assets/svg/ic_rightChevron.tsx';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import useCustomNavigation from '../../hooks/useCustomNavigation.ts';
+import Token from '../../domains/storage/Token.ts';
 
 interface MyPageViewProps {
   email: string;
@@ -21,12 +21,11 @@ interface MyPageViewProps {
 
 export default function MyPageView({
   email,
-  id,
   imageUrl,
   nickname,
 }: MyPageViewProps) {
   const {navigation} = useCustomNavigation();
-
+  const token = new Token();
   // 애니메이션 값 초기화
   const scaleAnim = useRef(new Animated.Value(1)).current;
 
@@ -44,35 +43,38 @@ export default function MyPageView({
     }).start();
   };
 
+  const handleEditUser = () => {
+    navigation.navigate('MainStack', {
+      screen: 'EditUserInformation',
+      params: {email: email, nickname: nickname, image: imageUrl},
+    });
+  };
+
   const handleLogout = async () => {
     try {
-      const accessToken = await AsyncStorage.getItem('accessToken');
+      const accessToken = await token.getAccessToken();
       if (accessToken) {
         const response = await service.account.logout(accessToken);
-        if (response.status === 200) {
-          await AsyncStorage.removeItem('accessToken');
-          await AsyncStorage.removeItem('refreshToken');
-          console.log('로그아웃 성공');
+        if (response.data.resultCode === 200) {
           navigation.navigate('LogIn');
-        } else {
-          console.log('로그아웃 실패');
         }
       } else {
         console.log('로그인된 사용자가 없습니다.');
       }
     } catch (error) {
       console.log('로그아웃 중 오류 발생:', error);
+    } finally {
+      await token.clearToken();
     }
   };
-
   const handleTermsOfService = () => {
     console.log('서비스 이용약관 버튼 클릭');
-    // 여기에 서비스 이용약관 페이지로 이동하는 로직 추가
+    // TODO : 여기에 서비스 이용약관 페이지로 이동하는 로직 추가
   };
 
   const handlePrivacyPolicy = () => {
     console.log('개인정보 처리방침 버튼 클릭');
-    // 여기에 개인정보 처리방침 페이지로 이동하는 로직 추가
+    // TODO : 여기에 개인정보 처리방침 페이지로 이동하는 로직 추가
   };
 
   return (
@@ -96,11 +98,15 @@ export default function MyPageView({
                 </Text>
               </View>
               <Image
-                source={require('../../assets/images/img_profile_image.png')}
+                source={
+                  imageUrl === 'domain 주소'
+                    ? require('../../assets/images/img_user_no_profile.png') // 로컬 이미지
+                    : {uri: imageUrl} // 원격 URL
+                }
                 style={{
-                  width: 60,
-                  height: 60,
-                  borderRadius: 30,
+                  width: 70,
+                  height: 70,
+                  borderRadius: 35,
                 }}
               />
             </View>
@@ -134,7 +140,8 @@ export default function MyPageView({
                   elevation: 2,
                 }}
                 onPressIn={handlePressIn}
-                onPressOut={handlePressOut}>
+                onPressOut={handlePressOut}
+                onPress={handleEditUser}>
                 <View style={{flex: 1, flexDirection: 'column', gap: 10}}>
                   <Text
                     style={{
@@ -156,17 +163,14 @@ export default function MyPageView({
         </View>
 
         <View style={{alignItems: 'center', marginTop: 20}}>
-          <Animated.View style={{transform: [{scale: scaleAnim}]}}>
-            <Pressable
-              onPress={handleLogout}
-              onPressIn={handlePressIn}
-              onPressOut={handlePressOut}>
+          <View>
+            <Pressable onPress={handleLogout}>
               <Text
                 style={{fontSize: 16, fontWeight: 'bold', color: '#20B767'}}>
                 로그아웃
               </Text>
             </Pressable>
-          </Animated.View>
+          </View>
         </View>
 
         <View

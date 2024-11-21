@@ -14,4 +14,26 @@ export default class TeamService {
   async createTeam(token: string, teamName: string, teamDescription: string) {
     return await this.teamRepo.createTeam(token, teamName, teamDescription);
   }
+
+  async editTeam(
+    token: string,
+    teamName: string,
+    teamDescription: string,
+    teamId: string
+  ) {
+    return await this.teamRepo.editTeam(
+      token,
+      teamName,
+      teamDescription,
+      teamId
+    );
+  }
+
+  async deleteTeam(token: string, teamId: string) {
+    return await this.teamRepo.deleteTeam(token, teamId);
+  }
+
+  async inviteMember(token: string, teamId: string, email: string) {
+    return await this.teamRepo.inviteMember(token, teamId, email);
+  }
 }

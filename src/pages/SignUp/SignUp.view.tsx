@@ -1,6 +1,16 @@
 import React from 'react';
-import {Image, SafeAreaView, Text, TouchableOpacity, View} from 'react-native';
+import {
+  ActivityIndicator,
+  Image,
+  Pressable,
+  SafeAreaView,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import SignUpTextInput from '../../components/SignUpTextInput';
+import IcLeftArrow from '../../assets/svg/ic_leftArrow.tsx';
+import useCustomNavigation from '../../hooks/useCustomNavigation.ts';
 
 interface SignUpViewProps {
   email: string;
@@ -17,6 +27,7 @@ interface SignUpViewProps {
   showConfirmPassword: boolean;
   toggleShowPassword: () => void;
   toggleShowConfirmPassword: () => void;
+  isLoading: boolean;
 }
 
 export default function SignUpView({
@@ -34,9 +45,27 @@ export default function SignUpView({
   showConfirmPassword,
   toggleShowPassword,
   toggleShowConfirmPassword,
+  isLoading,
 }: SignUpViewProps) {
+  const {navigation} = useCustomNavigation();
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'center',
+          paddingTop: 20,
+          paddingBottom: 10,
+          backgroundColor: '#fff',
+          position: 'relative',
+        }}>
+        <Pressable
+          onPress={() => navigation.goBack()}
+          style={{position: 'absolute', left: 20}}>
+          <IcLeftArrow size={24} />
+        </Pressable>
+      </View>
       <View className="px-6 flex-1">
         <Text className="text-2xl font-bold mt-7">회원가입</Text>
         <View className="mt-16">
@@ -109,6 +138,23 @@ export default function SignUpView({
           </Text>
         </TouchableOpacity>
       </View>
+
+      {isLoading && (
+        <View
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            zIndex: 10,
+          }}>
+          <ActivityIndicator size="large" color="#20B767" />
+        </View>
+      )}
     </SafeAreaView>
   );
 }

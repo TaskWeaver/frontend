@@ -1,6 +1,8 @@
-import {SafeAreaView, Text, TouchableOpacity, View} from 'react-native';
+import {Pressable, SafeAreaView, Text, View} from 'react-native';
 import SignUpTextInput from '../../components/SignUpTextInput';
 import React from 'react';
+import IcLeftArrow from '../../assets/svg/ic_leftArrow.tsx';
+import useCustomNavigation from '../../hooks/useCustomNavigation.ts';
 
 interface AuthorizationViewProps {
   authCode: string;
@@ -8,6 +10,8 @@ interface AuthorizationViewProps {
   onProfile: () => void;
   secondsLeft: number;
   formattedTime: string;
+  onResendCode: () => void;
+  isResending: boolean;
 }
 
 export default function AuthorizationView({
@@ -16,20 +20,72 @@ export default function AuthorizationView({
   onProfile,
   secondsLeft,
   formattedTime,
+  onResendCode,
+  isResending,
 }: AuthorizationViewProps) {
+  const {navigation} = useCustomNavigation();
+
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
-      <View className="px-6 flex-1">
-        <Text className="text-2xl font-bold mt-7">회원가입</Text>
-        <View className="mt-6 mt-16">
-          <Text className="text-base font-semibold">인증번호</Text>
-          <View className="relative">
-            <Text className="text-sm text-gray absolute right-2 top-3 z-10">
-              {formattedTime}
-            </Text>
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'center',
+          paddingTop: 20,
+          paddingBottom: 10,
+          backgroundColor: '#fff',
+          position: 'relative',
+        }}>
+        <Pressable
+          onPress={() => navigation.goBack()}
+          style={{position: 'absolute', left: 20}}>
+          <IcLeftArrow size={24} />
+        </Pressable>
+      </View>
+      <View style={{paddingHorizontal: 24, flex: 1}}>
+        <Text style={{fontSize: 24, fontWeight: 'bold', marginTop: 28}}>
+          회원가입
+        </Text>
+        <View style={{marginTop: 48}}>
+          <Text style={{fontSize: 16, fontWeight: 'bold'}}>인증번호</Text>
+          <View style={{position: 'relative', marginTop: 16}}>
+            {secondsLeft > 0 ? (
+              <Text
+                style={{
+                  position: 'absolute',
+                  right: 10,
+                  top: 10,
+                  fontSize: 14,
+                  color: 'gray',
+                }}>
+                {formattedTime}
+              </Text>
+            ) : (
+              <Pressable
+                style={{
+                  position: 'absolute',
+                  right: 2,
+                  top: 2,
+                  zIndex: 10,
+                  borderRadius: 6,
+                  backgroundColor: '#20B767',
+                  padding: 12,
+                }}
+                onPress={onResendCode}>
+                <Text
+                  style={{
+                    color: 'white',
+                    fontWeight: 'bold',
+                    fontSize: 12,
+                  }}>
+                  {'재발송'}
+                </Text>
+              </Pressable>
+            )}
             <SignUpTextInput
-              placeholder={'인증번호 6자리'}
-              keyboardType={'numeric'}
+              placeholder="인증번호 6자리"
+              keyboardType="numeric"
               onChangeText={onChangeAuthCode}
               value={authCode}
             />
@@ -44,14 +100,25 @@ export default function AuthorizationView({
           right: 0,
           paddingHorizontal: 24,
         }}>
-        <TouchableOpacity
-          className="bg-theme py-3.5 rounded w-full"
+        <Pressable
+          style={{
+            backgroundColor: secondsLeft > 0 ? '#20B767' : '#d9d9d9',
+            paddingVertical: 16,
+            borderRadius: 8,
+            width: '100%',
+          }}
           onPress={onProfile}
           disabled={secondsLeft === 0}>
-          <Text className="text-white text-center font-medium text-lg">
+          <Text
+            style={{
+              color: 'white',
+              textAlign: 'center',
+              fontWeight: '700',
+              fontSize: 16,
+            }}>
             본인인증
           </Text>
-        </TouchableOpacity>
+        </Pressable>
       </View>
     </SafeAreaView>
   );
