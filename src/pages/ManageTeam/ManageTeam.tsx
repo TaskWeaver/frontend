@@ -8,16 +8,16 @@ import BottomSheet from '@gorhom/bottom-sheet';
 
 const ManageTeamContainer = () => {
   const {navigation} = useCustomNavigation();
-  const bottomSheetRef = useRef<BottomSheet>(null); // 바텀 시트 레퍼런스
-  const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false); // 바텀 시트 표시 상태
+  const bottomSheetRef = useRef<BottomSheet>(null);
+  const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
 
   const handleBackPress = () => {
     navigation.goBack();
   };
 
   const handleOpenBottomSheet = () => {
-    setIsBottomSheetVisible(true); // 바텀 시트 표시 상태 변경
-    bottomSheetRef.current?.expand(); // 바텀 시트를 열도록 설정
+    setIsBottomSheetVisible(true);
+    bottomSheetRef.current?.expand();
   };
 
   return (
@@ -70,7 +70,6 @@ const ManageTeamContainer = () => {
         </View>
       </View>
 
-      {/* Bottom Sheet */}
       <BottomSheet
         ref={bottomSheetRef}
         snapPoints={['25%', '50%']} // 바텀 시트 높이
