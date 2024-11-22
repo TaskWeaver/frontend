@@ -87,19 +87,49 @@ export default function UserInformation() {
                 fontWeight: 'bold',
                 color: '#20B767',
               }}>
-              개인정보
+              개인정보 변경
             </Text>
             <Text style={{fontSize: 16, fontWeight: 'medium', color: '#333'}}>
-              개인정보를 수정해보세요
+              닉네임, 이미지를 변경해보세요
+            </Text>
+          </View>
+          <RightChevron size={24} />
+        </Pressable>
+        <Pressable
+          style={{
+            backgroundColor: '#FAFAFA',
+            borderRadius: 12,
+            paddingVertical: 20,
+            paddingHorizontal: 20,
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            elevation: 2,
+          }}>
+          <View style={{flex: 1, flexDirection: 'column', gap: 10}}>
+            <Text
+              style={{
+                fontSize: 20,
+                fontWeight: 'bold',
+                color: '#20B767',
+              }}>
+              비밀번호 변경
+            </Text>
+            <Text style={{fontSize: 16, fontWeight: 'medium', color: '#333'}}>
+              비밀번호를 변경해 개인정보를 보호해보세요
             </Text>
           </View>
           <RightChevron size={24} />
         </Pressable>
       </View>
-      <View>
-        <Pressable>
-          <Text>탈퇴하기</Text>
-        </Pressable>
+      <View style={{alignItems: 'center', marginTop: 20}}>
+        <View>
+          <Pressable>
+            <Text style={{fontSize: 16, fontWeight: 'bold', color: '#C7C7C9'}}>
+              탈퇴하기
+            </Text>
+          </Pressable>
+        </View>
       </View>
     </SafeAreaView>
   );
