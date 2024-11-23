@@ -12,6 +12,7 @@ export interface Team {
 export interface TeamMember {
   id: string | number;
   name: string;
+  nickname: string;
   email?: string;
   role?: string;
 }

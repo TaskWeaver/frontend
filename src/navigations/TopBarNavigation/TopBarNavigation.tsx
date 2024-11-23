@@ -125,7 +125,7 @@ const TopBarNavigation = () => {
         </View>
       </View>
       <Tab.Navigator
-        tabBar={(props: any) => {
+        tabBar={(props) => {
           const activeRoute = props.state.routeNames[props.state.index];
           // eslint-disable-next-line react-hooks/rules-of-hooks
           useEffect(() => {

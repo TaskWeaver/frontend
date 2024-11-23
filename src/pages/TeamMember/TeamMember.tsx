@@ -28,6 +28,8 @@ const TeamMember = () => {
     state.team.teams.find((t) => t.id === teamId)
   );
 
+  console.log(team);
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
