@@ -1,9 +1,12 @@
-import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {RootStackParamList} from '../navigations/types.ts';
+import {useNavigation} from '@react-navigation/native';
+import {RootStackParamList, SignUpParamList} from '../navigations/types.ts';
 
 export default function useCustomNavigation() {
-    const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+  const navigation = useNavigation<
+    NativeStackNavigationProp<RootStackParamList> &
+      NativeStackNavigationProp<SignUpParamList>
+  >();
 
-    return { navigation };
+  return {navigation};
 }

@@ -1,1 +1,1 @@
-export { default as RootStackNavigation } from './RootStackNavigation';
+export {default as RootStackNavigator} from './RootStackNavigation';
