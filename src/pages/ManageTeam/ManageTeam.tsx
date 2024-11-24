@@ -92,6 +92,10 @@ const ManageTeamContainer = () => {
     navigation.navigate('MainStack', {screen: 'Notification'});
   };
 
+  const handleProject = () => {
+    navigation.navigate('MainStack', {screen: 'CreateProject', params: {teamId: team?.id || ""}});
+  };
+
   const handlePresentSheet = () => {
     setIsBottomSheetOpen(true);
     bottomSheetRef.current?.snapToIndex(0);
@@ -132,6 +136,8 @@ const ManageTeamContainer = () => {
   const handleDeleteCancel = () => {
     setDeleteModalVisible(false);
   };
+
+
 
   const handleInviteMember = async (teamId: string, email: string) => {
     const accessToken = await token.getAccessToken();
@@ -241,7 +247,9 @@ const ManageTeamContainer = () => {
             marginBottom: 10,
           }}>
           <Text style={{fontSize: 14, fontWeight: 'bold'}}>프로젝트</Text>
-          <IcPlus size={14} />
+          <Pressable onPress={handleProject}>
+            <IcPlus size={14} />
+          </Pressable>
         </View>
         <View
           style={{

@@ -8,6 +8,7 @@ import ManageTeamContainer from '../../pages/ManageTeam/ManageTeam.tsx';
 import UserInformation from '../../pages/UserInformation/UserInformation.tsx';
 import EditTeamPage from '../../pages/EditTeam/EditTeam.tsx';
 import TeamMember from '../../pages/TeamMember/TeamMember.tsx';
+import CreateProject from '../../pages/CreateProject/CreateProject.tsx';
 
 const Stack = createNativeStackNavigator<MainStackProps>();
 
@@ -51,6 +52,11 @@ export default function MainNavigation() {
         component={TeamMember}
         options={{headerShown: false}}
       />
+        <Stack.Screen
+            name={'CreateProject'}
+            component={CreateProject}
+            options={{headerShown: false}}
+        />
     </Stack.Navigator>
   );
 }
