@@ -31,7 +31,7 @@ export default function CreateProject() {
 
             </View>
         </SafeAreaView>
-    )
+    );
 }
 
 const styles = StyleSheet.create({
