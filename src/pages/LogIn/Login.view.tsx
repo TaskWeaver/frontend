@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, Image, SafeAreaView, TouchableOpacity, View} from 'react-native';
+import {Text, Image, SafeAreaView, TouchableOpacity, View, Pressable} from 'react-native';
 import SignUpTextInput from '../../components/SignUpTextInput';
 import useCustomNavigation from '../../hooks/useCustomNavigation.ts';
 
@@ -49,20 +49,20 @@ export default function LoginView({
                             placeholder="영문, 숫자, 특수문자 조합 8자리 이상"
                             secureTextEntry={!showPassword}
                         />
-                        <TouchableOpacity
+                        <Pressable
                             onPress={toggleShowPassword}
                             style={{position: 'absolute', right: 10, top: 15}}>
                             <Image
                                 source={require('../../assets/images/img_visible_password.png')}
                                 style={{width: 20, height: 14}}
                             />
-                        </TouchableOpacity>
+                        </Pressable>
                     </View>
                 </View>
-                <TouchableOpacity style={{marginTop: 112, backgroundColor: '#20B767', borderRadius: 12, padding: 20}}
-                                  onPress={onLogin}>
+                <Pressable style={{marginTop: 112, backgroundColor: '#20B767', borderRadius: 12, padding: 20}}
+                           onPress={onLogin}>
                     <Text style={{textAlign: 'center', color: 'white', fontWeight: 'bold'}}>로그인</Text>
-                </TouchableOpacity>
+                </Pressable>
                 <View
                     style={{
                         flexDirection: 'row',
@@ -71,15 +71,15 @@ export default function LoginView({
                         justifyContent: 'center',
                         marginTop: 12,
                     }}>
-                    <TouchableOpacity onPress={onForgotPassword}>
+                    <Pressable onPress={onForgotPassword}>
                         <Text>비밀번호 찾기</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={onForgotPassword}>
+                    </Pressable>
+                    <Pressable onPress={onForgotPassword}>
                         <Text style={{color: 'grey'}}>|</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={onSignUp}>
+                    </Pressable>
+                    <Pressable onPress={onSignUp}>
                         <Text>회원가입</Text>
-                    </TouchableOpacity>
+                    </Pressable>
                 </View>
             </View>
         </SafeAreaView>
