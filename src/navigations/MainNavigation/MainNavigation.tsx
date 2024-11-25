@@ -10,6 +10,8 @@ import EditTeamPage from '../../pages/EditTeam/EditTeam.tsx';
 import TeamMember from '../../pages/TeamMember/TeamMember.tsx';
 import CreateProject from '../../pages/CreateProject/CreateProject.tsx';
 import FindPassword from '../../pages/FindPassword/FindPassword.tsx';
+import FindPasswordAuth from '../../pages/FindPasswordAuth/FindPasswordAuth.tsx';
+import SetPassword from '../../pages/SetPassword/SetPassword.tsx';
 
 const Stack = createNativeStackNavigator<MainStackProps>();
 
@@ -61,6 +63,16 @@ export default function MainNavigation() {
             <Stack.Screen
                 name={'FindPassword'}
                 component={FindPassword}
+                options={{headerShown: false}}
+            />
+            <Stack.Screen
+                name={'FindPasswordAuth'}
+                component={FindPasswordAuth}
+                options={{headerShown: false}}
+            />
+            <Stack.Screen
+                name={'SetPassword'}
+                component={SetPassword}
                 options={{headerShown: false}}
             />
         </Stack.Navigator>

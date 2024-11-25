@@ -23,7 +23,10 @@ export default function FindPassword() {
             const response = await service.account.sendAuthCode(email);
 
             if (response.resultCode === 200 || response.resultCode === 201) {
-                console.log('hello');
+                navigation.navigate('MainStack', {
+                    screen: 'FindPasswordAuth',
+                    params: {email: email, authCode: response.result.certificationNum},
+                });
             }
         } catch (e: any) {
             if (e.response?.status === 400 || e.response?.status === 404) {

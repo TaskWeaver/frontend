@@ -17,6 +17,8 @@ export type MainStackProps = {
     TeamMember: { teamId: string };
     CreateProject: { teamId: string };
     FindPassword: undefined;
+    FindPasswordAuth: { email: string, authCode: string };
+    SetPassword: undefined;
 };
 
 export type RootStackParamList = {
