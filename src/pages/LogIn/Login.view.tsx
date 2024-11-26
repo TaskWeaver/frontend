@@ -56,7 +56,6 @@ export default function LoginView({
                                 source={require('../../assets/images/img_visible_password.png')}
                                 style={{width: 20, height: 14}}
                             />
-
                         </Pressable>
                     </View>
                 </View>

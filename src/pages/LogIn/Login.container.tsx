@@ -116,7 +116,6 @@ export default function LoginContainer() {
                 onRequestClose={() => setIsErrorDialogOpen(false)}>
                 <View style={styles.modalBackground}>
                     <View style={styles.modalView}>
-                        <Text style={styles.modalTitle}>로그인 오류</Text>
                         <Text style={styles.modalText}>{errorMessage}</Text>
                         <Pressable
                             style={styles.confirmButton}
