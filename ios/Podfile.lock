@@ -1,4 +1,5 @@
 PODS:
+  - BEMCheckBox (1.4.1)
   - boost (1.84.0)
   - DoubleConversion (1.1.6)
   - FBLazyVector (0.76.3)
@@ -1664,6 +1665,9 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
+  - RNCCheckbox (0.5.17):
+    - BEMCheckBox (~> 1.4)
+    - React-Core
   - RNDeviceInfo (14.0.1):
     - React-Core
   - RNGestureHandler (2.21.2):
@@ -1957,6 +1961,7 @@ DEPENDENCIES:
   - ReactCodegen (from `build/generated/ios`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
+  - "RNCCheckbox (from `../node_modules/@react-native-community/checkbox`)"
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNPermissions (from `../node_modules/react-native-permissions`)
@@ -1967,6 +1972,7 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
+    - BEMCheckBox
     - SocketRocket
 
 EXTERNAL SOURCES:
@@ -2107,6 +2113,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-async-storage/async-storage"
+  RNCCheckbox:
+    :path: "../node_modules/@react-native-community/checkbox"
   RNDeviceInfo:
     :path: "../node_modules/react-native-device-info"
   RNGestureHandler:
@@ -2123,6 +2131,7 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
+  BEMCheckBox: 5ba6e37ade3d3657b36caecc35c8b75c6c2b1a4e
   boost: 1dca942403ed9342f98334bf4c3621f011aa7946
   DoubleConversion: f16ae600a246532c4020132d54af21d0ddb2a385
   FBLazyVector: be7314029d6ec6b90f0f75ce1195b8130ed9ac4f
@@ -2191,6 +2200,7 @@ SPEC CHECKSUMS:
   ReactCodegen: ae99a130606068ed40d1d9c0d5f25fda142a0647
   ReactCommon: 89c87b343deacc8610b099ac764848f0ce937e3e
   RNCAsyncStorage: fe98f1b459a87b80f12207da80c50b3a3abb6081
+  RNCCheckbox: a3ca9978cb0846b981d28da4e9914bd437403d77
   RNDeviceInfo: 825f0d2f4381327317f12d1522720a8f76e6a19e
   RNGestureHandler: 0e5ae8d72ef4afb855e98dcdbe60f27d938abe13
   RNPermissions: 00c1cfbdcbda40c167021a47aeed31fd3fe8195a
