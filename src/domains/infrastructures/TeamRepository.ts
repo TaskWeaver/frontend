@@ -118,13 +118,34 @@ export default class TeamRepository {
                 memberId: members,
             });
 
-            console.log(response);
-
             return response.data;
 
         } catch (e) {
             console.log(e);
             throw e;
         }
+    }
+
+    async acceptInvitation(token: string, teamId: number, inviteState: number) {
+        const api = axios.create({
+            baseURL: REACT_APP_SERVER_URI,
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            },
+        });
+
+        try {
+            const response = await api.post('v1/team/invitation/answer', {
+                teamId: teamId,
+                inviteState: inviteState,
+            });
+
+            return response.data;
+        } catch (e) {
+            console.log(e);
+            throw (e);
+        }
+
     }
 }

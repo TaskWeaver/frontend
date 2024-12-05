@@ -1,4 +1,4 @@
-import React, {useCallback, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {
     View,
     Text,
@@ -51,12 +51,30 @@ const ManageTeamContainer = () => {
     const [memberEmail, setMemberEmail] = useState('');
     const [feedbackModalVisible, setFeedbackModalVisible] = useState(false);
     const [feedbackMessage, setFeedbackMessage] = useState('');
-
+    const [userId, setUserId] = useState('');
     const bottomSheetRef = useRef<BottomSheet>(null);
     const snapPoints = React.useMemo(() => ['18%'], []);
 
+    useEffect(() => {
+        const getUser = async () => {
+            const accessToken = await token.getAccessToken();
+            if (!accessToken) {
+                return;
+            }
+
+            const response = await service.user.getProfile(accessToken);
+            setUserId(response.id);
+        };
+
+        getUser();
+    }, []);
+
     const team = useSelector((state: RootState) =>
         state.team.teams.find((t: { id: string; }) => t.id === teamId)
+    );
+
+    const isCurrentUserLeader = team?.members.some(
+        (member) => member.role === 'LEADER' && member.id === userId
     );
 
     const showToast = () => {
@@ -81,7 +99,7 @@ const ManageTeamContainer = () => {
     const handleTeamMember = () => {
         navigation.navigate('MainStack', {
             screen: 'TeamMember',
-            params: {teamId: team?.id || ''},
+            params: {teamId: team?.id ?? ''},
         });
     };
 
@@ -203,12 +221,12 @@ const ManageTeamContainer = () => {
             <View style={styles.content}>
                 <View style={styles.teamInfoContainer}>
                     <Text style={styles.teamName}>{team.name}</Text>
-                    <Text style={styles.teamDescription}>{team.description}</Text>
-                    <Pressable
+                    <Text style={styles.teamDescription}>{team?.description}</Text>
+                    {isCurrentUserLeader ? <Pressable
                         style={styles.moreOptionsButton}
                         onPress={handlePresentSheet}>
                         <IcMoreButton color={'white'}/>
-                    </Pressable>
+                    </Pressable> : (<View/>)}
                 </View>
             </View>
 

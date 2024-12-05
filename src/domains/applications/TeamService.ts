@@ -40,4 +40,8 @@ export default class TeamService {
     async deleteMember(token: string, teamId: string, members: string[]) {
         return await this.teamRepo.deleteMember(token, teamId, members);
     }
+
+    async acceptInvitation(token: string, teamId: number, inviteState: number) {
+        return await this.teamRepo.acceptInvitation(token, teamId, inviteState);
+    }
 }
