@@ -8,8 +8,9 @@ import {
     Image,
 } from 'react-native';
 import IcLeftArrow from '../../assets/svg/ic_leftArrow.tsx';
-import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
+import {RouteProp, useRoute} from '@react-navigation/native';
 import RightChevron from '../../assets/svg/ic_rightChevron.tsx';
+import useCustomNavigation from '../../hooks/useCustomNavigation.ts';
 
 type UserInformationProps = RouteProp<
     { UserInformation: { nickname: string; email: string } },
@@ -17,9 +18,13 @@ type UserInformationProps = RouteProp<
 >;
 
 export default function UserInformation() {
-    const navigation = useNavigation();
+    const {navigation} = useCustomNavigation();
     const route = useRoute<UserInformationProps>();
     const {email, nickname} = route.params;
+
+    const handleDelete = () => {
+        navigation.navigate('MainStack', {screen: 'DeleteAccount'});
+    };
 
     return (
         <SafeAreaView style={{flex: 1, backgroundColor: '#FFFFFF'}}>
@@ -124,7 +129,7 @@ export default function UserInformation() {
             </View>
             <View style={{alignItems: 'center', marginBottom: 20}}>
                 <View>
-                    <Pressable>
+                    <Pressable onPress={handleDelete}>
                         <Text style={{fontSize: 16, fontWeight: 'bold', color: '#C7C7C9'}}>
                             탈퇴하기
                         </Text>

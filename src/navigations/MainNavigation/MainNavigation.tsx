@@ -12,6 +12,7 @@ import CreateProject from '../../pages/CreateProject/CreateProject.tsx';
 import FindPassword from '../../pages/FindPassword/FindPassword.tsx';
 import FindPasswordAuth from '../../pages/FindPasswordAuth/FindPasswordAuth.tsx';
 import SetPassword from '../../pages/SetPassword/SetPassword.tsx';
+import DeleteAccount from '../../pages/DeleteAccount/DeleteAccount.tsx';
 
 const Stack = createNativeStackNavigator<MainStackProps>();
 
@@ -75,6 +76,7 @@ export default function MainNavigation() {
                 component={SetPassword}
                 options={{headerShown: false}}
             />
+            <Stack.Screen name={'DeleteAccount'} component={DeleteAccount} options={{headerShown: false}}/>
         </Stack.Navigator>
     );
 }

@@ -19,6 +19,7 @@ export type MainStackProps = {
     FindPassword: undefined;
     FindPasswordAuth: { email: string, authCode: string };
     SetPassword: undefined;
+    DeleteAccount: undefined;
 };
 
 export type RootStackParamList = {

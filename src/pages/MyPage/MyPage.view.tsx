@@ -182,18 +182,14 @@ export default function MyPageView({
                         marginBottom: 40,
                     }}>
                     <Pressable
-                        onPress={handleTermsOfService}
-                        onPressIn={handlePressIn}
-                        onPressOut={handlePressOut}>
+                        onPress={handleTermsOfService}>
                         <Text style={{fontSize: 14, color: '#333', fontWeight: 'medium'}}>
                             서비스 이용약관
                         </Text>
                     </Pressable>
                     <Text style={styles.separator}>|</Text>
                     <Pressable
-                        onPress={handlePrivacyPolicy}
-                        onPressIn={handlePressIn}
-                        onPressOut={handlePressOut}>
+                        onPress={handlePrivacyPolicy}>
                         <Text style={{fontSize: 14, color: '#333', fontWeight: 'medium'}}>
                             개인정보 처리방침
                         </Text>
