@@ -22,7 +22,7 @@ interface Notification {
     type: string;
     relatedTeamTitle: string;
     createdAt: string;
-    relatedTypeId: number; // 팀 ID
+    relatedTypeId: string
 }
 
 export default function NotificationView() {
@@ -52,12 +52,12 @@ export default function NotificationView() {
             console.log('팀 초대 수락 응답:', response);
 
             // Redux 상태 업데이트
-            dispatch(updateTeamMemberStatus({id: teamId, isMember: true}));
+            dispatch(updateTeamMemberStatus({id: String(teamId), isMember: true}));
 
             // 알림 상태 업데이트
             setNotifications((prevNotifications) =>
                 prevNotifications.map((notification) =>
-                    notification.relatedTypeId === teamId
+                    notification.relatedTypeId === String(teamId)
                         ? {...notification, isAccepted: true}
                         : notification
                 )
@@ -119,7 +119,7 @@ export default function NotificationView() {
 
     const renderItem = ({item}: { item: Notification }) => {
         // Redux의 팀 목록에서 해당 팀이 존재하는지 확인
-        const isAccepted = teams.some((team) => team.id === item.relatedTypeId && team.isMember);
+        const isAccepted = teams.some((team) => team.id === item.relatedTypeId);
 
         return (
             <View style={styles.notificationContainer}>
@@ -135,7 +135,7 @@ export default function NotificationView() {
                         styles.enterButton,
                         isAccepted && styles.enterButtonDisabled,
                     ]}
-                    onPress={() => handleEnter(item.relatedTypeId)}
+                    onPress={() => handleEnter(Number(item.relatedTypeId))}
                     disabled={isAccepted}>
                     <Text style={styles.enterButtonText}>
                         {isAccepted ? '참여 완료' : '참여하기'}

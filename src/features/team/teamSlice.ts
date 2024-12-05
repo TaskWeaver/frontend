@@ -7,12 +7,26 @@ interface TeamMember {
     imageUrl?: string | null;
 }
 
+interface ProjectMember {
+    memberId: string;
+    nickname: string;
+    imageUrl: string | null;
+}
+
+interface Project {
+    id: string;
+    title: string;
+    description: string;
+    members: ProjectMember[];
+}
+
 interface Team {
     id: string;
     name: string;
-    description: string; // 팀 설명 추가
+    description: string; // 팀 설명
     members: TeamMember[];
     isMember?: boolean;
+    projects: Project[]; // 팀 내 생성된 프로젝트 목록
 }
 
 interface TeamState {
@@ -51,13 +65,35 @@ export const teamSlice = createSlice({
                 state.teams[index] = {...state.teams[index], ...action.payload};
             }
         },
-        updateTeamMemberStatus: (
+        addProject: (
             state,
-            action: PayloadAction<{ id: string | number; isMember: boolean }>
+            action: PayloadAction<{
+                teamId: string;
+                project: { id: string; title: string; description: string };
+            }>
         ) => {
-            const team = state.teams.find((team) => team.id === action.payload.id);
+            const team = state.teams.find((team) => team.id === action.payload.teamId);
             if (team) {
-                team.isMember = action.payload.isMember;
+                team.projects.push({...action.payload.project, members: []});
+            }
+        },
+        addProjectMember: (
+            state,
+            action: PayloadAction<{
+                teamId: string;
+                projectId: string;
+                memberId: string;
+            }>
+        ) => {
+            const team = state.teams.find((team) => team.id === action.payload.teamId);
+            const project = team?.projects.find((proj) => proj.id === action.payload.projectId);
+            const member = team?.members.find((member) => member.id === action.payload.memberId);
+            if (project && member) {
+                project.members.push({
+                    memberId: member.id,
+                    nickname: member.nickname,
+                    imageUrl: member.imageUrl || null,
+                });
             }
         },
         setSelectedTeam: (state, action: PayloadAction<string | number>) => {
@@ -75,7 +111,8 @@ export const {
     setTeams,
     removeTeam,
     updateTeam,
-    updateTeamMemberStatus,
+    addProject,
+    addProjectMember,
     setSelectedTeam,
     clearSelectedTeam,
 } = teamSlice.actions;
