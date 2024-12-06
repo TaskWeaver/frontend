@@ -38,6 +38,15 @@ type ManageTeamRouteProp = RouteProp<
     'ManageTeam'
 >;
 
+interface ProjectType {
+    createAt: string,
+    description: string,
+    managerId: number,
+    name: string,
+    memberId: number[],
+    projectId: number
+}
+
 const ManageTeamContainer = () => {
     const {navigation} = useCustomNavigation();
     const dispatch = useDispatch();
@@ -45,6 +54,7 @@ const ManageTeamContainer = () => {
     const {teamId} = route.params;
     const token = new Token();
 
+    const [projects, setProjects] = useState([]); // 프로젝트 상태 추가
     const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
     const [deleteModalVisible, setDeleteModalVisible] = useState(false);
     const [inviteModalVisible, setInviteModalVisible] = useState(false);
@@ -68,6 +78,7 @@ const ManageTeamContainer = () => {
         };
 
         getUser();
+        fetchProjects();
     }, []);
 
     const team = useSelector((state: RootState) =>
@@ -181,6 +192,33 @@ const ManageTeamContainer = () => {
         }
     };
 
+    const fetchProjects = async () => {
+        const accessToken = await token.getAccessToken();
+        if (!accessToken) {
+            return;
+        }
+
+        try {
+            const response = await service.team.getProjects(accessToken, teamId);
+            if (response?.result) {
+                setProjects(response.result);
+            }
+        } catch (error) {
+            console.error('프로젝트 가져오기 실패:', error);
+        }
+    };
+
+    const handleProjectPress = (project: ProjectType) => {
+        navigation.navigate('MainStack', {
+            screen: 'ManageProject',
+            params: {
+                projectId: project.projectId,
+                name: project.name,
+                description: project.description,
+            },
+        });
+    };
+
     const renderBackdrop = useCallback(
         (props: JSX.IntrinsicAttributes & BottomSheetDefaultBackdropProps) => (
             <BottomSheetBackdrop
@@ -241,7 +279,7 @@ const ManageTeamContainer = () => {
                     }}>
                     <Text style={{fontSize: 14, fontWeight: 'bold'}}>팀 멤버</Text>
                     <Pressable onPress={handleTeamMember}>
-                        <Ic_rightChevron size={14}/>
+                        <Ic_rightChevron size={14} color={'black'}/>
                     </Pressable>
                 </View>
                 {team.members.length > 0 ? (
@@ -287,26 +325,39 @@ const ManageTeamContainer = () => {
                         paddingHorizontal: 3,
                         flexDirection: 'row',
                         justifyContent: 'space-between',
-                        marginBottom: 10,
+                        marginBottom: 16,
                     }}>
                     <Text style={{fontSize: 14, fontWeight: 'bold'}}>프로젝트</Text>
                     <Pressable onPress={handleProject}>
                         <IcPlus size={14}/>
                     </Pressable>
                 </View>
-                <View
-                    style={{
-                        padding: 18,
-                        borderWidth: 1,
-                        borderRadius: 8,
-                        borderStyle: 'solid',
-                        backgroundColor: '#FAFAFA',
-                        borderColor: '#F0F0F0',
-                    }}>
-                    <Text style={{color: '#C7C7C9', fontWeight: 'medium'}}>
-                        프로젝트를 추가해보세요
-                    </Text>
-                </View>
+                {projects.length > 0 ? (
+                    <ScrollView style={{minHeight: 200}}>
+                        {projects.map((project: ProjectType) => (
+                            <Pressable key={project.projectId} style={styles.projectCard}
+                                       onPress={() => handleProjectPress(project)}
+                            >
+                                <Text style={styles.projectName}>{project.name}</Text>
+                                <Ic_rightChevron size={14} color={'black'}/>
+                            </Pressable>
+                        ))}
+                    </ScrollView>
+                ) : (
+                    <View
+                        style={{
+                            padding: 18,
+                            borderWidth: 1,
+                            borderRadius: 8,
+                            borderStyle: 'solid',
+                            backgroundColor: '#FAFAFA',
+                            borderColor: '#F0F0F0',
+                        }}>
+                        <Text style={{color: '#C7C7C9', fontWeight: 'medium'}}>
+                            프로젝트를 추가해보세요
+                        </Text>
+                    </View>
+                )}
             </View>
 
             <Modal
@@ -678,6 +729,30 @@ const styles = StyleSheet.create({
         fontSize: 10,
         color: '#666',
         textAlign: 'center',
+    },
+    projectCard: {
+        backgroundColor: '#FAFAFA',
+        borderRadius: 8,
+        padding: 16,
+        marginBottom: 12,
+        borderWidth: 1,
+        borderColor: '#EAEAEA',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        flexDirection: 'row',
+    },
+    projectName: {
+        fontSize: 16,
+        fontWeight: 'bold',
+    },
+    projectDescription: {
+        fontSize: 14,
+        color: '#666',
+        marginBottom: 8,
+    },
+    projectDate: {
+        fontSize: 12,
+        color: '#999',
     },
 });
 

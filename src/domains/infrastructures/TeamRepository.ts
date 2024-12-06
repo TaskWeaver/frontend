@@ -148,4 +148,47 @@ export default class TeamRepository {
         }
 
     }
+
+    async createProject(token: string, teamId: string, name: string, description: string, managerId: number, memberIdList: number[]) {
+        const api = axios.create({
+            baseURL: REACT_APP_SERVER_URI,
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        try {
+            const response = await api.post(`v1/team/${teamId}/project`, {
+                name,
+                description,
+                managerId,
+                memberIdList,
+            });
+
+            console.log(response);
+            return response.data;
+        } catch (e) {
+            console.log(e);
+            throw (e);
+        }
+    }
+
+    async getProjects(token: string, teamId: string) {
+        const api = axios.create({
+            baseURL: REACT_APP_SERVER_URI,
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        try {
+            const response = await api.get(`v1/team/${teamId}/projects`);
+
+            console.log(response);
+            return response.data;
+        } catch (e) {
+            console.log(e);
+            throw (e);
+        }
+    }
 }

@@ -44,4 +44,12 @@ export default class TeamService {
     async acceptInvitation(token: string, teamId: number, inviteState: number) {
         return await this.teamRepo.acceptInvitation(token, teamId, inviteState);
     }
+
+    async createProject(token: string, teamId: string, name: string, description: string, managerId: number, memberIdList: number[]) {
+        return await this.teamRepo.createProject(token, teamId, name, description, managerId, memberIdList);
+    }
+
+    async getProjects(token: string, teamId: string) {
+        return await this.teamRepo.getProjects(token, teamId);
+    }
 }

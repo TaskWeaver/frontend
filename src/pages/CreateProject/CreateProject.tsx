@@ -79,6 +79,40 @@ export default function CreateProject() {
         );
     };
 
+    const handleProject = async () => {
+        const token = await tokenManager.getAccessToken();
+
+        if (!token) {
+            return;
+        }
+
+        // Convert selectedMembers to a list of numbers
+        const memberIdList = selectedMembers.map((id) => Number(id));
+
+        try {
+            const response = await service.team.createProject(
+                token,
+                teamId,
+                projectTitle,
+                projectDescription,
+                Number(user.id),
+                memberIdList
+            );
+
+            // 프로젝트 생성 후 manageProject로 이동
+            navigation.navigate('MainStack', {
+                screen: 'ManageProject',
+                params: {
+                    projectId: response.projectId,
+                    name: projectTitle,
+                    description: projectDescription,
+                },
+            });
+        } catch (error) {
+            console.error('Failed to create project:', error);
+        }
+    };
+
     const renderTeamMember = ({item}: { item: { id: string; nickname: string; imageUrl: string } }) => (
         <Pressable onPress={() => toggleMemberSelection(item.id)}
                    style={[styles.teamMemberContainer, selectedMembers.includes(item.id) && styles.selectedMemberImage,
@@ -138,7 +172,11 @@ export default function CreateProject() {
                                         }
                                         style={styles.memberImage}
                                     />
-                                    <Text style={{fontWeight: 16, lineHeight: 16, marginTop: 8}}>{item?.nickname}</Text>
+                                    <Text style={{
+                                        fontWeight: '500',
+                                        lineHeight: 16,
+                                        marginTop: 8,
+                                    }}>{item?.nickname}</Text>
                                 </View>
                             )}
                             horizontal
@@ -164,7 +202,8 @@ export default function CreateProject() {
             </View>
 
             <View style={{flex: 1, paddingHorizontal: 24, marginTop: 560}}>
-                <Pressable style={{alignItems: 'center', backgroundColor: '#20B767', borderRadius: 8, padding: 18}}>
+                <Pressable onPress={handleProject}
+                           style={{alignItems: 'center', backgroundColor: '#20B767', borderRadius: 8, padding: 18}}>
                     <Text style={{color: 'white', fontWeight: '700'}}>다음</Text>
                 </Pressable>
             </View>
