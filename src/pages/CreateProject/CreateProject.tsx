@@ -99,15 +99,11 @@ export default function CreateProject() {
                 memberIdList
             );
 
-            // 프로젝트 생성 후 manageProject로 이동
-            navigation.navigate('MainStack', {
-                screen: 'ManageProject',
-                params: {
-                    projectId: response.projectId,
-                    name: projectTitle,
-                    description: projectDescription,
-                },
-            });
+
+            if (response.resultCode === 200 || response.resultCode === 201) {
+                navigation.goBack();
+            }
+
         } catch (error) {
             console.error('Failed to create project:', error);
         }

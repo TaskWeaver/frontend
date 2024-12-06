@@ -64,9 +64,18 @@ export default function ManageProject() {
                                height: 260,
                            }}/>
                     <View style={{flexDirection: 'row', alignItems: 'center', marginTop: -30}}>
-                        <Text style={{fontSize: 16}}>오늘이 마감일인</Text>
-                        <Text style={{fontSize: 16, marginLeft: 4, color: '#20B767'}}>태스크</Text>
-                        <Text style={{fontSize: 16}}>가 없습니다</Text>
+                        <Text style={{fontSize: 16}}>아직</Text>
+                        <Text style={{fontSize: 16, marginLeft: 4, color: '#20B767', fontWeight: '700'}}>{name} 팀</Text>
+                        <Text style={{fontSize: 16}}>의</Text>
+                        <Text style={{fontSize: 16, fontWeight: '700'}}>Task</Text>
+                        <Text style={{fontSize: 16}}>가 없습니다.</Text>
+                    </View>
+                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                        <Text style={{fontSize: 16, marginRight: 4}}>새로운</Text>
+                        <Text style={{fontSize: 16, fontWeight: '700'}}>Task</Text>
+                        <Text style={{fontSize: 16}}>를 추가해주세요.</Text>
+
+
                     </View>
                 </View>
             </View>

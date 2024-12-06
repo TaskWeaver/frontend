@@ -7,9 +7,9 @@ import {
     SafeAreaView,
     TouchableOpacity,
     Modal,
-    TextInput, Image, ScrollView,
+    TextInput, Image, ScrollView, RefreshControl, FlatList,
 } from 'react-native';
-import {useRoute, RouteProp} from '@react-navigation/native';
+import {useRoute, RouteProp, useFocusEffect} from '@react-navigation/native';
 import {useSelector, useDispatch} from 'react-redux';
 import Toast from 'react-native-toast-message';
 import useCustomNavigation from '../../hooks/useCustomNavigation.ts';
@@ -62,6 +62,7 @@ const ManageTeamContainer = () => {
     const [feedbackModalVisible, setFeedbackModalVisible] = useState(false);
     const [feedbackMessage, setFeedbackMessage] = useState('');
     const [userId, setUserId] = useState('');
+    const [refreshing, setRefreshing] = useState(false);
 
     const bottomSheetRef = useRef<BottomSheet>(null);
     const snapPoints = React.useMemo(() => ['18%'], []);
@@ -78,8 +79,13 @@ const ManageTeamContainer = () => {
         };
 
         getUser();
-        fetchProjects();
     }, []);
+
+    useFocusEffect(
+        useCallback(() => {
+            fetchProjects();
+        }, [])
+    );
 
     const team = useSelector((state: RootState) =>
         state.team.teams.find((t: { id: string; }) => t.id === teamId)
@@ -193,8 +199,10 @@ const ManageTeamContainer = () => {
     };
 
     const fetchProjects = async () => {
+        setRefreshing(true);
         const accessToken = await token.getAccessToken();
         if (!accessToken) {
+            setRefreshing(false);
             return;
         }
 
@@ -205,6 +213,8 @@ const ManageTeamContainer = () => {
             }
         } catch (error) {
             console.error('프로젝트 가져오기 실패:', error);
+        } finally {
+            setRefreshing(false);
         }
     };
 
@@ -230,6 +240,18 @@ const ManageTeamContainer = () => {
         ),
         []
     );
+
+    const renderProject = ({item}: { item: ProjectType }) => (
+        <Pressable
+            key={item.projectId}
+            style={styles.projectCard}
+            onPress={() => handleProjectPress(item)}
+        >
+            <Text style={styles.projectName}>{item.name}</Text>
+            <Ic_rightChevron size={14} color={'black'}/>
+        </Pressable>
+    );
+
 
     if (!team) {
         return (
@@ -319,7 +341,7 @@ const ManageTeamContainer = () => {
                     </View>
                 )}
             </View>
-            <View style={{paddingHorizontal: 24, marginTop: 60}}>
+            <View style={{flex: 1, paddingHorizontal: 24, marginTop: 60}}>
                 <View
                     style={{
                         paddingHorizontal: 3,
@@ -332,32 +354,20 @@ const ManageTeamContainer = () => {
                         <IcPlus size={14}/>
                     </Pressable>
                 </View>
-                {projects.length > 0 ? (
-                    <ScrollView style={{minHeight: 200}}>
-                        {projects.map((project: ProjectType) => (
-                            <Pressable key={project.projectId} style={styles.projectCard}
-                                       onPress={() => handleProjectPress(project)}
-                            >
-                                <Text style={styles.projectName}>{project.name}</Text>
-                                <Ic_rightChevron size={14} color={'black'}/>
-                            </Pressable>
-                        ))}
-                    </ScrollView>
-                ) : (
-                    <View
-                        style={{
-                            padding: 18,
-                            borderWidth: 1,
-                            borderRadius: 8,
-                            borderStyle: 'solid',
-                            backgroundColor: '#FAFAFA',
-                            borderColor: '#F0F0F0',
-                        }}>
-                        <Text style={{color: '#C7C7C9', fontWeight: 'medium'}}>
-                            프로젝트를 추가해보세요
-                        </Text>
-                    </View>
-                )}
+                <FlatList
+                    data={projects}
+                    keyExtractor={(item) => item.projectId.toString()}
+                    renderItem={renderProject}
+                    refreshControl={
+                        <RefreshControl refreshing={refreshing} onRefresh={fetchProjects}/>
+                    }
+                    showsVerticalScrollIndicator={false}
+                    ListEmptyComponent={
+                        <View style={styles.emptyContainer}>
+                            <Text style={styles.emptyText}>프로젝트를 추가해보세요</Text>
+                        </View>
+                    }
+                />
             </View>
 
             <Modal
@@ -753,6 +763,18 @@ const styles = StyleSheet.create({
     projectDate: {
         fontSize: 12,
         color: '#999',
+    },
+    emptyContainer: {
+        padding: 18,
+        borderWidth: 1,
+        borderRadius: 8,
+        backgroundColor: '#FAFAFA',
+        borderColor: '#F0F0F0',
+        alignItems: 'center',
+    },
+    emptyText: {
+        color: '#C7C7C9',
+        fontWeight: 'medium',
     },
 });
 
