@@ -132,5 +132,20 @@ export default class AccountRepository {
         }
     }
 
+    async deleteAccount(token: string) {
+        const api = axios.create({
+            baseURL: REACT_APP_SERVER_URI,
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        });
 
+        try {
+            const response = await api.delete('v1/user');
+            return response.data;
+        } catch (e) {
+            throw e;
+        }
+    }
 }
