@@ -39,12 +39,13 @@ type ManageTeamRouteProp = RouteProp<
 >;
 
 interface ProjectType {
-    createAt: string,
+    createdAt: string,
     description: string,
     managerId: number,
     name: string,
     memberId: number[],
     projectId: number
+    projectStateName: string
 }
 
 const ManageTeamContainer = () => {
@@ -178,6 +179,7 @@ const ManageTeamContainer = () => {
     };
 
 
+    // eslint-disable-next-line @typescript-eslint/no-shadow
     const handleInviteMember = async (teamId: string, email: string) => {
         const accessToken = await token.getAccessToken();
         if (!accessToken) {
@@ -225,6 +227,8 @@ const ManageTeamContainer = () => {
                 projectId: project.projectId,
                 name: project.name,
                 description: project.description,
+                status: project.projectStateName,
+                createdAt: project.createdAt,
             },
         });
     };

@@ -20,7 +20,7 @@ export type MainStackProps = {
     FindPasswordAuth: { email: string, authCode: string };
     SetPassword: undefined;
     DeleteAccount: undefined;
-    ManageProject: { projectId: number, name: string, description: string }
+    ManageProject: { projectId: number, name: string, description: string, status: string, createdAt: string }
 };
 
 export type RootStackParamList = {
