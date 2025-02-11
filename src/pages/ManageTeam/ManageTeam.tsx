@@ -224,6 +224,7 @@ const ManageTeamContainer = () => {
         navigation.navigate('MainStack', {
             screen: 'ManageProject',
             params: {
+                teamId: teamId,
                 projectId: project.projectId,
                 name: project.name,
                 description: project.description,
@@ -288,7 +289,13 @@ const ManageTeamContainer = () => {
                     <Text style={styles.teamName}>{team.name}</Text>
                     <Text style={styles.teamDescription}>{team?.description}</Text>
                     {isCurrentUserLeader ? <Pressable
-                        style={styles.moreOptionsButton}
+                        style={{
+                            position: 'absolute',
+                            top: 4,
+                            right: 0,
+                            zIndex: 1,
+                            padding: 8,
+                        }}
                         onPress={handlePresentSheet}>
                         <IcMoreButton color={'white'}/>
                     </Pressable> : (<View/>)}

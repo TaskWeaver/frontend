@@ -191,4 +191,93 @@ export default class TeamRepository {
             throw (e);
         }
     }
+
+    async changeStatus(token: string, taskId: string, taskState: number) {
+        const api = axios.create({
+            baseURL: REACT_APP_SERVER_URI,
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        try {
+            const response = await api.patch(`v1/task/state/${taskId}`, {
+                taskState
+            });
+    
+            console.log(response);
+            return response.data;
+        } catch (e: any) {
+            if (e.response && e.response.data) {
+                console.log(e.response.data.reason); // reason 출력
+            } else {
+                console.log('Unexpected error:', e);
+            }
+            throw e;
+        }
+    }
+    
+    async createTask(token: string, projectId: string, taskData: any) {
+        const formData = new FormData();
+        
+        formData.append('request', JSON.stringify(taskData.request));
+        
+        if (!taskData.images || taskData.images.length === 0) {
+            formData.append('images', {
+                uri: '',
+                type: 'image/jpeg',
+                name: 'empty_image.jpg'
+            });
+        } else {
+            taskData.images.forEach((image: any, index: any) => {
+                formData.append('images', {
+                    uri: image,
+                    type: 'image/jpeg',
+                    name: `task_image_${index}.jpg`
+                });
+            });
+        }
+     
+        const api = axios.create({
+            baseURL: process.env.REACT_APP_SERVER_URI,
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        
+        try {
+            const response = await api.post(`/v1/projects/${projectId}/tasks`, formData);
+            return response.data;
+        } catch (error: any) {
+            if (axios.isAxiosError(error) && error.response) {
+                console.error('Task creation error:', error.response.data);
+            } else {
+                console.error('Unexpected error:', error);
+            }
+            throw error;
+        }
+    }
+
+    async getTasks(token: string, teamId: string, projectId: string) {
+        const api = axios.create({
+            baseURL: REACT_APP_SERVER_URI,
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        try {
+            const response = await api.get(`/v1/team/${teamId}/project/${projectId}`);
+            console.log(response);
+            return response.data;
+        } catch (e: any) {
+            if (e.response && e.response.data) {
+                console.log(e.response.data.reason);
+            } else {
+                console.log('Unexpected error:', e);
+            }
+            throw e;
+        }
+    }
 }

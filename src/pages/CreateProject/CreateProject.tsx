@@ -209,7 +209,7 @@ export default function CreateProject() {
                     <View style={styles.modalContent}>
                         <Text style={styles.modalTitle}>프로젝트 참여자 선택</Text>
                         <FlatList
-                            data={team.members}
+                            data={team.members as { id: string; nickname: string; imageUrl: string }[]}
                             keyExtractor={(item) => item.id}
                             renderItem={renderTeamMember}
                             contentContainerStyle={{paddingVertical: 10}}

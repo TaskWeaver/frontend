@@ -14,6 +14,7 @@ import FindPasswordAuth from '../../pages/FindPasswordAuth/FindPasswordAuth.tsx'
 import SetPassword from '../../pages/SetPassword/SetPassword.tsx';
 import DeleteAccount from '../../pages/DeleteAccount/DeleteAccount.tsx';
 import ManageProject from '../../pages/ManageProject/ManageProject.tsx';
+import CreateTask from '../../pages/CreateTask/CreateTask.tsx';
 
 const Stack = createNativeStackNavigator<MainStackProps>();
 
@@ -87,6 +88,7 @@ export default function MainNavigation() {
                 component={ManageProject}
                 options={{headerShown: false}}
             />
+            <Stack.Screen name={"CreateTask"} component={CreateTask} options={{headerShown: false}}/>
         </Stack.Navigator>
     );
 }

@@ -52,4 +52,13 @@ export default class TeamService {
     async getProjects(token: string, teamId: string) {
         return await this.teamRepo.getProjects(token, teamId);
     }
+    async changeStatus(token: string, taskId: string, taskState: number) {
+        return await this.teamRepo.changeStatus(token, taskId, taskState);
+    }
+    async createTask(token: string, projectId: string, taskData: any) {
+        return await this.teamRepo.createTask(token, projectId, taskData);
+    }
+    async getTasks(token: string, projectId: string, teamId: string) {
+        return await this.teamRepo.getTasks(token, teamId, projectId);
+    }
 }
